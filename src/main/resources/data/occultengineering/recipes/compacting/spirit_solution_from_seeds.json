@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "occultism:datura_seeds"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "occultengineering:spirit_solution",
+      "amount": 10
+    }
+  ]
+}

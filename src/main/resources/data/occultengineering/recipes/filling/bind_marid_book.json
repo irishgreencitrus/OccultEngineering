@@ -1,0 +1,16 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "occultism:book_of_binding_marid"
+    }, {
+      "fluid": "occultengineering:spirit_solution",
+      "amount": 25
+    }
+  ],
+  "results": [
+    {
+      "item": "occultism:book_of_binding_bound_marid"
+    }
+  ]
+}
