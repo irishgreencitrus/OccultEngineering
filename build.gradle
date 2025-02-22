@@ -216,6 +216,10 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        // Maven of dragons.plus
+        url "https://maven.dragons.plus/releases"
+    }
 }
 
 dependencies {
@@ -228,6 +232,10 @@ dependencies {
     //jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[MC1.20.1,1.21)")
     jarJar("com.tterrag.registrate:Registrate:${registrate_version}") {
         jarJar.ranged(it, '[MC1.19.3-1.1.10,)')
+    }
+    jarJar(group: 'plus.dragons.createdragonlib', name: "create_dragon_lib-${minecraft_version}", version: "${create_dragon_lib_version_range}") {
+        transitive = false
+        jarJar.pin(it, project.create_dragon_lib_version)
     }
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -264,6 +272,8 @@ dependencies {
     implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    implementation fg.deobf("plus.dragons.createdragonlib:create_dragon_lib-${minecraft_version}:${create_dragon_lib_version}")
 }
 
 mixin {
