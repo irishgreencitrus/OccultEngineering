@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "occultism:taboo_book"
+    },
+    {
+      "item": "occultism:purified_ink"
+    },
+    {
+      "item": "occultism:awakened_feather"
+    },
+    {
+      "item": "minecraft:orange_dye"
+    },
+    {
+      "item": "minecraft:purple_dye"
+    }
+  ],
+  "results": [
+    {
+      "item": "occultism:book_of_binding_marid"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "occultism:book_of_binding_empty"
+    },
+    {
+      "item": "minecraft:orange_dye"
+    },
+    {
+      "item": "minecraft:purple_dye"
+    }
+  ],
+  "results": [
+    {
+      "item": "occultism:book_of_binding_marid"
+    }
+  ]
+}
