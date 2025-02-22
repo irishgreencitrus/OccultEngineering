@@ -8,20 +8,30 @@ import io.github.irishgreencitrus.occultengineering.kinetics.fan.processing.FanE
 import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.DimensionalStorageActuatorInteractionPoint;
 import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.SacrificialBowlInteractionPoint;
 import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.StableWormholeInteractionPoint;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringCreativeModeTab;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import plus.dragons.createdragonlib.lang.Lang;
+import plus.dragons.createdragonlib.lang.LangFactory;
 
 @Mod(OccultEngineering.MODID)
 public class OccultEngineering {
+    public static final String NAME = "Create: Occult Engineering";
     public static final String MODID = "occultengineering";
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
+
+    public static final Lang LANG = new Lang(MODID);
+    public static final LangFactory LANG_FACTORY = LangFactory.create(NAME, MODID).tooltips().ui();
     public OccultEngineering(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
+        modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
+
 
         REGISTRATE.registerEventListeners(modEventBus);
         FanProcessingTypeRegistry.register(ResourceLocation.fromNamespaceAndPath(MODID,"enspirit"), new FanEnspiritType());
@@ -30,5 +40,7 @@ public class OccultEngineering {
         ArmInteractionPointType.register(new DimensionalStorageActuatorInteractionPoint(ResourceLocation.fromNamespaceAndPath(MODID, "dimensional_storage_actuator_interaction_point")));
 
         OccultEngineeringFluids.register();
+        OccultEngineeringCreativeModeTab.register(modEventBus);
+
     }
 }
