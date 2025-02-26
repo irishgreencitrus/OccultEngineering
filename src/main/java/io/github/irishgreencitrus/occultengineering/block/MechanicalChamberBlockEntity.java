@@ -1,6 +1,5 @@
 package io.github.irishgreencitrus.occultengineering.block;
 
-import com.klikli_dev.modonomicon.api.ModonomiconAPI;
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
 import com.klikli_dev.occultism.common.ritual.CraftMinerSpiritRitual;
 import com.klikli_dev.occultism.common.ritual.CraftRitual;
@@ -10,10 +9,15 @@ import com.klikli_dev.occultism.crafting.recipe.RitualRecipe;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.klikli_dev.occultism.util.ItemNBTUtil;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
@@ -29,6 +33,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import plus.dragons.createdragonlib.lang.LangBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,7 +101,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
 
                 if (!self.level.isClientSide) {
                     self.lastChangeTime = MechanicalChamberBlockEntity.this.level.getGameTime();
-                    networkDirty = true;
+                    updateBlock();
                 }
             }
 
@@ -114,7 +119,6 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
 
     public @Nullable RitualRecipe getCurrentRitualRecipe() {
         // If we don't have a ritual recipe, refresh it from the server.
-        // (see LoadNetwork)
         if (currentRitualRecipeId != null && level != null) {
             Optional<? extends Recipe<?>> recipe = level.getRecipeManager().byKey(currentRitualRecipeId);
 
@@ -147,8 +151,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
 
         // We don't call Ritual.start(), as it only plays a sound for our purposes!
 
-        setChanged();
-        networkDirty = true;
+        updateBlock();
 
         level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
     }
@@ -186,43 +189,33 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     public boolean isRitualValid(RitualRecipe recipe, Level level, BlockPos centerPosition, ItemStack activationItem, List<Ingredient> additionalIngredients) {
         return recipe.getPentacle() != null && recipe.getActivationItem().test(activationItem) &&
                 recipe.getRitual().areAdditionalIngredientsFulfilled(level, centerPosition, additionalIngredients) &&
-                getPentacle(level, centerPosition) == recipe.getPentacle();
+                getPentacle(recipe, level, centerPosition) == recipe.getPentacle();
     }
 
 
-    public Multiblock getPentacle(Level level, BlockPos blockPos) {
-        var pentacleMultiblocks = level
-                .getRecipeManager()
-                .getAllRecipesFor(OccultismRecipes.RITUAL_TYPE.get())
-                .stream()
-                .map(RitualRecipe::getPentacleId)
-                .distinct()
-                .map(ModonomiconAPI.get()::getMultiblock)
-                .toList();
-        // TODO: avoid running this check every tick.
-        //  Cache the last seen pentacle ID and rotation and check those first.
-        for (var pentacle : pentacleMultiblocks) {
-            for (var rotation : Rotation.values()) {
-                Collection<Multiblock.SimulateResult> results = pentacle.simulate(level, blockPos, rotation, false, false).getSecond();
-                Multiblock pentacleCandidate = null;
-                for (var result : results) {
-                    var stateMatcher = result.getStateMatcher();
-                    if (!stateMatcher.countsTowardsTotalBlocks()) continue;
+    public Multiblock getPentacle(RitualRecipe recipe, Level level, BlockPos blockPos) {
+        var pentacle = recipe.getPentacle();
+        for (var rotation : Rotation.values()) {
+            Collection<Multiblock.SimulateResult> results = pentacle.simulate(level, blockPos, rotation, false, false).getSecond();
+            Multiblock pentacleCandidate = null;
+            for (var result : results) {
+                var stateMatcher = result.getStateMatcher();
+                if (!stateMatcher.countsTowardsTotalBlocks()) continue;
 
-                    // Look for the center block
-                    pentacleCandidate = pentacle;
+                // Look for the center block
+                pentacleCandidate = pentacle;
 
-                    if (!result.getWorldPosition().equals(blockPos)) {
-                        // If our test is not fulfilled, we're either looking at the wrong pentacle, or it isn't valid.
-                        // Either way, we need to look at the next pentacle.
-                        if (!result.test(level, rotation)) {
-                            pentacleCandidate = null;
-                            break;
-                        }
+                if (!result.getWorldPosition().equals(blockPos)) {
+                    // If our test is not fulfilled, we're either looking at the wrong pentacle, or it isn't valid.
+                    // Either way, we need to look at the next pentacle.
+                    if (!result.test(level, rotation)) {
+                        pentacleCandidate = null;
+                        break;
                     }
                 }
-                if (pentacleCandidate != null) return pentacleCandidate;
             }
+            if (pentacleCandidate != null)
+                return pentacleCandidate;
         }
         return null;
     }
@@ -249,7 +242,8 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         }
 
         if (level.getGameTime() % 20 == 0) {
-            currentTime += (int) (speed / 32f);
+            // We don't care about the direction of the input, just the speed.
+            currentTime += getRitualSpeedMultiplier();
         }
 
         if (level.random.nextInt(16) == 0) {
@@ -260,8 +254,6 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
                             0.0);
         }
 
-        // TODO: sometimes we aren't consuming items. What is that about?
-
         // We don't call Ritual.update, it doesn't seem to do anything?
         if (!recipe.getRitual().consumeAdditionalIngredients(level, getBlockPos(), remainingIngredients, currentTime, consumedIngredients)) {
             this.stopRitual(false);
@@ -270,6 +262,26 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
 
         if (this.currentTime >= recipe.getDuration())
             this.stopRitual(true);
+    }
+
+    private int getRitualSpeedMultiplier() {
+        var calc = (int) (Math.abs(getSpeed()) / 32f);
+        return calc <= 0 ? 1 : calc;
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        var parent = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        if (getCurrentRitualRecipe() != null) {
+            var builder = new LangBuilder(OccultEngineering.MODID);
+            builder
+                    .translate("tooltip.ritualspeed")
+                    .text(" ")
+                    .text(String.valueOf(getRitualSpeedMultiplier()))
+                    .text("x")
+                    .style(ChatFormatting.GRAY).forGoggles(tooltip);
+        }
+        return parent;
     }
 
     private void stopRitual(boolean ritualCompleted) {
@@ -329,8 +341,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         if (remainingIngredients != null) remainingIngredients.clear();
         consumedIngredients.clear();
 
-        setChanged();
-        networkDirty = true;
+        updateBlock();
 
         level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
     }
@@ -351,9 +362,25 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     @Override
     public void read(CompoundTag compound, boolean clientPacket) {
         super.read(compound, clientPacket);
+
         if (compound.contains("currentRitual")) {
             this.currentRitualRecipeId = ResourceLocation.parse(compound.getString("currentRitual"));
         }
+
+        this.consumedIngredients.clear();
+        if (this.currentRitualRecipeId != null || this.getCurrentRitualRecipe() != null) {
+            if (compound.contains("consumedIngredients")) {
+                ListTag list = compound.getList("consumedIngredients", Tag.TAG_COMPOUND);
+                for (int i = 0; i < list.size(); i++) {
+                    ItemStack stack = ItemStack.of(list.getCompound(i));
+                    this.consumedIngredients.add(stack);
+                }
+            }
+            this.restoreRemainingIngredients();
+        }
+
+        this.lazyItemStackHandler.ifPresent((handler) -> handler.deserializeNBT(compound.getCompound("inventory")));
+        this.lastChangeTime = compound.getLong("lastChangeTime");
 
         this.currentTime = compound.getInt("currentTime");
     }
@@ -363,9 +390,25 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         RitualRecipe recipe = this.getCurrentRitualRecipe();
         if (recipe != null) {
             compound.putString("currentRitual", recipe.getId().toString());
+            if (!this.consumedIngredients.isEmpty()) {
+                ListTag list = new ListTag();
+                for (ItemStack stack : this.consumedIngredients) {
+                    list.add(stack.serializeNBT());
+                }
+                compound.put("consumedIngredients", list);
+            }
         }
+        compound.putLong("lastChangeTime", this.lastChangeTime);
+        this.lazyItemStackHandler.ifPresent(handler -> compound.put("inventory", handler.serializeNBT()));
         compound.putInt("currentTime", this.currentTime);
 
         super.write(compound, clientPacket);
+    }
+
+    private void updateBlock() {
+        setChanged();
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+        }
     }
 }

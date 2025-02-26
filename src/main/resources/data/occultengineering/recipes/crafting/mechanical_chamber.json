@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "IBI",
+    " I "
+  ],
+  "key": {
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "B": {
+      "item": "occultism:sacrificial_bowl"
+    },
+    "I": {
+      "item": "occultism:iesnium_ingot"
+    }
+  },
+  "result": {
+    "item": "occultengineering:mechanical_chamber"
+  }
+}

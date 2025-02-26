@@ -1,15 +1,12 @@
 package io.github.irishgreencitrus.occultengineering.block;
 
+import com.klikli_dev.occultism.util.StorageUtil;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -19,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class MechanicalChamberBlock extends KineticBlock implements IBE<MechanicalChamberBlockEntity> {
-    private static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 14.0, 15.0);
+    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0);
 
     public MechanicalChamberBlock(Properties properties) {
         super(properties);
@@ -46,15 +42,14 @@ public class MechanicalChamberBlock extends KineticBlock implements IBE<Mechanic
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
-
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof MechanicalChamberBlockEntity chamber && player instanceof ServerPlayer serverPlayer) {
-            return chamber.activate(level, blockPos, serverPlayer.getMainHandItem()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = worldIn.getBlockEntity(pos);
+            if (blockEntity != null) {
+                StorageUtil.dropInventoryItems(blockEntity);
+            }
+            super.onRemove(state, worldIn, pos, newState, isMoving);
         }
-        return InteractionResult.PASS;
     }
 
     @Override

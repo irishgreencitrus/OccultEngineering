@@ -36,6 +36,7 @@ public class OccultEngineeringCreativeModeTab {
                         )
                         .displayItems((itemDisplayParameters, output) -> {
                             output.accept(OccultEngineeringFluids.SPIRIT_SOLUTION.get().getBucket());
+                            output.accept(OccultEngineeringBlocks.MECHANICAL_CHAMBER.get());
                         })
                         .build());
     }

@@ -1,4 +1,4 @@
-// 1.20.1	2025-02-24T16:45:05.6824323	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-02-26T17:55:43.3730984	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 feb601baaeb21f3af202085a6718ed64a89867bb assets/occultengineering/blockstates/mechanical_chamber.json
 856ac890f84bc8a3d4cef2b356b8b06a0b52734a assets/occultengineering/blockstates/spirit_solution.json
 ef3ad191a60a96f78af58a7322616e37cea8c888 assets/occultengineering/lang/en_ud.json
@@ -6,5 +6,6 @@ ef3ad191a60a96f78af58a7322616e37cea8c888 assets/occultengineering/lang/en_ud.jso
 7d184f3cec94194c9fa7e53679373371d4c190f9 assets/occultengineering/models/block/spirit_solution.json
 4b0846246d9848f1dd907d139e0ddf7c93ca2758 assets/occultengineering/models/item/mechanical_chamber.json
 fa5f1a75fa91589a433e0434c5e27a7ff2b3bfcc assets/occultengineering/models/item/spirit_solution_bucket.json
+f5e2ebd1d9ab304b6d8301225764c5745daaf997 data/minecraft/tags/blocks/mineable/pickaxe.json
 4cbd67108daf2796968e0853b908fa49eed492e8 data/occultengineering/loot_tables/blocks/mechanical_chamber.json
 4486a2c53f984ad1537ad860be59e34dff4438c1 data/occultengineering/tags/fluids/spirit_solution_fluid.json
