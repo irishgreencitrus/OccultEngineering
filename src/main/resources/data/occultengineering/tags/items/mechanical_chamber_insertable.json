@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "occultism:book_of_binding_bound_afrit",
+    "occultism:book_of_binding_bound_djinni",
+    "occultism:book_of_binding_bound_foliot",
+    "occultism:book_of_binding_bound_marid"
+  ]
+}

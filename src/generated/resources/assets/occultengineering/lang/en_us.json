@@ -1,13 +1,14 @@
 {
-  "_": "->------------------------]  Game Elements  [------------------------<-",
-  "block.occultengineering.spirit_solution": "Spirit Solution",
-  "fluid.occultengineering.spirit_solution": "Spirit Solution",
-  "item.occultengineering.spirit_solution_bucket": "Spirit Solution Bucket",
-  "recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
-  "recipe.occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
-  "_": "->------------------------]  Item Descriptions  [------------------------<-",
-  "_": "->------------------------]  UI & Messages  [------------------------<-",
-  "recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
-  "occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
-  "_": "Enjoy Create: Occult Engineering!"
+	"_": "->------------------------]  Game Elements  [------------------------<-",
+	"block.occultengineering.mechanical_chamber": "Mechanical Chamber",
+	"block.occultengineering.spirit_solution": "Spirit Solution",
+	"fluid.occultengineering.spirit_solution": "Spirit Solution",
+	"item.occultengineering.spirit_solution_bucket": "Spirit Solution Bucket",
+	"recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
+	"occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+	"_": "->------------------------]  UI & Messages  [------------------------<-",
+	"recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
+	"occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
+	"_": "Enjoy Create: Occult Engineering!"
 }

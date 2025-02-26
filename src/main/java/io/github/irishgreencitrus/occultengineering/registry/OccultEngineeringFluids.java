@@ -1,13 +1,13 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
 import com.tterrag.registrate.util.entry.FluidEntry;
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
+
+import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
 public class OccultEngineeringFluids {
     public static final FluidEntry<ForgeFlowingFluid.Flowing> SPIRIT_SOLUTION =
-            OccultEngineering
-                    .REGISTRATE
+            REGISTRATE
                     .standardFluid("spirit_solution")
                     .lang("Spirit Solution")
                     .tag(OccultEngineeringTags.SPIRIT_SOLUTION_FLUID)
