@@ -63,9 +63,21 @@ public class OccultEngineeringBlocks {
     }
 
     public static final BlockEntry<ChalkGlyphBlock> COPPER_CHALK = REGISTRATE
-            .block("copper_chalk", p -> new ChalkGlyphBlock(GLYPH_PROPERTIES, () -> 0xf96a1e, OccultEngineeringItems.COPPER_CHALK::get))
+            .block("copper_chalk", p -> new ChalkGlyphBlock(GLYPH_PROPERTIES, () -> 0xEB8E38, OccultEngineeringItems.COPPER_CHALK::get))
             .blockstate(OccultEngineeringBlocks::genChalkGlyph)
-            .color(() -> () -> (state, world, pos, layer) -> 0xf96a1e)
+            .color(() -> () -> (state, world, pos, layer) -> 0xEB8E38)
+            .register();
+
+    public static final BlockEntry<ChalkGlyphBlock> ZINC_CHALK = REGISTRATE
+            .block("zinc_chalk", p -> new ChalkGlyphBlock(GLYPH_PROPERTIES, () -> 0x92D6A4, OccultEngineeringItems.ZINC_CHALK::get))
+            .blockstate(OccultEngineeringBlocks::genChalkGlyph)
+            .color(() -> () -> (state, world, pos, layer) -> 0x92D6A4)
+            .register();
+
+    public static final BlockEntry<ChalkGlyphBlock> BRASS_CHALK = REGISTRATE
+            .block("brass_chalk", p -> new ChalkGlyphBlock(GLYPH_PROPERTIES, () -> 0xFBC655, OccultEngineeringItems.BRASS_CHALK::get))
+            .blockstate(OccultEngineeringBlocks::genChalkGlyph)
+            .color(() -> () -> (state, world, pos, layer) -> 0xFBC655)
             .register();
 
     public static void register() {

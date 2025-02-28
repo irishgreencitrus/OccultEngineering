@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "occultengineering:item/chalk_zinc"
+  }
+}

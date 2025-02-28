@@ -1,9 +1,15 @@
 {
+  "block.occultengineering.brass_chalk": "ʞןɐɥƆ ssɐɹᗺ",
   "block.occultengineering.copper_chalk": "ʞןɐɥƆ ɹǝddoƆ",
   "block.occultengineering.mechanical_chamber": "ɹǝqɯɐɥƆ ןɐɔıuɐɥɔǝW",
   "block.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
+  "block.occultengineering.zinc_chalk": "ʞןɐɥƆ ɔuıZ",
   "fluid.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
+  "item.occultengineering.chalk_brass": "ʞןɐɥƆ ssɐɹᗺ",
+  "item.occultengineering.chalk_brass_impure": "ʞןɐɥƆ ssɐɹᗺ ǝɹndɯI",
   "item.occultengineering.chalk_copper": "ʞןɐɥƆ ɹǝddoƆ",
   "item.occultengineering.chalk_copper_impure": "ʞןɐɥƆ ɹǝddoƆ ǝɹndɯI",
+  "item.occultengineering.chalk_zinc": "ʞןɐɥƆ ɔuıZ",
+  "item.occultengineering.chalk_zinc_impure": "ʞןɐɥƆ ɔuıZ ǝɹndɯI",
   "item.occultengineering.spirit_solution_bucket": "ʇǝʞɔnᗺ uoıʇnןoS ʇıɹıdS"
 }

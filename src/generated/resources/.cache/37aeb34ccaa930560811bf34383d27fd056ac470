@@ -1,9 +1,11 @@
-// 1.20.1	2025-02-28T11:24:29.0841627	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-02-28T14:21:57.2372693	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/brass_chalk.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/copper_chalk.json
 feb601baaeb21f3af202085a6718ed64a89867bb assets/occultengineering/blockstates/mechanical_chamber.json
 856ac890f84bc8a3d4cef2b356b8b06a0b52734a assets/occultengineering/blockstates/spirit_solution.json
-986dea7386da5a72fd88c2abe32831087da5df69 assets/occultengineering/lang/en_ud.json
-89012a7c1fe485554da2b0b4827d73a5f6f1fdb5 assets/occultengineering/lang/en_us.json
+87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/zinc_chalk.json
+5483a3525efb2bb186b3330b9af38f17b48f2dfe assets/occultengineering/lang/en_ud.json
+0dc03b25dc812195b8b6ceea8f417abdd885a40c assets/occultengineering/lang/en_us.json
 33df31259a8fc2623e750a8816895dd908ed031d assets/occultengineering/models/block/chalk_glyph/0.json
 e905b130222c6d2896593bbfda7c6abd45aece35 assets/occultengineering/models/block/chalk_glyph/1.json
 5ce3d22ecd375adb9234fb992673aaca6e195991 assets/occultengineering/models/block/chalk_glyph/10.json
@@ -18,11 +20,17 @@ af3adf84106fa25d684629edc6a647a9fc4a5c06 assets/occultengineering/models/block/c
 17d416ec4bf09822eb06a5bd25a437e114fcddff assets/occultengineering/models/block/chalk_glyph/8.json
 2037363810ebc9ba5d19dc681d202defdbfe6c60 assets/occultengineering/models/block/chalk_glyph/9.json
 7d184f3cec94194c9fa7e53679373371d4c190f9 assets/occultengineering/models/block/spirit_solution.json
+274d2f5072a51e4757b7b414b272c32789355ca3 assets/occultengineering/models/item/chalk_brass.json
+150ebbbac62b4b6676ff5b091e359d352d84ee6f assets/occultengineering/models/item/chalk_brass_impure.json
 bd9653b345c556c099be02dc105628f0e94317c0 assets/occultengineering/models/item/chalk_copper.json
 47988fb162664794c7172edec8268f24ad541b4a assets/occultengineering/models/item/chalk_copper_impure.json
+69053e3b2b849628f918514d40a127bf75f44735 assets/occultengineering/models/item/chalk_zinc.json
+0c861a19b158cdca456a461037524cad0182ecf4 assets/occultengineering/models/item/chalk_zinc_impure.json
 4b0846246d9848f1dd907d139e0ddf7c93ca2758 assets/occultengineering/models/item/mechanical_chamber.json
 fa5f1a75fa91589a433e0434c5e27a7ff2b3bfcc assets/occultengineering/models/item/spirit_solution_bucket.json
 f5e2ebd1d9ab304b6d8301225764c5745daaf997 data/minecraft/tags/blocks/mineable/pickaxe.json
+7006ec974cd0826b59d863126cc5c55d64999ab5 data/occultengineering/loot_tables/blocks/brass_chalk.json
 ae13028199cd6f49b2bfaa7166ef2f712d5fe1d0 data/occultengineering/loot_tables/blocks/copper_chalk.json
 4cbd67108daf2796968e0853b908fa49eed492e8 data/occultengineering/loot_tables/blocks/mechanical_chamber.json
+943aec57643f1b03062b4e1e8fe0b20c3242cad9 data/occultengineering/loot_tables/blocks/zinc_chalk.json
 4486a2c53f984ad1537ad860be59e34dff4438c1 data/occultengineering/tags/fluids/spirit_solution_fluid.json

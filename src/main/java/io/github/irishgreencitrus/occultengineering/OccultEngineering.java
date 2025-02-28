@@ -50,11 +50,12 @@ public class OccultEngineering {
 
         OccultEngineeringCreativeModeTab.register(modEventBus);
 
+        OccultEngineeringItems.register();
         OccultEngineeringFluids.register();
         OccultEngineeringBlocks.register();
         OccultEngineeringBlockEntities.register();
 
-        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> () -> new OccultEngineeringClient(context));
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> OccultEngineeringClient.onCtorClient(modEventBus));
         LOGGER.info("Setup is complete.");
     }
 }

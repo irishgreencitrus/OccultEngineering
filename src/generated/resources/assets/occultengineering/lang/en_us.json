@@ -1,18 +1,22 @@
 {
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
+	"block.occultengineering.brass_chalk": "Brass Chalk",
 	"block.occultengineering.copper_chalk": "Copper Chalk",
 	"block.occultengineering.mechanical_chamber": "Mechanical Chamber",
 	"block.occultengineering.spirit_solution": "Spirit Solution",
+	"block.occultengineering.zinc_chalk": "Zinc Chalk",
 
 	"fluid.occultengineering.spirit_solution": "Spirit Solution",
+	"item.occultengineering.chalk_brass": "Brass Chalk",
+	"item.occultengineering.chalk_brass_impure": "Impure Brass Chalk",
 	"item.occultengineering.chalk_copper": "Copper Chalk",
 	"item.occultengineering.chalk_copper_impure": "Impure Copper Chalk",
+	"item.occultengineering.chalk_zinc": "Zinc Chalk",
+	"item.occultengineering.chalk_zinc_impure": "Impure Zinc Chalk",
 	"item.occultengineering.spirit_solution_bucket": "Spirit Solution Bucket",
-	"occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
-	"recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
-	"occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
 	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+
 	"occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
 	"_": "->------------------------]  Ponder Content  [------------------------<-",
 
