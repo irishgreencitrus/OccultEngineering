@@ -11,8 +11,10 @@ import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.Sacri
 import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.StableWormholeInteractionPoint;
 import io.github.irishgreencitrus.occultengineering.registry.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -27,7 +29,13 @@ public class OccultEngineering {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID);
 
     public static final Lang LANG = new Lang(MODID);
-    public static final LangFactory LANG_FACTORY = LangFactory.create(NAME, MODID).tooltips().ui();
+    public static final LangFactory LANG_FACTORY = LangFactory
+            .create(NAME, MODID)
+            .tooltips()
+            .ponders(
+                    OccultEngineeringPonderTags::register
+            ).ui();
+
     public OccultEngineering(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(EventPriority.LOWEST, LANG_FACTORY::datagen);
@@ -42,11 +50,11 @@ public class OccultEngineering {
 
         OccultEngineeringCreativeModeTab.register(modEventBus);
 
-        OccultEngineeringPartialModels.register();
         OccultEngineeringFluids.register();
         OccultEngineeringBlocks.register();
         OccultEngineeringBlockEntities.register();
 
+        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> () -> new OccultEngineeringClient(context));
         LOGGER.info("Setup is complete.");
     }
 }

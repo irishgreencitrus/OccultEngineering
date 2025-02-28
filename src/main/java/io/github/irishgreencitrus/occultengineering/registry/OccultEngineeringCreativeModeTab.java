@@ -37,6 +37,8 @@ public class OccultEngineeringCreativeModeTab {
                         .displayItems((itemDisplayParameters, output) -> {
                             output.accept(OccultEngineeringFluids.SPIRIT_SOLUTION.get().getBucket());
                             output.accept(OccultEngineeringBlocks.MECHANICAL_CHAMBER.get());
+                            output.accept(OccultEngineeringItems.COPPER_CHALK.get());
+                            output.accept(OccultEngineeringItems.COPPER_CHALK_IMPURE.get());
                         })
                         .build());
     }

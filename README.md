@@ -6,11 +6,13 @@ An integration between Occultism and the Create Mod.
 ### Bulk Enspirit
 Place a Spiritfire or a Spirit Campfire in front of an encased fan, to cause a purple effect.
 This can be used to automate all the Spiritfire's recipes!
+
 ### Mechanical Arm Compatibility
 Create's Mechanical Arm can now interact with:
 - Stable Wormhole
 - Dimensional Storage Actuator
 - Sacrificial Bowl
+
 ### Spirit Solution
 Get Spirit Solution by either mixing Demon's Dream Fruit with water with heat, or by crushing Demon's Dream Seeds.
 
@@ -31,6 +33,10 @@ It works best with the Mechanical Arm:
 - The Mechanical Arm will only insert a bound book into the chamber.
 - The Mechanical Arm will only insert the book if the book completes the ritual.
 - The Mechanical Arm will only extract results from the ritual, not the book itself.
+
+### JEI Support
+
+JEI can be used for all recipes in the mod.
 
 ## Planned
 

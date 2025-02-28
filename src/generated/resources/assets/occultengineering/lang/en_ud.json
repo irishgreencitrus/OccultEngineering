@@ -1,6 +1,9 @@
 {
+  "block.occultengineering.copper_chalk": "ʞןɐɥƆ ɹǝddoƆ",
   "block.occultengineering.mechanical_chamber": "ɹǝqɯɐɥƆ ןɐɔıuɐɥɔǝW",
   "block.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
   "fluid.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
+  "item.occultengineering.chalk_copper": "ʞןɐɥƆ ɹǝddoƆ",
+  "item.occultengineering.chalk_copper_impure": "ʞןɐɥƆ ɹǝddoƆ ǝɹndɯI",
   "item.occultengineering.spirit_solution_bucket": "ʇǝʞɔnᗺ uoıʇnןoS ʇıɹıdS"
 }

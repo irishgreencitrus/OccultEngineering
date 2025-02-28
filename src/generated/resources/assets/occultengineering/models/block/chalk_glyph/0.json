@@ -1,0 +1,6 @@
+{
+  "parent": "occultengineering:block/chalk_glyph",
+  "textures": {
+    "texture": "occultengineering:block/chalk_glyph/0"
+  }
+}

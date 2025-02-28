@@ -1,18 +1,25 @@
 {
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
-
+	"block.occultengineering.copper_chalk": "Copper Chalk",
 	"block.occultengineering.mechanical_chamber": "Mechanical Chamber",
 	"block.occultengineering.spirit_solution": "Spirit Solution",
 
 	"fluid.occultengineering.spirit_solution": "Spirit Solution",
-  "item.occultengineering.spirit_solution_bucket": "Spirit Solution Bucket",
-  "_": "->------------------------]  Item Descriptions  [------------------------<-",
-  "occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
+	"item.occultengineering.chalk_copper": "Copper Chalk",
+	"item.occultengineering.chalk_copper_impure": "Impure Copper Chalk",
+	"item.occultengineering.spirit_solution_bucket": "Spirit Solution Bucket",
+	"occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
+	"recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
+	"occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
+	"_": "->------------------------]  Item Descriptions  [------------------------<-",
+	"occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
+	"_": "->------------------------]  Ponder Content  [------------------------<-",
+
 
 
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
-  "recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
-  "occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
-  "_": "Enjoy Create: Occult Engineering!"
+	"recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
+	"occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
+	"_": "Enjoy Create: Occult Engineering!"
 }
