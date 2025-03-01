@@ -1,0 +1,49 @@
+{
+  "type": "modonomicon:dense",
+  "mapping": {
+    "*": {
+      "type": "modonomicon:display",
+      "display": "occultism:otherstone"
+    },
+    "+": {
+      "type": "modonomicon:display",
+      "display": "minecraft:stone"
+    },
+    "0": {
+      "type": "modonomicon:block",
+      "block": "occultengineering:mechanical_chamber"
+    },
+    "C": {
+      "type": "modonomicon:tag",
+      "tag": "#minecraft:candles"
+    },
+    "W": {
+      "type": "modonomicon:block",
+      "block": "occultism:chalk_glyph_white"
+    },
+    "c": {
+      "type": "modonomicon:block",
+      "block": "occultengineering:copper_chalk"
+    }
+  },
+  "pattern": [
+    [
+      "CW___WC",
+      "W_c_c_W",
+      "_c_W_c_",
+      "__W0W__",
+      "_c_W_c_",
+      "W_c_c_W",
+      "CW___WC"
+    ],
+    [
+      "*+*+*+*",
+      "+*+*+*+",
+      "*+*+*+*",
+      "+*+*+*+",
+      "*+*+*+*",
+      "+*+*+*+",
+      "*+*+*+*"
+    ]
+  ]
+}

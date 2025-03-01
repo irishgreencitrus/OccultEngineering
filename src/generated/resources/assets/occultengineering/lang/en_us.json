@@ -1,6 +1,7 @@
 {
 
 	"_": "->------------------------]  Game Elements  [------------------------<-",
+
 	"block.occultengineering.brass_chalk": "Brass Chalk",
 	"block.occultengineering.copper_chalk": "Copper Chalk",
 	"block.occultengineering.mechanical_chamber": "Mechanical Chamber",
@@ -25,5 +26,7 @@
 	"_": "->------------------------]  UI & Messages  [------------------------<-",
 	"recipe.occultengineering.fan_enspirit": "Bulk Enspirit",
 	"occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
+	"multiblock.occultengineering.craft_puca": "Fionntán's Uncompromising Captivation",
+
 	"_": "Enjoy Create: Occult Engineering!"
 }

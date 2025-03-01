@@ -1,0 +1,24 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "create:zinc_ingot"
+    },
+    {
+      "item": "create:zinc_ingot"
+    },
+    {
+      "item": "occultism:chalk_white_impure"
+    },
+    {
+      "fluid": "occultengineering:spirit_solution",
+      "amount": 250,
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "occultengineering:chalk_copper_impure"
+    }
+  ]
+}

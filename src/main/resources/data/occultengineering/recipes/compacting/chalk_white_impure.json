@@ -1,0 +1,22 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "occultism:burnt_otherstone"
+    },
+    {
+      "item": "occultism:burnt_otherstone"
+    },
+    {
+      "item": "occultism:otherworld_ashes"
+    },
+    {
+      "item": "occultism:otherworld_ashes"
+    }
+  ],
+  "results": [
+    {
+      "item": "occultism:chalk_white_impure"
+    }
+  ]
+}
