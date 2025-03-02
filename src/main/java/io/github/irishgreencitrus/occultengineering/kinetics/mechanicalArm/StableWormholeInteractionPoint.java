@@ -4,16 +4,11 @@ import com.klikli_dev.occultism.common.block.storage.StableWormholeBlock;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class StableWormholeInteractionPoint extends ArmInteractionPointType {
-    public StableWormholeInteractionPoint(ResourceLocation id) {
-        super(id);
-    }
-
     @Override
     public boolean canCreatePoint(Level level, BlockPos blockPos, BlockState blockState) {
         return blockState.getBlock() instanceof StableWormholeBlock;

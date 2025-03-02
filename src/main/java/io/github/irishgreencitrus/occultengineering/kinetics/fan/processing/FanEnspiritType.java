@@ -1,6 +1,5 @@
 package io.github.irishgreencitrus.occultengineering.kinetics.fan.processing;
 
-import com.klikli_dev.occultism.crafting.recipe.ItemStackFakeInventory;
 import com.klikli_dev.occultism.crafting.recipe.SpiritFireRecipe;
 import com.klikli_dev.occultism.registry.OccultismEffects;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
@@ -15,6 +14,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -37,23 +38,18 @@ public class FanEnspiritType implements FanProcessingType {
 
     @Override
     public boolean canProcess(ItemStack itemStack, Level level) {
-        ItemStackFakeInventory fakeInventory = new ItemStackFakeInventory(ItemStack.EMPTY);
-        fakeInventory.setItem(0, itemStack);
-        Optional<SpiritFireRecipe> recipe = level.getRecipeManager().getRecipeFor(
-                OccultismRecipes.SPIRIT_FIRE_TYPE.get(), fakeInventory, level
-        );
-        return recipe.isPresent();
+        Optional<RecipeHolder<SpiritFireRecipe>> spiritRecipe = level.getRecipeManager()
+                .getRecipeFor(OccultismRecipes.SPIRIT_FIRE_TYPE.get(), new SingleRecipeInput(itemStack), level);
+
+        return spiritRecipe.isPresent();
     }
 
     @Override
     public @Nullable List<ItemStack> process(ItemStack itemStack, Level level) {
-        ItemStackFakeInventory fakeInventory = new ItemStackFakeInventory(ItemStack.EMPTY);
-        fakeInventory.setItem(0, itemStack);
-        Optional<SpiritFireRecipe> recipe = level.getRecipeManager().getRecipeFor(
-                OccultismRecipes.SPIRIT_FIRE_TYPE.get(), fakeInventory, level
-        );
-        return recipe.map(
-                spiritFireRecipe -> RecipeApplier.applyRecipeOn(level, itemStack, spiritFireRecipe)
+        Optional<RecipeHolder<SpiritFireRecipe>> spiritRecipe = level.getRecipeManager()
+                .getRecipeFor(OccultismRecipes.SPIRIT_FIRE_TYPE.get(), new SingleRecipeInput(itemStack), level);
+        return spiritRecipe.map(
+                spiritFireRecipeRecipeHolder -> RecipeApplier.applyRecipeOn(level, itemStack, spiritFireRecipeRecipeHolder)
         ).orElse(null);
     }
 
@@ -75,7 +71,7 @@ public class FanEnspiritType implements FanProcessingType {
     @Override
     public void affectEntity(Entity entity, Level level) {
         if (entity instanceof Player p) {
-            p.addEffect(new MobEffectInstance(OccultismEffects.THIRD_EYE.get(), 5*20, 1));
+            p.addEffect(new MobEffectInstance(OccultismEffects.THIRD_EYE, 5 * 20, 1));
             p.addEffect(new MobEffectInstance(MobEffects.HUNGER, 15 * 20, 1));
         }
     }

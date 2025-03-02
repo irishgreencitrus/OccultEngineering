@@ -6,17 +6,12 @@ import io.github.irishgreencitrus.occultengineering.block.MechanicalChamberBlock
 import io.github.irishgreencitrus.occultengineering.block.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class MechanicalChamberInteractionPoint extends ArmInteractionPointType {
-    public MechanicalChamberInteractionPoint(ResourceLocation id) {
-        super(id);
-    }
-
     @Override
     public boolean canCreatePoint(Level level, BlockPos blockPos, BlockState blockState) {
         return blockState.getBlock() instanceof MechanicalChamberBlock;

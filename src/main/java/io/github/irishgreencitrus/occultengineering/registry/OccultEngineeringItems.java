@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.klikli_dev.occultism.common.item.tool.ChalkItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.ApiStatus;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
@@ -33,6 +34,7 @@ public class OccultEngineeringItems {
             .lang("Brass Chalk")
             .register();
 
-    public static void register() {
+    @ApiStatus.Internal
+    public static void init() {
     }
 }

@@ -9,6 +9,7 @@ import com.klikli_dev.occultism.registry.OccultismTags;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -16,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -147,22 +147,22 @@ public class PentacleProvider implements DataProvider {
 
             JsonObject json = new JsonObject();
             json.addProperty("type", "modonomicon:block");
-            json.addProperty("block", ForgeRegistries.BLOCKS.getKey(b.get()).toString());
+            json.addProperty("block", BuiltInRegistries.BLOCK.getKey(b.get()).toString());
             return this.element(c, json);
         }
 
         private MappingBuilder blockDisplay(char c, Supplier<? extends Block> b, Supplier<? extends Block> display) {
             JsonObject json = new JsonObject();
             json.addProperty("type", "modonomicon:block");
-            json.addProperty("block", ForgeRegistries.BLOCKS.getKey(b.get()).toString());
-            json.addProperty("display", ForgeRegistries.BLOCKS.getKey(display.get()).toString());
+            json.addProperty("block", BuiltInRegistries.BLOCK.getKey(b.get()).toString());
+            json.addProperty("display", BuiltInRegistries.BLOCK.getKey(display.get()).toString());
             return this.element(c, json);
         }
 
         private MappingBuilder display(char c, Supplier<? extends Block> display) {
             JsonObject json = new JsonObject();
             json.addProperty("type", "modonomicon:display");
-            json.addProperty("display", ForgeRegistries.BLOCKS.getKey(display.get()).toString());
+            json.addProperty("display", BuiltInRegistries.BLOCK.getKey(display.get()).toString());
             return this.element(c, json);
         }
 
@@ -202,7 +202,7 @@ public class PentacleProvider implements DataProvider {
         }
 
         private MappingBuilder goldChalk() {
-            return this.block('G', OccultismBlocks.CHALK_GLYPH_GOLD);
+            return this.block('G', OccultismBlocks.CHALK_GLYPH_YELLOW);
         }
 
         private MappingBuilder purpleChalk() {

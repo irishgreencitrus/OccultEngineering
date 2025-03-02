@@ -1,20 +1,22 @@
 package io.github.irishgreencitrus.occultengineering;
 
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPartialModels;
-import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPonderTags;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
+@Mod(value = OccultEngineering.MODID, dist = Dist.CLIENT)
 public class OccultEngineeringClient {
-
-    public static void onCtorClient(IEventBus modEventBus) {
-        OccultEngineeringPartialModels.register();
+    public OccultEngineeringClient(IEventBus modEventBus) {
+        OccultEngineeringPartialModels.init();
 
         modEventBus.addListener(OccultEngineeringClient::setup);
         OccultEngineering.LOGGER.info("Client setup is complete.");
     }
 
+
     public static void setup(final FMLClientSetupEvent event) {
-        OccultEngineeringPonderTags.register();
+        //OccultEngineeringPonderTags.register();
     }
 }

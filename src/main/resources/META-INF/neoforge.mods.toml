@@ -1,7 +1,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="${loader_version_range}" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion = "${neo_loader_version_range}" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="${mod_license}"
@@ -37,11 +37,11 @@ authors="${mod_authors}" #optional
 description='''${mod_description}'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional
-   modId="forge" #mandatory
-   mandatory=true #mandatory
-   versionRange="${forge_version_range}" #mandatory
+modId = "neoforge"
+mandatory = true
+versionRange = "${neo_version_range}"
    ordering="NONE"
-   side="BOTH"# Here's another dependency
+side = "BOTH"
 [[dependencies.${mod_id}]]
    modId="minecraft"
    mandatory=true
@@ -51,12 +51,12 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
    modId = "occultism"
    mandatory = true
-   versionRange = "[1.101.0,2.0.0)"
+versionRange = "[1.176.0,2.0.0)"
    ordering = "AFTER"
    side = "BOTH"
 [[dependencies.${mod_id}]]
    modId = "create"
    mandatory = true
-   versionRange = "[0.5.1.e-22,0.6.0)"
+versionRange = "[6.0.0,7.0.0)"
    ordering = "AFTER"
    side = "BOTH"
