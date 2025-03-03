@@ -22,9 +22,8 @@ runs {
         workingDirectory project.file('run')
 
         systemProperty 'forge.logging.markers', 'REGISTRIES'
-        systemProperty 'forge.logging.console.level', 'debug'
-        jvmArguments.addAll('-XX:+AllowEnhancedClassRedefinition', '-XX:+IgnoreUnrecognizedVMOptions')
-        modSource project.sourceSets.main
+        jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+        //modSource project.sourceSets.main
     }
 
     client {
@@ -37,11 +36,12 @@ runs {
     }
 
     data {
-        arguments.addAll '--mod', mod_id,
+        arguments.addAll(
+                '--mod', mod_id as String,
                 '--all',
-                '--output', file('src/generated/resources/'),
-                '--existing', file('src/main/resources/'),
-                '--existing-mod', 'create'
+                '--output', file('src/generated/resources/').getAbsolutePath(),
+                '--existing', file('src/main/resources/').getAbsolutePath())
+        //'--existing-mod', 'create')
     }
 }
 
@@ -79,13 +79,6 @@ repositories {
         }
     }
     maven {
-        name 'LDTTeam - Modding - PerViamInvenire (MineColonies)'
-        url 'https://ldtteam.jfrog.io/ldtteam/modding/'
-        content {
-            includeGroup "com.ldtteam"
-        }
-    }
-    maven {
         name = "Curios Maven"
         url = "https://maven.theillusivec4.top/"
         content {
@@ -106,27 +99,21 @@ repositories {
             includeGroup "net.tslat.smartbrainlib"
         }
     }
-    maven {
-        url 'https://www.cursemaven.com'
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        // Maven of dragons.plus
-        url "https://maven.dragons.plus/releases"
-    }
 }
+
+jarJar.enable()
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
     // CREATE
+    jarJar(
+            implementation("com.tterrag.registrate:Registrate:${registrate_version}")
+    )
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
     implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
     compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
     // OCCULTISM
     implementation("com.klikli_dev:occultism-${occultism_minecraft_version}-neoforge:${occultism_version}") { transitive = false }
@@ -157,7 +144,7 @@ tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
             minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
             neo_version         : neo_version, neo_version_range: neo_version_range,
-            loader_version_range: neoloader_range,
+            loader_version_range: loader_version_range,
             mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
             mod_authors         : mod_authors, mod_description: mod_description,
     ]

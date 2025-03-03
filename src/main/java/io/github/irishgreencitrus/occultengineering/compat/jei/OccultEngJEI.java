@@ -6,16 +6,15 @@ import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
-import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CRecipes;
+import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.compat.jei.category.FanEnspiritCategory;
 import io.github.irishgreencitrus.occultengineering.utility.OccultEngineeringLang;
 import mezz.jei.api.IModPlugin;
@@ -54,7 +53,7 @@ import java.util.function.Supplier;
 @ParametersAreNonnullByDefault
 public class OccultEngJEI implements IModPlugin {
 
-    private static final ResourceLocation ID = Create.asResource("jei_plugin");
+    private static final ResourceLocation ID = OccultEngineering.asResource("jei_plugin");
 
     private final List<CreateRecipeCategory<?>> allCategories = new ArrayList<>();
     private IIngredientManager ingredientManager;
@@ -249,8 +248,8 @@ public class OccultEngJEI implements IModPlugin {
             }
 
             CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
-                    new mezz.jei.api.recipe.RecipeType<>(Create.asResource(name), recipeClass),
-                    CreateLang.translateDirect("recipe." + name), background, icon, recipesSupplier, catalysts);
+                    new mezz.jei.api.recipe.RecipeType<>(OccultEngineering.asResource(name), recipeClass),
+                    OccultEngineeringLang.translateDirect("recipe." + name), background, icon, recipesSupplier, catalysts);
             CreateRecipeCategory<T> category = factory.create(info);
             allCategories.add(category);
             return category;

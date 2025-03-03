@@ -24,6 +24,7 @@ public class OccultEngineeringCreativeModeTab {
                     .icon(
                             () -> new ItemStack(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get())
                     )
+                    /*
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get());
                         output.accept(OccultEngineeringBlocks.MECHANICAL_CHAMBER.get());
@@ -34,6 +35,7 @@ public class OccultEngineeringCreativeModeTab {
                         output.accept(OccultEngineeringItems.ZINC_CHALK.get());
                         output.accept(OccultEngineeringItems.BRASS_CHALK.get());
                     })
+                     */
                     .build());
 
     @ApiStatus.Internal

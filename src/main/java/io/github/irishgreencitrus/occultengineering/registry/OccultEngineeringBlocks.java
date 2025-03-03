@@ -3,7 +3,6 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
 import com.simibubi.create.foundation.data.AssetLookup;
-import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import org.jetbrains.annotations.ApiStatus;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
@@ -34,7 +32,7 @@ public class OccultEngineeringBlocks {
             .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE))
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
-            .transform(CStress.setImpact(4.0))
+            //.transform()
             .simpleItem()
             .register();
 
@@ -81,7 +79,6 @@ public class OccultEngineeringBlocks {
             .color(() -> () -> (state, world, pos, layer) -> 0xFBC655)
             .register();
 
-    @ApiStatus.Internal
     public static void init() {
     }
 }
