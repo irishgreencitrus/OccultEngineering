@@ -10,6 +10,7 @@ import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.klikli_dev.occultism.util.ItemNBTUtil;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +34,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import plus.dragons.createdragonlib.lang.LangBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -364,7 +364,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         super.read(compound, clientPacket);
 
         if (compound.contains("currentRitual")) {
-            this.currentRitualRecipeId = ResourceLocation.parse(compound.getString("currentRitual"));
+            this.currentRitualRecipeId = new ResourceLocation(compound.getString("currentRitual"));
         }
 
         this.consumedIngredients.clear();

@@ -43,8 +43,7 @@ public class JeiPlugin implements IModPlugin {
                         .catalystStack(
                                 () -> AllBlocks.ENCASED_FAN.asStack()
                                         .setHoverName(
-                                                OccultEngineering
-                                                        .LANG
+                                                OccultEngineering.lang()
                                                         .translate("fan_enspirit.fan")
                                                         .component()
                                                         .withStyle(
@@ -76,7 +75,7 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(OccultEngineering.MODID, "jei");
+        return OccultEngineering.asResource("jei");
     }
 
     @Override

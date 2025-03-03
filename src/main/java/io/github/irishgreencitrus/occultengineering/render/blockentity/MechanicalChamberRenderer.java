@@ -3,11 +3,11 @@ package io.github.irishgreencitrus.occultengineering.render.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.block.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPartialModels;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -80,6 +80,6 @@ public class MechanicalChamberRenderer extends KineticBlockEntityRenderer<Mechan
 
     @Override
     protected SuperByteBuffer getRotatedModel(MechanicalChamberBlockEntity be, BlockState state) {
-        return CachedBufferer.partialFacing(OccultEngineeringPartialModels.TOP_SHAFT, state, Direction.UP);
+        return CachedBuffers.partialFacing(OccultEngineeringPartialModels.TOP_SHAFT, state, Direction.UP);
     }
 }

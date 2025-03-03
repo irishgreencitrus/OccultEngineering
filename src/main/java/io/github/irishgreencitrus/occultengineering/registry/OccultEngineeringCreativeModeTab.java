@@ -1,9 +1,9 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
 import com.simibubi.create.AllCreativeModeTabs;
-import com.simibubi.create.foundation.utility.Components;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,7 +27,7 @@ public class OccultEngineeringCreativeModeTab {
         CREATIVE_TAB = REGISTER.register("base",
                 () -> CreativeModeTab
                         .builder()
-                        .title(Components.literal("Create: Occult Engineering"))
+                        .title(Component.literal("Create: Occult Engineering"))
                         .withTabsBefore(
                                 AllCreativeModeTabs.BASE_CREATIVE_TAB.getId(),
                                 AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getId())

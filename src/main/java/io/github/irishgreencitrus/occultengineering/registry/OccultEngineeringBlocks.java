@@ -2,14 +2,12 @@ package io.github.irishgreencitrus.occultengineering.registry;
 
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.block.MechanicalChamberBlock;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -33,7 +31,7 @@ public class OccultEngineeringBlocks {
             .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE))
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
             .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
-            .transform(BlockStressDefaults.setImpact(4.0))
+            //.transform(BlockStressDefaults.setImpact(4.0))
             .simpleItem()
             .register();
 
@@ -46,7 +44,7 @@ public class OccultEngineeringBlocks {
 
 
     public static void genChalkGlyph(DataGenContext<Block, ChalkGlyphBlock> context, RegistrateBlockstateProvider blockstateProvider) {
-        ModelFile.ExistingModelFile parentModel = blockstateProvider.models().getExistingFile(ResourceLocation.fromNamespaceAndPath(OccultEngineering.MODID, "block/chalk_glyph"));
+        ModelFile.ExistingModelFile parentModel = blockstateProvider.models().getExistingFile(OccultEngineering.asResource("block/chalk_glyph"));
         blockstateProvider.getVariantBuilder(context.get())
                 .forAllStates(state -> {
                     int sign = state.getValue(ChalkGlyphBlock.SIGN);

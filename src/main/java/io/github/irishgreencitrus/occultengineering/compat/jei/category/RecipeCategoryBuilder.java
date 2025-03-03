@@ -5,12 +5,12 @@ import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
-import com.simibubi.create.foundation.config.ConfigBase;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CRecipes;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import mezz.jei.api.gui.drawable.IDrawable;
+import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -198,10 +198,10 @@ public class RecipeCategoryBuilder<T extends Recipe<?>> {
         } else {
             recipesSupplier = Collections::emptyList;
         }
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(modid, name);
+        ResourceLocation id = new ResourceLocation(modid, name);
         CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
                 new mezz.jei.api.recipe.RecipeType<>(id, recipeClass),
-                OccultEngineering.LANG.fromRL("recipe", id).component(),
+                OccultEngineering.lang().translate("recipe." + id).component(),
                 background, icon, recipesSupplier, catalysts);
         return factory.create(info);
     }

@@ -63,7 +63,7 @@ public class PentacleProvider implements DataProvider {
     }
 
     private void addPentacle(String name, List<String> pattern, Map<Character, JsonElement> mappings) {
-        this.addPentacle(ResourceLocation.fromNamespaceAndPath(OccultEngineering.MODID, name), pattern, mappings);
+        this.addPentacle(OccultEngineering.asResource(name), pattern, mappings);
     }
 
     private void addPentacle(ResourceLocation rl, List<String> pattern, Map<Character, JsonElement> mappings) {
