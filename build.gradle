@@ -84,7 +84,7 @@ legacyForge {
             gameDirectory = project.file('run')
             systemProperty 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
             systemProperty 'forge.logging.console.level', 'debug'
-            programArguments.addAll("--mod", mod_id, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources").getAbsolutePath())
+            programArguments.addAll("--mod", mod_id as String, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources").getAbsolutePath())
         }
 
         gameTestServer {
