@@ -2,6 +2,7 @@
 [![Modrinth Badge](https://img.shields.io/modrinth/dt/occult-engineering?logo=modrinth&label=&suffix=%20&style=flat&color=242629&labelColor=5ca424&logoColor=1c1c1c)](https://modrinth.com/mod/occult-engineering)
 [![Curseforge Badge](https://cf.way2muchnoise.eu/1206040.svg)](https://www.curseforge.com/minecraft/mc-mods/create-occult-engineering)
 
+![Version Badge](https://cf.way2muchnoise.eu/versions/1206040.svg)
 
 An integration between Occultism and the Create Mod.
 
