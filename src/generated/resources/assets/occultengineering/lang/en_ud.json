@@ -2,6 +2,7 @@
   "block.occultengineering.brass_chalk": "ʞןɐɥƆ ssɐɹᗺ",
   "block.occultengineering.copper_chalk": "ʞןɐɥƆ ɹǝddoƆ",
   "block.occultengineering.mechanical_chamber": "ɹǝqɯɐɥƆ ןɐɔıuɐɥɔǝW",
+  "block.occultengineering.otherworld_detector": "ɹoʇɔǝʇǝᗡ pןɹoʍɹǝɥʇO",
   "block.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
   "block.occultengineering.zinc_chalk": "ʞןɐɥƆ ɔuıZ",
   "fluid.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
@@ -14,6 +15,6 @@
   "item.occultengineering.spirit_solution_bucket": "ʇǝʞɔnᗺ uoıʇnןoS ʇıɹıdS",
   "multiblock.occultengineering.craft_puca": "uoıʇɐʌıʇdɐƆ buısıɯoɹdɯoɔu∩ s,uáʇuuoıℲ",
   "occultengineering.fan_enspirit.fan": "ǝɹıɟʇıɹıdS puıɥǝq uɐℲ",
-  "occultengineering.tooltip.ritualspeed": "ɹǝıןdıʇןnW pǝǝdS ןɐnʇıᴚ",
-  "recipe.occultengineering.fan_enspirit": "ʇıɹıdsuƎ ʞןnᗺ"
+  "occultengineering.recipe.fan_enspirit": "ʇıɹıdsuƎ ʞןnᗺ",
+  "occultengineering.tooltip.ritualspeed": "ɹǝıןdıʇןnW pǝǝdS ןɐnʇıᴚ"
 }
