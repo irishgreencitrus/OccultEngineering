@@ -1,7 +1,10 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
+import com.klikli_dev.occultism.common.item.DummyTooltipItem;
+import com.klikli_dev.occultism.common.item.spirit.BookOfBindingItem;
 import com.klikli_dev.occultism.common.item.tool.ChalkItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import io.github.irishgreencitrus.occultengineering.item.BookOfBindingBoundGlintItem;
 import net.minecraft.world.item.Item;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
@@ -32,6 +35,22 @@ public class OccultEngineeringItems {
                     p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.BRASS_CHALK))
             .lang("Brass Chalk")
             .register();
+
+    public static final ItemEntry<BookOfBindingItem> BOOK_OF_BINDING_PUCA = REGISTRATE.item("book_of_binding_puca", BookOfBindingItem::new)
+            .lang("Book of Binding: Púca")
+            .register();
+
+    public static final ItemEntry<BookOfBindingBoundGlintItem> BOOK_OF_BINDING_BOUND_PUCA = REGISTRATE.item("book_of_binding_bound_puca", BookOfBindingBoundGlintItem::new)
+            .model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("item/book_of_binding_puca")))
+            .lang("Book of Binding: Púca (Bound)")
+            .register();
+
+    static {
+        REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)
+                .model((c, p) -> p.singleTexture(c.getName(), p.mcLoc("item/generated"), "layer0", p.modLoc("item/ritual_dummy")))
+                .lang("Ritual: Craft Otherworld Detector")
+                .register();
+    }
 
     public static void register() {
     }

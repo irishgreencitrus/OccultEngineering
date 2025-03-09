@@ -1,3 +1,5 @@
 {
-  "occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier"
+  "occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
+  "item.occultengineering.book_of_binding_puca.tooltip": "This book has not been bound to a púca yet.",
+  "item.occultengineering.book_of_binding_bound_puca.tooltip": "Can be used to summon the púca %s"
 }

@@ -1,5 +1,9 @@
 {
   "occultengineering.recipe.fan_enspirit": "Bulk Enspirit",
   "occultengineering.fan_enspirit.fan": "Fan behind Spiritfire",
-  "multiblock.occultengineering.craft_puca": "Fionntán's Uncompromising Captivation"
+  "multiblock.occultengineering.craft_puca": "Fionntán's Uncompromising Captivation",
+  "ritual.occultengineering.craft_otherworld_detector.conditions": "Not all requirements for this ritual are met.",
+  "ritual.occultengineering.craft_otherworld_detector.finished": "Successfully crafted an otherworld detector.",
+  "ritual.occultengineering.craft_otherworld_detector.interrupted": "Binding of Púca interrupted.",
+  "ritual.occultengineering.craft_otherworld_detector.started": "Started binding Púca into an otherworld detector."
 }

@@ -1,0 +1,17 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "occultengineering:book_of_binding_puca"
+    },
+    {
+      "fluid": "occultengineering:spirit_solution",
+      "amount": 25
+    }
+  ],
+  "results": [
+    {
+      "item": "occultengineering:book_of_binding_bound_puca"
+    }
+  ]
+}

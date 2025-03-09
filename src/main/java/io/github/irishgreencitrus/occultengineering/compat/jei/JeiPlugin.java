@@ -1,6 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.compat.jei;
 
 import com.klikli_dev.occultism.crafting.recipe.SpiritFireRecipe;
+import com.klikli_dev.occultism.integration.jei.JeiRecipeTypes;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.AllBlocks;
@@ -9,6 +10,7 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.compat.jei.category.FanEnspiritCategory;
 import io.github.irishgreencitrus.occultengineering.compat.jei.category.RecipeCategoryBuilder;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.forge.ForgeTypes;
@@ -18,6 +20,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
@@ -81,6 +84,7 @@ public class JeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         allCategories.forEach(c -> c.registerCatalysts(registration));
+        registration.addRecipeCatalyst(new ItemStack(OccultEngineeringBlocks.MECHANICAL_CHAMBER), JeiRecipeTypes.RITUAL);
     }
 
     @Override

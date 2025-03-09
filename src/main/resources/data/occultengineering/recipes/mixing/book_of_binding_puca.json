@@ -1,0 +1,26 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "occultism:taboo_book"
+    },
+    {
+      "item": "occultism:purified_ink"
+    },
+    {
+      "item": "occultism:awakened_feather"
+    },
+    {
+      "item": "minecraft:red_dye"
+    },
+    {
+      "fluid": "occultengineering:spirit_solution",
+      "amount": 50
+    }
+  ],
+  "results": [
+    {
+      "item": "occultengineering:book_of_binding_puca"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class OcEngStress extends ConfigBase {
     }
 
     @Override
+    @NotNull
     public String getName() {
         return "stressValues.v" + VERSION;
     }
@@ -82,7 +84,7 @@ public class OcEngStress extends ConfigBase {
 
     private static void assertFromOccultEngineering(BlockBuilder<?, ?> builder) {
         if (!builder.getOwner().getModid().equals(OccultEngineering.MODID)) {
-            throw new IllegalStateException("Non-Create blocks cannot be added to Create's config.");
+            throw new IllegalStateException("Non-Occult Engineering blocks cannot be added to Occult Engineering's config.");
         }
     }
 

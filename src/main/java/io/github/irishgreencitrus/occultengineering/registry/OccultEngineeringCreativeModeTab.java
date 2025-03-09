@@ -44,6 +44,8 @@ public class OccultEngineeringCreativeModeTab {
                             output.accept(OccultEngineeringItems.ZINC_CHALK.get());
                             output.accept(OccultEngineeringItems.BRASS_CHALK.get());
                             output.accept(OccultEngineeringBlocks.OTHERWORLD_DETECTOR.get());
+                            output.accept(OccultEngineeringItems.BOOK_OF_BINDING_PUCA);
+                            output.accept(OccultEngineeringItems.BOOK_OF_BINDING_BOUND_PUCA);
                         })
                         .build());
     }

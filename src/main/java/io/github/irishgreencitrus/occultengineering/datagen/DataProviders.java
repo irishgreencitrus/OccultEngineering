@@ -26,6 +26,7 @@ public class DataProviders {
 
             provideDefaultLang("interface", langConsumer);
             provideDefaultLang("tooltips", langConsumer);
+            provideRitualDummiesLang(langConsumer);
         });
     }
 
@@ -40,6 +41,20 @@ public class DataProviders {
             String key = entry.getKey();
             String value = new String(entry.getValue().getAsString().getBytes(), StandardCharsets.UTF_8);
             consumer.accept(key, value);
+        }
+    }
+
+    private static void provideRitualDummiesLang(BiConsumer<String, String> consumer) {
+        String path = "assets/occultengineering/lang/default/ritual_dummy_tooltips.json";
+        JsonElement jsonElement = FilesHelper.loadJsonResource(path);
+        if (jsonElement == null) {
+            throw new IllegalStateException(String.format("Could not find ritual dummy lang file: %s", path));
+        }
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            String key = entry.getKey();
+            String value = new String(entry.getValue().getAsString().getBytes(), StandardCharsets.UTF_8);
+            consumer.accept("item.occultengineering.ritual_dummy_" + key + ".tooltip", value);
         }
     }
 }
