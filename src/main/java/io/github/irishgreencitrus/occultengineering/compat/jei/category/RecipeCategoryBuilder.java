@@ -201,7 +201,7 @@ public class RecipeCategoryBuilder<T extends Recipe<?>> {
         ResourceLocation id = new ResourceLocation(modid, name);
         CreateRecipeCategory.Info<T> info = new CreateRecipeCategory.Info<>(
                 new mezz.jei.api.recipe.RecipeType<>(id, recipeClass),
-                OccultEngineering.lang().translate("recipe." + id).component(),
+                OccultEngineering.lang().translate("recipe." + name).component(),
                 background, icon, recipesSupplier, catalysts);
         return factory.create(info);
     }

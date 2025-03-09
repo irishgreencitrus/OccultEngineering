@@ -43,6 +43,7 @@ public class OccultEngineeringCreativeModeTab {
                             output.accept(OccultEngineeringItems.COPPER_CHALK.get());
                             output.accept(OccultEngineeringItems.ZINC_CHALK.get());
                             output.accept(OccultEngineeringItems.BRASS_CHALK.get());
+                            output.accept(OccultEngineeringBlocks.OTHERWORLD_DETECTOR.get());
                         })
                         .build());
     }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "occultengineering:block/otherworld_detector"
+    },
+    "powered=true": {
+      "model": "occultengineering:block/otherworld_detector_powered"
+    }
+  }
+}

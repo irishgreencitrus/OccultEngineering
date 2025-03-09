@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.block;
+package io.github.irishgreencitrus.occultengineering.block.mechanical_chamber;
 
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
 import com.klikli_dev.occultism.common.ritual.CraftMinerSpiritRitual;

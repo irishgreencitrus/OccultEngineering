@@ -2,8 +2,8 @@ package io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm;
 
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
-import io.github.irishgreencitrus.occultengineering.block.MechanicalChamberBlock;
-import io.github.irishgreencitrus.occultengineering.block.MechanicalChamberBlockEntity;
+import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlock;
+import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;

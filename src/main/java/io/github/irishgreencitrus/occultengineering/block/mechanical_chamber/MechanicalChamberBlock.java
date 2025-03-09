@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.block;
+package io.github.irishgreencitrus.occultengineering.block.mechanical_chamber;
 
 import com.klikli_dev.occultism.util.StorageUtil;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
