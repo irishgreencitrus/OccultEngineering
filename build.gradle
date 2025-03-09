@@ -16,6 +16,9 @@ plugins {
     id "net.neoforged.moddev.legacyforge" version "2.0.78"
 }
 
+if (System.getenv('MOD_VERSION') != null) {
+    mod_version = System.getenv('MOD_VERSION')
+}
 group = mod_group_id
 version = mod_version
 

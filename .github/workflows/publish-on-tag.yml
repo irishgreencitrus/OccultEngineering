@@ -59,13 +59,6 @@ jobs:
         run: ./gradlew build
         env:
           MOD_VERSION: ${{ steps.get_version.outputs.result }}
-      - name: Update CHANGELOG
-        id: changelog
-        uses: klikli-dev/changelog-action@main
-        with:
-          token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
-          mcVersion: ${{ steps.get_mc_version.outputs.result }}
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
@@ -73,18 +66,10 @@ jobs:
           allowUpdates: true
           draft: false
           name: occultengineering-${{ steps.get_mc_version.outputs.result }}-${{ steps.get_version.outputs.result }}-${{ steps.get_release_type.outputs.result }}
-          body: ${{ steps.changelog.outputs.changes }}
           token: ${{ github.token }}
           tag: ${{ github.ref }}
           artifacts: ./build/libs/occultengineering-${{ steps.get_mc_version.outputs.result }}-${{ steps.get_version.outputs.result }}.jar
           artifactContentType: application/java-archive
-      - name: Commit CHANGELOG.md
-        uses: stefanzweifel/git-auto-commit-action@v5
-        if: ${{ steps.get_release_type.outputs.result != 'test' }}
-        with:
-          branch: forge-1.20.1
-          commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
-          file_pattern: CHANGELOG.md
       - name: Upload to Mod Platforms
         uses: Kir-Antipov/mc-publish@v3.3.0
         if: ${{ steps.get_release_type.outputs.result != 'test' }}
