@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
 
+@ParametersAreNonnullByDefault
 public class PulverizerBlock extends HorizontalKineticBlock implements IBE<PulverizerBlockEntity> {
     private static final VoxelShaper SHAPE = new AllShapes.Builder(Block.box(2, 0, 0, 14, 2, 13))
             .add(5, 2, 3, 11, 11, 10)
@@ -33,7 +34,6 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
 
     @Override
     @SuppressWarnings("deprecation")
-    @ParametersAreNonnullByDefault
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(HORIZONTAL_FACING));
     }

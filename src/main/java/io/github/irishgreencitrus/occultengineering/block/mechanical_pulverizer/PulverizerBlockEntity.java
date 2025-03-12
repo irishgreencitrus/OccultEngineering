@@ -60,6 +60,8 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
             if (outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i)) return;
         }
 
+        if (level == null) return;
+
         if (timer > 0) {
             timer -= getProcessingSpeed();
             if (level.isClientSide) {
@@ -129,11 +131,12 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     }
 
     private void process() {
+        if (level == null) return;
         var inputStack = inputInv.getStackInSlot(0);
         var inventoryIn = new ItemStackFakeInventory(inputStack);
         if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
             Optional<CrushingRecipe> recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
-            if (!recipe.isPresent())
+            if (recipe.isEmpty())
                 return;
             lastRecipe = recipe.get();
         }
@@ -148,6 +151,7 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
     private void spawnParticles() {
         // TODO: spawn particles out the front of the pulverizer
+        if (level == null) return;
         ItemStack item = inputInv.getStackInSlot(0);
         if (item.isEmpty()) return;
 
@@ -156,12 +160,13 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     }
 
     private boolean canProcess(ItemStack stack) {
+        if (level == null) return false;
         ItemStackFakeInventory inventory = new ItemStackFakeInventory(stack);
 
         if (lastRecipe != null && lastRecipe.matches(inventory, level)) {
             return true;
         }
-        return level != null && level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventory, level).isPresent();
+        return level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventory, level).isPresent();
     }
 
     private class PulverizerInventoryHandler extends CombinedInvWrapper {
