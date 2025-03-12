@@ -53,7 +53,7 @@ and is used for new rituals.
 
 This is the Ritual currently used only to craft the Otherworld Detector.
 
-![](./marketing/fionnatan_circle.png)
+<img src="./marketing/fionnatan_circle.png" alt="drawing" width="400"/>
 
 ### New Spirits
 
