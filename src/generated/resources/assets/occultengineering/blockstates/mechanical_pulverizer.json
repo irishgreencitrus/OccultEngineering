@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "occultengineering:block/mechanical_pulverizer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "occultengineering:block/mechanical_pulverizer"
+    },
+    "facing=south": {
+      "model": "occultengineering:block/mechanical_pulverizer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "occultengineering:block/mechanical_pulverizer",
+      "y": 270
+    }
+  }
+}

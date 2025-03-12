@@ -10,6 +10,7 @@ import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlock;
+import io.github.irishgreencitrus.occultengineering.block.mechanical_pulverizer.PulverizerBlock;
 import io.github.irishgreencitrus.occultengineering.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.config.OcEngStress;
 import net.minecraft.tags.BlockTags;
@@ -95,6 +96,16 @@ public class OccultEngineeringBlocks {
             }))
             .transform(pickaxeOnly())
             .lang("Otherworld Detector")
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<PulverizerBlock> MECHANICAL_PULVERIZER = REGISTRATE
+            .block("mechanical_pulverizer", PulverizerBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .transform(pickaxeOnly())
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion())
+            .blockstate(BlockStateGen.horizontalBlockProvider(false))
+            .transform(OcEngStress.setImpact(4.0))
             .simpleItem()
             .register();
 
