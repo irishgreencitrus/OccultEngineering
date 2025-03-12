@@ -6,6 +6,7 @@ import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.sound.SoundScapes;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -15,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -150,13 +152,22 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     }
 
     private void spawnParticles() {
-        // TODO: spawn particles out the front of the pulverizer
         if (level == null) return;
+        if (level.random.nextInt(3) != 0) return;
         ItemStack item = inputInv.getStackInSlot(0);
         if (item.isEmpty()) return;
 
         ItemParticleOption data = new ItemParticleOption(ParticleTypes.ITEM, item);
-        level.addParticle(data, worldPosition.getX(), worldPosition.getY() + 1, worldPosition.getZ(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
+        var yRot = -getBlockState().getValue(PulverizerBlock.HORIZONTAL_FACING).toYRot();
+
+        var center = worldPosition.getCenter();
+        var offset = VecHelper.rotate(new Vec3(0, 0, 8 / 16f), yRot, Direction.Axis.Y);
+        offset = VecHelper.offsetRandomly(offset, level.random, 1 / 64f);
+        center = center.add(offset);
+
+        var targetOffset = VecHelper.rotate(new Vec3(0, -0.5f, 0.2f), yRot, Direction.Axis.Y);
+        var target = targetOffset;
+        level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
     }
 
     private boolean canProcess(ItemStack stack) {
