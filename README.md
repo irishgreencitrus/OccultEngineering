@@ -1,53 +1,69 @@
-# Create: Occult Engineering
+![Create: Occult Engineering Logo](./marketing/title.png)
+
 [![Modrinth Badge](https://img.shields.io/modrinth/dt/occult-engineering?logo=modrinth&label=&suffix=%20&style=flat&color=242629&labelColor=5ca424&logoColor=1c1c1c)](https://modrinth.com/mod/occult-engineering)
 [![Curseforge Badge](https://cf.way2muchnoise.eu/1206040.svg)](https://www.curseforge.com/minecraft/mc-mods/create-occult-engineering)
 
 ![Version Badge](https://cf.way2muchnoise.eu/versions/1206040.svg)
 
-An integration between Occultism and the Create Mod.
+> An integration between the Create mod and Occultism.
 
-## Currently Supported:
-### Bulk Enspirit
-Place a Spiritfire or a Spirit Campfire in front of an encased fan, to cause a purple effect.
-This can be used to automate all the Spiritfire's recipes!
+## Main Features
 
-### Mechanical Arm Compatibility
-Create's Mechanical Arm can now interact with:
-- Stable Wormhole
-- Dimensional Storage Actuator
-- Sacrificial Bowl
+### Spiritfire Automation
+
+Place a Spiritfire or Spirit Campfire in front of an Encased Fan to automate the process!
+
+### Ritual Automation
+
+Automate any ritual (which doesn't require a sacrifice or external item use) using the Mechanical Chamber.
+
+The Mechanical Arm is the best way to insert books into the Mechanical Chamber, and it uses the items in Sacrificial
+Bowls
+around it as usual.
+
+### Crushing Automation
+
+Automate crushing into dust using the Mechanical Pulverizer. This can be used in place of Occultism's crushing entities,
+to automate all the dusts.
+
+### Otherworld Detector
+
+The otherworld detector outputs a Redstone signal if the nearest player to them has the otherworld vision
+(either the goggles or the third eye potion effect).
+
+Take a comparator output from it to get the distance to the nearest player with the otherworld vision!
 
 ### Spirit Solution
-Get Spirit Solution by either mixing Demon's Dream Fruit with water with heat, or by crushing Demon's Dream Seeds.
 
-Spirit Solution can be poured onto the unbound Books of Binding via the Spout in order to bind them!
+Crafted by either mixing Demon's Dream Fruit with water while heated, or crushing Demon's Dream Seeds,
+Spirit Solution is used to bind books instead of crafting with a Dictionary of Spirits. In the future, it will
+be used for other useful things.
 
-### Mechanical Chamber
+## Partially Developed Features
 
-Use the Mechanical Chamber to more easily automate crafting rituals!
+These features are considered partially developed, because there is some functionality but they aren't feature complete,
+and don't necessarily have any logical progression.
 
-Powered from the top by Shaft, it works in place of a Golden Sacrificial Bowl in the center of a ritual.
-The faster the shaft in the top spins, the faster the ritual will be completed i.e.
-a shaft with speed 64 will complete the ritual twice as fast as a shaft with speed 32.
+### New Rituals
 
-Place your Sacrificial Bowls as usual, within 8 blocks of the center to start it.
+Copper, Zinc and Brass chalk can be crafted and drawn on the ground like Occultism's regular chalk,
+and is used for new rituals.
 
-It works best with the Mechanical Arm:
+#### Fionntán's Uncompromising Captivation
 
-- The Mechanical Arm will only insert a bound book into the chamber.
-- The Mechanical Arm will only insert the book if the book completes the ritual.
-- The Mechanical Arm will only extract results from the ritual, not the book itself.
+This is the Ritual currently used only to craft the Otherworld Detector.
 
-### JEI Support
+![](./marketing/fionnatan_circle.png)
 
-JEI can be used for all recipes in the mod.
+### New Spirits
 
-## Planned
+#### The Púca
 
-- [x] Automated Rituals
-- [ ] Automated Crushing into Dust
-- [ ] New Chalk Types
-- [ ] New Pentacles
-- [ ] New Rituals
-- [ ] Special Features (yet to be revealed)
-- [ ] Ponder Menu for the Features
+The Púca is a new spirit to add to the 4 existing base spirits. In the future it will be used for Create mod helper
+entities
+much like the lumberjacks of the Occultism mod.
+
+## Future Plans
+
+- Add a way to replace the sacrifices of a ritual with something more easily automated
+- Complete documentation for the pentacles and the mod, using a combination of Modonomicon and Create's Ponder.
