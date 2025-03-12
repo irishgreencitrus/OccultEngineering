@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "SB ",
+    " O "
+  ],
+  "key": {
+    "I": {
+      "item": "create:iron_sheet"
+    },
+    "S": {
+      "item": "create:shaft"
+    },
+    "B": {
+      "item": "occultism:silver_block"
+    },
+    "O": {
+      "item": "occultism:otherstone_slab"
+    }
+  },
+  "result": {
+    "item": "occultengineering:mechanical_pulverizer"
+  }
+}
