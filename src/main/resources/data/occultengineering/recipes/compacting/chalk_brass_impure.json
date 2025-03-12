@@ -2,10 +2,10 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "item": "create:brass_ingot"
+      "tag": "forge:dusts/brass"
     },
     {
-      "item": "create:brass_ingot"
+      "tag": "forge:dusts/brass"
     },
     {
       "item": "occultism:chalk_white_impure"

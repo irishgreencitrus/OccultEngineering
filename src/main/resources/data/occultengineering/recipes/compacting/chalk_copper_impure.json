@@ -2,10 +2,10 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "item": "occultism:copper_dust"
+      "tag": "forge:dusts/copper"
     },
     {
-      "item": "occultism:copper_dust"
+      "tag": "forge:dusts/copper"
     },
     {
       "item": "occultism:chalk_white_impure"

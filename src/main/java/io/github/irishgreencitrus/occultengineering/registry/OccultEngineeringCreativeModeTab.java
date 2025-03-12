@@ -36,16 +36,6 @@ public class OccultEngineeringCreativeModeTab {
                         )
                         .displayItems((itemDisplayParameters, output) -> {
                             output.accept(OccultEngineeringFluids.SPIRIT_SOLUTION.get().getBucket());
-                            output.accept(OccultEngineeringBlocks.MECHANICAL_CHAMBER.get());
-                            output.accept(OccultEngineeringItems.COPPER_CHALK_IMPURE.get());
-                            output.accept(OccultEngineeringItems.ZINC_CHALK_IMPURE.get());
-                            output.accept(OccultEngineeringItems.BRASS_CHALK_IMPURE.get());
-                            output.accept(OccultEngineeringItems.COPPER_CHALK.get());
-                            output.accept(OccultEngineeringItems.ZINC_CHALK.get());
-                            output.accept(OccultEngineeringItems.BRASS_CHALK.get());
-                            output.accept(OccultEngineeringBlocks.OTHERWORLD_DETECTOR.get());
-                            output.accept(OccultEngineeringItems.BOOK_OF_BINDING_PUCA);
-                            output.accept(OccultEngineeringItems.BOOK_OF_BINDING_BOUND_PUCA);
                         })
                         .build());
     }

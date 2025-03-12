@@ -2,10 +2,10 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "item": "create:zinc_ingot"
+      "tag": "forge:dusts/zinc"
     },
     {
-      "item": "create:zinc_ingot"
+      "tag": "forge:dusts/zinc"
     },
     {
       "item": "occultism:chalk_white_impure"

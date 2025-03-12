@@ -45,6 +45,13 @@ public class OccultEngineeringItems {
             .lang("Book of Binding: Púca (Bound)")
             .register();
 
+    public static final ItemEntry<Item> ZINC_DUST = REGISTRATE
+            .item("zinc_dust", Item::new)
+            .lang("Zinc Dust")
+            .register();
+
+    public static final ItemEntry<Item> BRASS_DUST = REGISTRATE.item("brass_dust", Item::new).lang("Brass Dust").register();
+
     static {
         REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)
                 .model((c, p) -> p.singleTexture(c.getName(), p.mcLoc("item/generated"), "layer0", p.modLoc("item/ritual_dummy")))
