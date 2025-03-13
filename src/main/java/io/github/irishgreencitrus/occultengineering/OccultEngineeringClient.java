@@ -1,8 +1,10 @@
 package io.github.irishgreencitrus.occultengineering;
 
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
+import io.github.irishgreencitrus.occultengineering.ponder.OccultEngineeringPonderPlugin;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPartialModels;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -21,5 +23,6 @@ public class OccultEngineeringClient {
                 .withButtonLabels("Client Settings", null, "Server Settings")
                 .withSpecs(OccultEngineeringConfig.client().specification, null, OccultEngineeringConfig.server().specification)
         );
+        PonderIndex.addPlugin(new OccultEngineeringPonderPlugin());
     }
 }

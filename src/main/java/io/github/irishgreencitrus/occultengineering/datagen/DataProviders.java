@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.ponder.OccultEngineeringPonderPlugin;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,6 +29,7 @@ public class DataProviders {
             provideDefaultLang("interface", langConsumer);
             provideDefaultLang("tooltips", langConsumer);
             provideRitualDummiesLang(langConsumer);
+            providerPonderLang(langConsumer);
         });
     }
 
@@ -56,5 +59,10 @@ public class DataProviders {
             String value = new String(entry.getValue().getAsString().getBytes(), StandardCharsets.UTF_8);
             consumer.accept("item.occultengineering.ritual_dummy_" + key + ".tooltip", value);
         }
+    }
+
+    private static void providerPonderLang(BiConsumer<String, String> consumer) {
+        PonderIndex.addPlugin(new OccultEngineeringPonderPlugin());
+        PonderIndex.getLangAccess().provideLang(OccultEngineering.MODID, consumer);
     }
 }

@@ -20,9 +20,10 @@ public class OccultEngineeringPonderTags {
                 .add(OccultismBlocks.SACRIFICIAL_BOWL.get())
                 .add(OccultismBlocks.STABLE_WORMHOLE.get())
                 .add(OccultismBlocks.STORAGE_CONTROLLER.get())
-                .add(OccultEngineeringBlocks.MECHANICAL_CHAMBER);
+                .add(OccultEngineeringBlocks.MECHANICAL_CHAMBER.get());
 
-        HELPER.addToTag(AllCreatePonderTags.ARM_TARGETS)
-                .add(OccultEngineeringBlocks.MECHANICAL_CHAMBER);
+        HELPER.addToTag(AllCreatePonderTags.KINETIC_APPLIANCES)
+                .add(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
+                .add(OccultEngineeringBlocks.MECHANICAL_PULVERIZER);
     }
 }
