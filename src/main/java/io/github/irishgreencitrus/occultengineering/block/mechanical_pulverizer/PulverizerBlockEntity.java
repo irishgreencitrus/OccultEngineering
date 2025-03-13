@@ -165,12 +165,11 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         offset = VecHelper.offsetRandomly(offset, level.random, 1 / 64f);
         center = center.add(offset);
 
-        var targetOffset = VecHelper.rotate(new Vec3(0, -0.5f, 0.2f), yRot, Direction.Axis.Y);
-        var target = targetOffset;
+        var target = VecHelper.rotate(new Vec3(0, -0.5f, 0.2f), yRot, Direction.Axis.Y);
         level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
     }
 
-    private boolean canProcess(ItemStack stack) {
+    public boolean canProcess(ItemStack stack) {
         if (level == null) return false;
         ItemStackFakeInventory inventory = new ItemStackFakeInventory(stack);
 
