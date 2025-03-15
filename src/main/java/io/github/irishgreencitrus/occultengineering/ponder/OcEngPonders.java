@@ -155,6 +155,9 @@ public class OcEngPonders {
         var cogs = util.select().fromTo(3, 2, 3, 3, 3, 3);
         scene.world().showSection(cogs, Direction.DOWN);
         scene.world().setKineticSpeed(mechChamberSelect, -32);
+        scene.idle(10);
+        scene.effects().indicateSuccess(mechChamber);
+        scene.idle(10);
         scene.overlay().showText(50)
                 .attachKeyFrame()
                 .text("It must be powered from the top with Rotational Power")
@@ -192,13 +195,12 @@ public class OcEngPonders {
 
         scene.world().showSection(bowls, Direction.DOWN);
         scene.idle(10);
-        scene.overlay().showOutline(PonderPalette.GREEN, new Object(), bowls, 30);
-        scene.idle(40);
+        scene.overlay().showOutline(PonderPalette.GREEN, new Object(), bowls, 50);
 
         scene.overlay().showText(50)
                 .attachKeyFrame()
                 .text("The chamber will pull automatically from Sacrificial Bowls within 8 blocks")
-                .pointAt(util.vector().topOf(2, 1, 0))
+                .pointAt(util.vector().blockSurface(util.grid().at(2, 1, 0), Direction.NORTH))
                 .placeNearTarget();
         scene.idle(60);
 
@@ -240,7 +242,6 @@ public class OcEngPonders {
         scene.world().showSection(depots, Direction.DOWN);
         scene.idle(10);
         scene.world().showSection(arms, Direction.DOWN);
-        scene.world().setKineticSpeed(arms, -32);
         scene.idle(10);
 
         scene.overlay().showOutline(PonderPalette.BLUE, new Object(), arms, 40);
