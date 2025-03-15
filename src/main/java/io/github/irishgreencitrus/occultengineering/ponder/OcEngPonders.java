@@ -1,8 +1,14 @@
 package io.github.irishgreencitrus.occultengineering.ponder;
 
+import com.klikli_dev.occultism.common.blockentity.SacrificialBowlBlockEntity;
+import com.klikli_dev.occultism.registry.OccultismBlocks;
 import com.klikli_dev.occultism.registry.OccultismItems;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.block.mechanical_pulverizer.PulverizerBlockEntity;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.ElementLink;
@@ -12,9 +18,11 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 public class OcEngPonders {
@@ -119,5 +127,207 @@ public class OcEngPonders {
 
         scene.world().createItemOnBelt(beltPos, Direction.EAST, new ItemStack(OccultismItems.COPPER_DUST.get()));
         scene.idle(60);
+    }
+
+    public static void chamber(SceneBuilder builder, SceneBuildingUtil util) {
+        var scene = new CreateSceneBuilder(builder);
+        scene.title("mechanical_chamber", "Using the Mechanical Chamber to Automate Rituals");
+
+        scene.configureBasePlate(0, 0, 7);
+        scene.world().showSection(util.select().layer(0), Direction.UP);
+        scene.idle(5);
+
+        BlockPos mechChamber = util.grid().at(3, 1, 3);
+        Selection mechChamberSelect = util.select().position(mechChamber);
+
+        scene.idle(5);
+        scene.world().showSection(mechChamberSelect, Direction.DOWN);
+        scene.world().setKineticSpeed(mechChamberSelect, 0);
+        scene.idle(10);
+
+        var chamberTop = util.vector().topOf(mechChamber);
+        scene.overlay().showText(80)
+                .text("The Mechanical Chamber can be used in place of a Golden Sacrificial Bowl for Rituals which craft items")
+                .pointAt(chamberTop)
+                .placeNearTarget();
+        scene.idle(90);
+
+        var cogs = util.select().fromTo(3, 2, 3, 3, 3, 3);
+        scene.world().showSection(cogs, Direction.DOWN);
+        scene.world().setKineticSpeed(mechChamberSelect, -32);
+        scene.overlay().showText(50)
+                .attachKeyFrame()
+                .text("It must be powered from the top with Rotational Power")
+                .pointAt(chamberTop)
+                .placeNearTarget();
+        scene.idle(60);
+
+
+        scene.overlay().showText(50)
+                .colored(PonderPalette.GREEN)
+                .text("The faster the Rotation, the faster the Ritual will complete")
+                .pointAt(chamberTop.add(0, 1, 0))
+                .placeNearTarget();
+        scene.idle(60);
+
+        var chalks = util.select().fromTo(1, 1, 1, 6, 1, 6)
+                .substract(mechChamberSelect)
+                .add(util.select().fromTo(0, 1, 0, 1, 1, 1))
+                .add(util.select().fromTo(0, 1, 5, 1, 1, 6))
+                .add(util.select().fromTo(5, 1, 0, 6, 1, 1));
+
+        scene.world().showSection(chalks, Direction.DOWN);
+        scene.idle(10);
+        scene.overlay().showText(50)
+                .attachKeyFrame()
+                .text("Surround the chamber with chalks and other ritual blocks")
+                .pointAt(chamberTop)
+                .placeNearTarget();
+        scene.idle(60);
+
+        var bowls = util.select().position(2, 1, 0)
+                .add(util.select().position(0, 1, 2))
+                .add(util.select().position(4, 1, 0))
+                .add(util.select().position(0, 1, 4));
+
+        scene.world().showSection(bowls, Direction.DOWN);
+        scene.idle(10);
+        scene.overlay().showOutline(PonderPalette.GREEN, new Object(), bowls, 30);
+        scene.idle(40);
+
+        scene.overlay().showText(50)
+                .attachKeyFrame()
+                .text("The chamber will pull automatically from Sacrificial Bowls within 8 blocks")
+                .pointAt(util.vector().topOf(2, 1, 0))
+                .placeNearTarget();
+        scene.idle(60);
+
+        var bowl1 = util.grid().at(2, 1, 0);
+        var bowl2 = util.grid().at(0, 1, 2);
+        var bowl3 = util.grid().at(4, 1, 0);
+
+        var observer = new ItemStack(Blocks.OBSERVER);
+        var otherStone = new ItemStack(OccultismBlocks.OTHERSTONE.get());
+        var otherEssence = new ItemStack(OccultismItems.OTHERWORLD_ESSENCE.get());
+
+        scene.world().modifyBlockEntity(bowl1, SacrificialBowlBlockEntity.class,
+                bwl -> bwl.itemStackHandler.setStackInSlot(0, observer));
+        scene.idle(5);
+        scene.world().modifyBlockEntity(bowl2, SacrificialBowlBlockEntity.class,
+                bwl -> bwl.itemStackHandler.setStackInSlot(0, otherStone));
+        scene.idle(5);
+        scene.world().modifyBlockEntity(bowl3, SacrificialBowlBlockEntity.class,
+                bwl -> bwl.itemStackHandler.setStackInSlot(0, otherEssence));
+        scene.idle(10);
+
+
+        scene.overlay().showText(40)
+                .attachKeyFrame()
+                .text("The bowls can either be filled by hand or through automation")
+                .pointAt(util.vector().topOf(bowl2))
+                .placeNearTarget();
+        scene.idle(50);
+
+        var inputDepot = util.grid().at(3, 1, 0);
+        var outputDepot = util.grid().at(0, 1, 3);
+        var depots = util.select().position(inputDepot).add(util.select().position(outputDepot));
+
+        var inputArm = util.grid().at(4, 3, 2);
+        var outputArm = util.grid().at(2, 3, 4);
+
+        var arms = util.select().position(inputArm).add(util.select().position(outputArm));
+
+        scene.world().showSection(depots, Direction.DOWN);
+        scene.idle(10);
+        scene.world().showSection(arms, Direction.DOWN);
+        scene.world().setKineticSpeed(arms, -32);
+        scene.idle(10);
+
+        scene.overlay().showOutline(PonderPalette.BLUE, new Object(), arms, 40);
+        scene.overlay().showText(40)
+                .attachKeyFrame()
+                .text("Mechanical Arms are the easiest way to use the chamber")
+                .pointAt(util.vector().blockSurface(util.grid().at(4, 3, 2), Direction.NORTH))
+                .placeNearTarget();
+        scene.idle(50);
+
+
+        var inputBook = OccultEngineeringItems.BOOK_OF_BINDING_BOUND_PUCA.asStack();
+        scene.world().createItemOnBeltLike(inputDepot, Direction.NORTH, inputBook);
+        scene.idle(20);
+        scene.overlay().showText(60)
+                .text("They only insert bound books once the rest of the ritual is complete")
+                .pointAt(util.vector().blockSurface(inputDepot, Direction.NORTH))
+                .placeNearTarget();
+        scene.idle(70);
+
+        scene.world().instructArm(inputArm, ArmBlockEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+        scene.idle(28);
+        scene.world().removeItemsFromBelt(inputDepot);
+        scene.world().instructArm(inputArm, ArmBlockEntity.Phase.SEARCH_OUTPUTS, inputBook, -1);
+        scene.idle(20);
+        scene.world().instructArm(inputArm, ArmBlockEntity.Phase.MOVE_TO_OUTPUT, inputBook, 0);
+        scene.idle(28);
+        scene.world().modifyBlockEntity(mechChamber, MechanicalChamberBlockEntity.class,
+                mech -> mech.itemStackHandler.setStackInSlot(0, inputBook));
+        scene.world().instructArm(inputArm, ArmBlockEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, 0);
+        scene.idle(20);
+
+        scene.overlay().showText(50)
+                .text("The Mechanical Chamber will then initiate the Ritual")
+                .pointAt(util.vector().topOf(mechChamber))
+                .placeNearTarget();
+        scene.idle(60);
+
+        scene.world().modifyBlockEntity(bowl1, SacrificialBowlBlockEntity.class,
+                bwl -> bwl.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY));
+        scene.effects().emitParticles(bowl1.getCenter(),
+                scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, new Vec3(0, 0.1, 0)),
+                1,
+                10);
+        scene.idle(20);
+
+        scene.world().modifyBlockEntity(bowl2, SacrificialBowlBlockEntity.class,
+                bwl -> bwl.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY));
+        scene.effects().emitParticles(bowl2.getCenter(),
+                scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, new Vec3(0, 0.1, 0)),
+                1,
+                10);
+        scene.idle(20);
+
+        scene.world().modifyBlockEntity(bowl3, SacrificialBowlBlockEntity.class,
+                bwl -> bwl.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY));
+        scene.effects().emitParticles(bowl3.getCenter(),
+                scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, new Vec3(0, 0.1, 0)),
+                1,
+                10);
+        scene.idle(20);
+
+        var outputBlock = OccultEngineeringBlocks.OTHERWORLD_DETECTOR.asStack();
+
+        scene.world().modifyBlockEntity(mechChamber, MechanicalChamberBlockEntity.class,
+                mech -> mech.itemStackHandler.setStackInSlot(0, outputBlock));
+
+        scene.idle(20);
+
+        scene.world().instructArm(outputArm, ArmBlockEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+        scene.idle(28);
+        scene.world().modifyBlockEntity(mechChamber, MechanicalChamberBlockEntity.class,
+                mech -> mech.itemStackHandler.setStackInSlot(0, ItemStack.EMPTY));
+        scene.world().instructArm(outputArm, ArmBlockEntity.Phase.SEARCH_OUTPUTS, outputBlock, -1);
+        scene.idle(20);
+        scene.world().instructArm(outputArm, ArmBlockEntity.Phase.MOVE_TO_OUTPUT, outputBlock, 0);
+        scene.idle(28);
+        scene.world().createItemOnBeltLike(outputDepot, Direction.EAST, outputBlock);
+        scene.world().instructArm(outputArm, ArmBlockEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, 0);
+        scene.overlay().showText(60)
+                .text("They also only extract the resulting items")
+                .pointAt(util.vector().blockSurface(outputDepot, Direction.NORTH))
+                .placeNearTarget();
+        scene.idle(120);
+    }
+
+    public static void detector(SceneBuilder builder, SceneBuildingUtil util) {
+
     }
 }

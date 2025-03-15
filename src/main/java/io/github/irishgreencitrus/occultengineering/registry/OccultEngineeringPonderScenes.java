@@ -11,5 +11,6 @@ public class OccultEngineeringPonderScenes {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
         HELPER.addStoryBoard(OccultEngineeringBlocks.MECHANICAL_PULVERIZER, "mechanical_pulverizer", OcEngPonders::pulverizer, AllCreatePonderTags.KINETIC_APPLIANCES);
+        HELPER.addStoryBoard(OccultEngineeringBlocks.MECHANICAL_CHAMBER, "mechanical_chamber", OcEngPonders::chamber, AllCreatePonderTags.KINETIC_APPLIANCES);
     }
 }
