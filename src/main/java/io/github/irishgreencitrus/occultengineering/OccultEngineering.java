@@ -15,6 +15,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
@@ -42,6 +43,7 @@ public class OccultEngineering {
         IEventBus modEventBus = FMLJavaModLoadingContext.get()
                 .getModEventBus();
         var modLoadingContext = ModLoadingContext.get();
+        modEventBus.addListener(OccultEngineering::init);
         modEventBus.addListener(OccultEngineering::onRegister);
 
 
@@ -58,6 +60,10 @@ public class OccultEngineering {
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> OccultEngineeringClient.onCtorClient(modEventBus));
         LOGGER.info("Setup is complete.");
+    }
+
+    public static void init(final FMLCommonSetupEvent event) {
+        OccultEngineeringFluids.registerFluidInteractions();
     }
 
     public static void onRegister(final RegisterEvent event) {
