@@ -4,6 +4,7 @@ import com.klikli_dev.occultism.common.blockentity.SacrificialBowlBlockEntity;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
+import com.simibubi.create.content.redstone.nixieTube.NixieTubeBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.block.mechanical_pulverizer.PulverizerBlockEntity;
@@ -329,6 +330,78 @@ public class OcEngPonders {
     }
 
     public static void detector(SceneBuilder builder, SceneBuildingUtil util) {
+        var scene = new CreateSceneBuilder(builder);
+        scene.title("otherworld_detector", "Detecting with the Otherworld Detector");
+        scene.configureBasePlate(0, 0, 5);
+        scene.world().showSection(util.select().layer(0), Direction.UP);
+        scene.idle(10);
+        BlockPos detector = util.grid().at(2, 1, 2);
+        Selection detectorSelect = util.select().position(detector);
 
+        Selection redstoneWiring = util.select().position(1, 1, 2);
+        Selection comparatorAndTubes = util.select().fromTo(2, 1, 0, 2, 1, 1);
+        scene.world().showSection(detectorSelect, Direction.DOWN);
+        scene.idle(10);
+        scene.overlay().showText(60)
+                .attachKeyFrame()
+                .text("Otherworld Detectors detect whether the nearest player can see into the Otherworld")
+                .pointAt(util.vector().topOf(detector))
+                .placeNearTarget();
+        scene.idle(70);
+
+        scene.world().showSection(redstoneWiring, Direction.DOWN);
+        scene.idle(10);
+
+        var zombieLoc = util.vector().topOf(2, 0, 4);
+
+        /*
+        var zombieElement = scene.world().createEntity(w -> {
+            Zombie zombieEntity = EntityType.ZOMBIE.create(w);
+            zombieEntity.setNoGravity(true);
+            zombieEntity.setNoAi(true);
+            zombieEntity.setPose(Pose.STANDING);
+            zombieEntity.setPosRaw(zombieLoc.x, zombieLoc.y, zombieLoc.z);
+            zombieEntity.setItemSlot(EquipmentSlot.HEAD, new ItemStack(OccultismItems.OTHERWORLD_GOGGLES.get()));
+            zombieEntity.setYRot(zombieEntity.yRotO = 90);
+            return zombieEntity;
+        });
+         */
+
+        scene.idle(4);
+        scene.effects().indicateRedstone(detector);
+        scene.world().toggleRedstonePower(detectorSelect);
+        scene.world().toggleRedstonePower(redstoneWiring);
+        scene.idle(10);
+        scene.overlay().showText(60)
+                .attachKeyFrame()
+                .text("This can be accomplished by either consuming Demon's Dream Fruit to get the Third Eye, or by wearing Otherworld Goggles")
+                .pointAt(zombieLoc)
+                .placeNearTarget();
+        scene.idle(70);
+
+        //scene.effects().emitParticles(zombieLoc, scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, Vec3.ZERO), 10, 1);
+        //scene.world().modifyEntity(zombieElement, Entity::discard);
+
+        //scene.idle(30);
+        var nixieLoc = util.grid().at(2, 1, 0);
+        scene.world().toggleRedstonePower(util.select().position(2, 1, 1));
+        scene.world().modifyBlockEntityNBT(util.select().position(nixieLoc), NixieTubeBlockEntity.class, nbt -> nbt.putInt("RedstoneStrength", 15));
+        scene.world().showSection(comparatorAndTubes, Direction.DOWN);
+        scene.idle(10);
+
+
+        scene.overlay().showText(90)
+                .attachKeyFrame()
+                .text("A comparator can also be used to get the distance to the player")
+                .pointAt(util.vector().topOf(nixieLoc))
+                .placeNearTarget();
+
+        for (int i = 14; i >= 1; i--) {
+            int finalI = i;
+            scene.world().modifyBlockEntityNBT(util.select().position(nixieLoc), NixieTubeBlockEntity.class, nbt -> nbt.putInt("RedstoneStrength", finalI));
+            scene.idle(10);
+        }
+
+        scene.idle(60);
     }
 }
