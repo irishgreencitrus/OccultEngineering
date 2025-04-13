@@ -5,6 +5,8 @@
 
 ![Version Badge](https://cf.way2muchnoise.eu/versions/1206040.svg)
 
+[![Discord Badge](https://img.shields.io/badge/Need_Help%3F-Join_The_Discord-7289da?style=for-the-badge&logo=discord&labelColor=%23424549)](https://discord.gg/B7Sd3eaTrs)
+
 > An integration between the Create mod and Occultism.
 
 ## Main Features
