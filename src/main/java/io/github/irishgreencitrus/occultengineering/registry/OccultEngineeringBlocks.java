@@ -2,7 +2,6 @@ package io.github.irishgreencitrus.occultengineering.registry;
 
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
-import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -25,6 +24,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
+@SuppressWarnings("unused")
 public class OccultEngineeringBlocks {
     static {
         REGISTRATE.setCreativeTab(OccultEngineeringCreativeModeTab.CREATIVE_TAB);
@@ -36,7 +36,8 @@ public class OccultEngineeringBlocks {
             .initialProperties(OccultismBlocks.IESNIUM_BLOCK::get)
             .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE))
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
-            .blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
+            //.blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
+            .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
             .simpleItem()
             .register();
@@ -106,6 +107,14 @@ public class OccultEngineeringBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion())
             .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<Block> STERLING_SILVER_BLOCK = REGISTRATE.block("sterling_silver_block", Block::new)
+            .initialProperties(SharedProperties::softMetal)
+            .transform(pickaxeOnly())
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
+            .lang("Block of Sterling Silver")
             .simpleItem()
             .register();
 

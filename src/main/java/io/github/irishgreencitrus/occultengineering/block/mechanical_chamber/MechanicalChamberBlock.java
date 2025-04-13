@@ -1,7 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.block.mechanical_chamber;
 
 import com.klikli_dev.occultism.util.StorageUtil;
-import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -24,7 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class MechanicalChamberBlock extends KineticBlock implements IBE<MechanicalChamberBlockEntity> {
+public class MechanicalChamberBlock extends HorizontalKineticBlock implements IBE<MechanicalChamberBlockEntity> {
     private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0);
 
     public MechanicalChamberBlock(Properties properties) {
