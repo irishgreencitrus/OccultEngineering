@@ -85,6 +85,7 @@ public class JeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         allCategories.forEach(c -> c.registerCatalysts(registration));
         registration.addRecipeCatalyst(new ItemStack(OccultEngineeringBlocks.MECHANICAL_CHAMBER), JeiRecipeTypes.RITUAL);
+        registration.addRecipeCatalyst(new ItemStack(OccultEngineeringBlocks.MECHANICAL_PULVERIZER), JeiRecipeTypes.CRUSHING);
     }
 
     @Override

@@ -1,0 +1,49 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "occultengineering:pentacles",
+  "description": "",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "occultism:pentacle"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.pentacles.craft_puca.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.pentacles.craft_puca.intro.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.pentacles.craft_puca.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:multiblock",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "multiblock_id": "occultengineering:craft_puca",
+      "multiblock_name": "",
+      "show_visualize_button": true,
+      "text": ""
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.pentacles.craft_puca.uses.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.pentacles.craft_puca.uses.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -8,
+  "y": 0
+}

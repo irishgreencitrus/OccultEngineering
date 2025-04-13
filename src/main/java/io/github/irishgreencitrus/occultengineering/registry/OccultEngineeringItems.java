@@ -5,11 +5,17 @@ import com.klikli_dev.occultism.common.item.spirit.BookOfBindingItem;
 import com.klikli_dev.occultism.common.item.tool.ChalkItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.item.BookOfBindingBoundGlintItem;
+import io.github.irishgreencitrus.occultengineering.item.MechanicalGuideItem;
 import net.minecraft.world.item.Item;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
+@SuppressWarnings("unused")
 public class OccultEngineeringItems {
+    public static final ItemEntry<MechanicalGuideItem> ENCYCLOPEDIA_OF_SOULS = REGISTRATE.item("encyclopedia_of_souls", MechanicalGuideItem::new)
+            .lang("Encyclopedia of Souls")
+            .register();
+
     public static final ItemEntry<Item> COPPER_CHALK_IMPURE = REGISTRATE.item("chalk_copper_impure", Item::new)
             .lang("Impure Copper Chalk")
             .register();
@@ -50,7 +56,25 @@ public class OccultEngineeringItems {
             .lang("Zinc Dust")
             .register();
 
-    public static final ItemEntry<Item> BRASS_DUST = REGISTRATE.item("brass_dust", Item::new).lang("Brass Dust").register();
+    public static final ItemEntry<Item> BRASS_DUST = REGISTRATE
+            .item("brass_dust", Item::new)
+            .lang("Brass Dust")
+            .register();
+
+    public static final ItemEntry<Item> STERLING_SILVER_INGOT = REGISTRATE
+            .item("sterling_silver_ingot", Item::new)
+            .lang("Sterling Silver Ingot")
+            .register();
+
+    public static final ItemEntry<Item> STERLING_SILVER_NUGGET = REGISTRATE
+            .item("sterling_silver_nugget", Item::new)
+            .lang("Sterling Silver Nugget")
+            .register();
+
+
+    // TODO: change texture of impure chalks
+
+    // TODO: move crafting recipes to datagen
 
     static {
         REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)

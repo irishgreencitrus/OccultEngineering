@@ -1,20 +1,21 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
+import com.klikli_dev.occultism.common.block.SacrificialBowlBlock;
+import com.klikli_dev.occultism.common.block.storage.StableWormholeBlock;
+import com.klikli_dev.occultism.common.block.storage.StorageControllerBlock;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.DimensionalStorageActuatorInteractionPoint;
+import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.BlockArmInteractionPoint;
 import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.MechanicalChamberInteractionPoint;
-import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.SacrificialBowlInteractionPoint;
-import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.StableWormholeInteractionPoint;
 import net.minecraft.core.Registry;
 
 public class OccultEngineeringArmInteractionPoints {
     static {
-        register("dimensional_storage", new DimensionalStorageActuatorInteractionPoint());
+        register("dimensional_storage", new BlockArmInteractionPoint<>(StorageControllerBlock.class));
         register("mechanical_chamber", new MechanicalChamberInteractionPoint());
-        register("sacrificial_bowl", new SacrificialBowlInteractionPoint());
-        register("stable_wormhole", new StableWormholeInteractionPoint());
+        register("sacrificial_bowl", new BlockArmInteractionPoint<>(SacrificialBowlBlock.class));
+        register("stable_wormhole", new BlockArmInteractionPoint<>(StableWormholeBlock.class));
     }
 
     private static <T extends ArmInteractionPointType> void register(String name, T type) {

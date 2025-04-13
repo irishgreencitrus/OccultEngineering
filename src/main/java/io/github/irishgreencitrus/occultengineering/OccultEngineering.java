@@ -37,8 +37,6 @@ public class OccultEngineering {
                 );
     }
 
-    //public static final Lang LANG = Lang;
-
     public OccultEngineering() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get()
                 .getModEventBus();

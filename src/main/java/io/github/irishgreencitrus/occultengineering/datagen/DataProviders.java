@@ -7,7 +7,6 @@ import com.tterrag.registrate.providers.ProviderType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.ponder.OccultEngineeringPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,9 +19,6 @@ import java.util.function.BiConsumer;
 public class DataProviders {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        generator.addProvider(event.includeServer(), new PentacleProvider(generator));
-
         OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             BiConsumer<String, String> langConsumer = provider::add;
 
