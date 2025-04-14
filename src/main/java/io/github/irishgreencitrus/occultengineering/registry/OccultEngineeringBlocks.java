@@ -36,7 +36,6 @@ public class OccultEngineeringBlocks {
             .initialProperties(OccultismBlocks.IESNIUM_BLOCK::get)
             .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE))
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
-            //.blockstate((ctx, pov) -> pov.simpleBlock(ctx.get(), AssetLookup.standardModel(ctx, pov)))
             .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
             .simpleItem()

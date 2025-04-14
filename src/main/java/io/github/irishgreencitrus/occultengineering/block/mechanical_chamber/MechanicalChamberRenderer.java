@@ -79,6 +79,6 @@ public class MechanicalChamberRenderer extends KineticBlockEntityRenderer<Mechan
 
     @Override
     protected SuperByteBuffer getRotatedModel(MechanicalChamberBlockEntity be, BlockState state) {
-        return CachedBuffers.partialFacing(OccultEngineeringPartialModels.SHAFT_QUARTER, state, Direction.UP);
+        return CachedBuffers.partialFacing(OccultEngineeringPartialModels.SHAFT_SPLIT, state, Direction.UP);
     }
 }

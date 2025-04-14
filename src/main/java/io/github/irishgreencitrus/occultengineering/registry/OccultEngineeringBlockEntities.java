@@ -17,7 +17,7 @@ public class OccultEngineeringBlockEntities {
             REGISTRATE
                     .blockEntity("mechanical_chamber", MechanicalChamberBlockEntity::new)
                     .visual(() -> (context, blockEntity, partialTick)
-                            -> new OrientedRotatingVisual<>(context, blockEntity, partialTick, Direction.SOUTH, Direction.UP, Models.partial(OccultEngineeringPartialModels.SHAFT_QUARTER)))
+                            -> new OrientedRotatingVisual<>(context, blockEntity, partialTick, Direction.SOUTH, Direction.UP, Models.partial(OccultEngineeringPartialModels.SHAFT_SPLIT)))
                     .validBlocks(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
                     .renderer(() -> MechanicalChamberRenderer::new)
                     .register();

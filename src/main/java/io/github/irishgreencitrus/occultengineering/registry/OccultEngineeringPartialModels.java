@@ -5,6 +5,7 @@ import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 
 public class OccultEngineeringPartialModels {
     public static final PartialModel SHAFT_QUARTER = PartialModel.of(OccultEngineering.asResource("block/shaft_quarter"));
+    public static final PartialModel SHAFT_SPLIT = PartialModel.of(OccultEngineering.asResource("block/shaft_split"));
 
     public static void register() {
     }

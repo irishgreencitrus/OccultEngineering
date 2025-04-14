@@ -161,7 +161,7 @@ public class OcEngPonders {
         scene.idle(10);
         scene.overlay().showText(50)
                 .attachKeyFrame()
-                .text("It must be powered from the top with Rotational Power")
+                .text("It must be powered from the top or bottom with Rotational Power")
                 .pointAt(chamberTop)
                 .placeNearTarget();
         scene.idle(60);

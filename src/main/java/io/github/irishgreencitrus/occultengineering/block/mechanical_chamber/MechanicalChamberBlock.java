@@ -73,7 +73,7 @@ public class MechanicalChamberBlock extends HorizontalKineticBlock implements IB
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return face == Direction.UP;
+        return face == Direction.UP || face == Direction.DOWN;
     }
 
     @Override
