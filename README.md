@@ -66,4 +66,4 @@ much like the lumberjacks of the Occultism mod.
 
 ## Future Plans
 
-- Add a way to replace the sacrifices of a ritual with something more easily automated
+Check out the [GitHub issues page](https://github.com/irishgreencitrus/OccultEngineering/issues) for planned features.
