@@ -9,6 +9,11 @@
 
 > An integration between the Create mod and Occultism.
 
+## Getting Started
+Get started by crafting a Encyclopedia of Souls from a Dictionary of Spirits and a Cogwheel.
+
+The rest can be discovered from within the book, or by reading recipes in JEI.
+
 ## Main Features
 
 ### Spiritfire Automation
@@ -51,12 +56,6 @@ and don't necessarily have any logical progression.
 Copper, Zinc and Brass chalk can be crafted and drawn on the ground like Occultism's regular chalk,
 and is used for new rituals.
 
-#### Fionntán's Uncompromising Captivation
-
-This is the Ritual currently used only to craft the Otherworld Detector.
-
-<img src="./marketing/fionnatan_circle.png" alt="drawing" width="400"/>
-
 ### New Spirits
 
 #### The Púca
@@ -68,4 +67,3 @@ much like the lumberjacks of the Occultism mod.
 ## Future Plans
 
 - Add a way to replace the sacrifices of a ritual with something more easily automated
-- Complete documentation for the pentacles and the mod, using a combination of Modonomicon and Create's Ponder.
