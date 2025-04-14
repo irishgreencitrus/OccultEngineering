@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.20.1-0.7.0] - 2025-04-14
+### :sparkles: New Features
+- [`8072514`](https://github.com/irishgreencitrus/OccultEngineering/commit/8072514b68fd7b8d88090529fb5f17d1318f54d7) - Add assets for Sterling Silver ingot and nuggets. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`ab00e1e`](https://github.com/irishgreencitrus/OccultEngineering/commit/ab00e1ee66bc24134b14c01fb73221a4bcc69a09) - Add Sterling Silver block and recipes *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`8523d71`](https://github.com/irishgreencitrus/OccultEngineering/commit/8523d717cb7e1378d8b75b7d9114248365aaba70) - Update the Mechanical Chamber's model *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`831f47c`](https://github.com/irishgreencitrus/OccultEngineering/commit/831f47c9b5ac5fc0097286c6e3771a2fc6de73de) - Add the new Modonomicon and misc. changes. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`eb04531`](https://github.com/irishgreencitrus/OccultEngineering/commit/eb045314498f3bd4750c607be7413ce9b0e66e49) - Add a shaft to the bottom of the Mechanical Chamber *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`c0297fa`](https://github.com/irishgreencitrus/OccultEngineering/commit/c0297fa90430aed69d1ade0569f197be6a41a95c) - Outline the Encyclopedia of Spirits *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`36cb872`](https://github.com/irishgreencitrus/OccultEngineering/commit/36cb87235fc1e6868085e9ef0ac4951036f256cb) - Finish the Encyclopedia of Souls, for now. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.6.0] - 2025-03-15
 ### :sparkles: New Features
 - [`6b812cf`](https://github.com/irishgreencitrus/OccultEngineering/commit/6b812cfdaf30404828f320bd0226b42618df55d5) - Implement manual interaction for the Mechanical Pulverizer. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -37,3 +48,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [beta/v1.20.1-0.4.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.4.0...beta/v1.20.1-0.4.1
 [beta/v1.20.1-0.5.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.4.1...beta/v1.20.1-0.5.0
 [beta/v1.20.1-0.6.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.5.0...beta/v1.20.1-0.6.0
+[beta/v1.20.1-0.7.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.6.0...beta/v1.20.1-0.7.0
