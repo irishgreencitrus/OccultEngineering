@@ -8,6 +8,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryParentModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookSpotlightPageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import com.klikli_dev.occultism.integration.modonomicon.pages.BookSpiritFireRecipePageModel;
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.AllBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
@@ -210,10 +211,39 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "Spirit Solution");
         lang().add(context().entryDescription(), "The essential elixir");
 
+        context().page("intro");
+        var intro = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get()))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageTitle(), "Spirit Solution");
+        lang().add(context().pageText(), """
+                Spirit Solution is used for a number of things in the mod. Most notably, it can be poured onto books
+                of binding to bind them ready for a ritual which can be used in place of  of crafting with a Dictionary of Spirits.
+                \\
+                It is also used as the only way to craft the new chalks.
+                """);
+
+        context().page("intro2");
+        var intro2 = BookTextPageModel.builder()
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageText(), """
+                To get started with a small bit of Spirit Solution, crush some Demon's Dream Seeds.
+                \\
+                Use standard Create machinery to pump it around, or collect it in a bucket when you have enough.
+                \\
+                To get the solution more efficiently, Water can either be mixed with Demon's Dream Fruit or
+                Otherworld Essence with heat applied.
+                """);
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get())
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(intro, intro2);
     }
 
     private BookEntryModel makeChalksEntry(CategoryEntryMap entryMap, char icon) {
@@ -223,10 +253,58 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "New Chalks");
         lang().add(context().entryDescription(), "Fancier symbols to decorate the ground");
 
+        context().page("chalks");
+        var chalks = BookTextPageModel.builder()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageTitle(), "More Chalks");
+        lang().add(context().pageText(), """
+                Along with Occultism's standard chalk, you may need to end up crafting 3 new types of chalk.
+                \\
+                \\
+                The cost of the chalk scales with the cost of the ritual, with Copper being the cheapest, then Zinc and
+                finally Brass.
+                """);
+
+        context().page("chalks2");
+        var chalks2 = BookTextPageModel.builder()
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageText(), """
+                The new chalks can only be crafted by pressing them with [Spirit Solution](entry://occultengineering:encyclopedia_of_souls/getting_started/spirit_solution).
+                \\
+                \\
+                The more expensive the chalk, the more spirit solution that they require.
+                """);
+
+        context().page("purify_copper");
+        var purify_copper = BookSpiritFireRecipePageModel.builder()
+                .withRecipeId1(modLoc("spirit_fire/chalk_copper"))
+                .withTitle1(context().pageTitle())
+                .build();
+        lang().add(context().pageTitle(), "Copper Chalk");
+
+        context().page("purify_zinc");
+        var purify_zinc = BookSpiritFireRecipePageModel.builder()
+                .withRecipeId1(modLoc("spirit_fire/chalk_zinc"))
+                .withTitle1(context().pageTitle())
+                .build();
+        lang().add(context().pageTitle(), "Zinc Chalk");
+
+        context().page("purify_brass");
+        var purify_brass = BookSpiritFireRecipePageModel.builder()
+                .withRecipeId1(modLoc("spirit_fire/chalk_brass"))
+                .withTitle1(context().pageTitle())
+                .build();
+        lang().add(context().pageTitle(), "Brass Chalk");
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringItems.COPPER_CHALK)
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(chalks, chalks2, purify_copper, purify_zinc, purify_brass);
     }
 
     private BookEntryModel makeSterlingSilverEntry(CategoryEntryMap entryMap, char icon) {
@@ -236,10 +314,36 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "Sterling Silver");
         lang().add(context().entryDescription(), "A new versatile material");
 
+        context().page("sterling_silver");
+        var sterlingSilver = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.STERLING_SILVER_INGOT))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageTitle(), "Sterling Silver");
+        lang().add(context().pageText(), """
+                Sterling Silver is a new crafting material that can be used to craft Occult Machinery.
+                \\
+                \\
+                Craft it by mixing Copper Dust and Silver Dust in a heated basin.
+                """);
+
+        context().page("uses");
+        var uses = BookTextPageModel.builder()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Usage");
+        lang().add(context().pageText(), """
+                - [*Mechanical Chamber*](entry://occultengineering:encyclopedia_of_souls/getting_started/mechanical_chamber)
+                - [*Mechanical Pulverizer*](entry://occultengineering:encyclopedia_of_souls/getting_started/mechanical_pulverizer)
+                """);
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringItems.STERLING_SILVER_INGOT)
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(sterlingSilver, uses);
     }
 
     private BookEntryModel makeChamberEntry(CategoryEntryMap entryMap, char icon) {
@@ -249,10 +353,28 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "Mechanical Chamber");
         lang().add(context().entryDescription(), "The height of ritual automation");
 
+        context().page("mechanical_chamber");
+        var mechanicalChamber = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringBlocks.MECHANICAL_CHAMBER))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Mechanical Chamber");
+        lang().add(context().pageText(), """
+                The Mechanical Chamber can be used in place of the Golden Sacrificial Bowl for any ritual that does not require item use
+                or sacrifice.
+                \\
+                \\
+                It works best with the rituals that produce items.
+                \\
+                \\
+                For more info, ponder the block.
+                """);
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(mechanicalChamber);
     }
 
     private BookEntryModel makePulverizerEntry(CategoryEntryMap entryMap, char icon) {
@@ -262,10 +384,24 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "Mechanical Pulverizer");
         lang().add(context().entryDescription(), "Dust galore!");
 
+        context().page("mechanical_pulverizer");
+        var mechanicalPulverizer = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringBlocks.MECHANICAL_PULVERIZER))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Mechanical Pulverizer");
+        lang().add(context().pageText(), """
+                The Mechanical Chamber can be used instead of Occultism's crushing for any item a spirit can crush.
+                \\
+                \\
+                For more info ponder the block.
+                """);
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_PULVERIZER)
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(mechanicalPulverizer);
     }
 
     private BookEntryModel makeDetectorEntry(CategoryEntryMap entryMap, char icon) {
@@ -275,10 +411,27 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "Otherworld Detector");
         lang().add(context().entryDescription(), "It knows when you're awake");
 
+        context().page("otherworld_detector");
+        var otherworldDetector = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringBlocks.OTHERWORLD_DETECTOR))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Otherworld Detector");
+        lang().add(context().pageText(), """
+                An Otherworld Detector can be used to detect whether the nearest player can see into the otherworld.
+                \\
+                \\
+                It outputs a redstone signal if they can.
+                \\
+                \\
+                For more info ponder the block.
+                """);
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringBlocks.OTHERWORLD_DETECTOR)
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(otherworldDetector);
     }
 
     private BookEntryModel makePucaBookEntry(CategoryEntryMap entryMap, char icon) {
@@ -288,10 +441,38 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "The Púca");
         lang().add(context().entryDescription(), "A new spirit fascinated with machinery");
 
+        context().page("puca");
+        var puca = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.BOOK_OF_BINDING_PUCA))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageTitle(), "The Púca");
+        lang().add(context().pageText(), """
+                The Púca is a new spirit that can be used to perform new rituals.
+                \\
+                \\
+                Its not very harmful, so it doesn't require large pentacles to contain it.
+                \\
+                \\
+                They are primarily used for crafting machines.
+                """);
+
+        context().page("uses");
+        var uses = BookTextPageModel.builder()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Used to Craft");
+        lang().add(context().pageText(), """
+                - [*Otherworld Detector*](entry://occultengineering:encyclopedia_of_souls/getting_started/otherworld_detector)
+                """);
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringItems.BOOK_OF_BINDING_PUCA)
                 .withLocation(entryMap.get(icon))
-                .withPages();
+                .withPages(puca, uses);
     }
 
     private BookEntryModel makePentaclesLinkEntry(CategoryEntryMap entryMap, char icon) {

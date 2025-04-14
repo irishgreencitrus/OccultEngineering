@@ -8,6 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
+/*
+    Looking for language data?
+    You'll find all the language data for the book in the respective category classes.
+ */
 public class EnUsProvider extends AbstractModonomiconLanguageProvider {
     public EnUsProvider(PackOutput output) {
         super(output, OccultEngineering.MODID, "en_us");
@@ -23,9 +27,7 @@ public class EnUsProvider extends AbstractModonomiconLanguageProvider {
     public CompletableFuture<?> run(CachedOutput cache) {
         this.addTranslations();
 
-        OccultEngineering.LOGGER.debug("Checking for book lang data {}", data());
         if (!this.data().isEmpty()) {
-            OccultEngineering.LOGGER.debug("We have some book data!");
             data().forEach((key, value) -> {
                 OccultEngineering.LOGGER.debug("Adding {} to REGISTRATE", key);
                 OccultEngineering.REGISTRATE.addRawLang(key, value);

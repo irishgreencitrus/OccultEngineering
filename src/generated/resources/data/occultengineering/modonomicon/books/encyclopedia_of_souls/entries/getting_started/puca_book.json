@@ -8,6 +8,31 @@
     "item": "occultengineering:book_of_binding_puca"
   },
   "name": "book.occultengineering.encyclopedia_of_souls.getting_started.puca_book.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:book_of_binding_puca"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.puca_book.puca.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.puca_book.puca.title"
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.puca_book.uses.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.puca_book.uses.title",
+      "use_markdown_in_title": false
+    }
+  ],
   "parents": [
     {
       "draw_arrow": true,

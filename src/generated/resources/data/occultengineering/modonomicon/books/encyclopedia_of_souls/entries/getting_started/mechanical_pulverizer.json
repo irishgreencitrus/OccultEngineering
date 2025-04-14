@@ -8,6 +8,20 @@
     "item": "occultengineering:mechanical_pulverizer"
   },
   "name": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_pulverizer.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_pulverizer"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_pulverizer.mechanical_pulverizer.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_pulverizer.mechanical_pulverizer.title"
+    }
+  ],
   "parents": [
     {
       "draw_arrow": true,

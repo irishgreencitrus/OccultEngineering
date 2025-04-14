@@ -8,6 +8,20 @@
     "item": "occultengineering:otherworld_detector"
   },
   "name": "book.occultengineering.encyclopedia_of_souls.getting_started.otherworld_detector.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:otherworld_detector"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.otherworld_detector.otherworld_detector.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.otherworld_detector.otherworld_detector.title"
+    }
+  ],
   "parents": [
     {
       "draw_arrow": true,

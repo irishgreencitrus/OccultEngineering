@@ -5,7 +5,6 @@ import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -32,7 +31,7 @@ public class OccultEngineeringCreativeModeTab {
                                 AllCreativeModeTabs.BASE_CREATIVE_TAB.getId(),
                                 AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getId())
                         .icon(
-                                () -> new ItemStack(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get())
+                                OccultEngineeringBlocks.MECHANICAL_CHAMBER::asStack
                         )
                         .displayItems((itemDisplayParameters, output) -> {
                             output.accept(OccultEngineeringFluids.SPIRIT_SOLUTION.get().getBucket());

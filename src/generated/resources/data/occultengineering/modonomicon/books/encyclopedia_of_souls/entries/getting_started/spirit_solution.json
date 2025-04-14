@@ -8,6 +8,31 @@
     "item": "occultengineering:spirit_solution_bucket"
   },
   "name": "book.occultengineering.encyclopedia_of_souls.getting_started.spirit_solution.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:spirit_solution_bucket"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.spirit_solution.intro.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.spirit_solution.intro.title"
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.spirit_solution.intro2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    }
+  ],
   "parents": [
     {
       "draw_arrow": true,
