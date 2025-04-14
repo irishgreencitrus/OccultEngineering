@@ -3,6 +3,8 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.klikli_dev.occultism.common.item.DummyTooltipItem;
 import com.klikli_dev.occultism.common.item.spirit.BookOfBindingItem;
 import com.klikli_dev.occultism.common.item.tool.ChalkItem;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.item.BookOfBindingBoundGlintItem;
 import io.github.irishgreencitrus.occultengineering.item.MechanicalGuideItem;
@@ -78,11 +80,20 @@ public class OccultEngineeringItems {
 
     static {
         REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)
-                .model((c, p) -> p.singleTexture(c.getName(), p.mcLoc("item/generated"), "layer0", p.modLoc("item/ritual_dummy")))
+                .model(OccultEngineeringItems::ritualDummyModel)
                 .lang("Ritual: Craft Otherworld Detector")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_chamber", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Chamber")
                 .register();
     }
 
     public static void register() {
+    }
+
+    private static void ritualDummyModel(DataGenContext<Item, DummyTooltipItem> c, RegistrateItemModelProvider p) {
+        p.singleTexture(c.getName(), p.mcLoc("item/generated"), "layer0", p.modLoc("item/ritual_dummy"));
     }
 }

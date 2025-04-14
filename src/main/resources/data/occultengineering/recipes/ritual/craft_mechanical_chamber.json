@@ -1,0 +1,29 @@
+{
+  "type": "occultism:ritual",
+  "ritual_type": "occultism:craft",
+  "activation_item": {
+    "item": "occultism:book_of_binding_bound_foliot"
+  },
+  "pentacle_id": "occultism:craft_foliot",
+  "duration": 300,
+  "ritual_dummy": {
+    "item": "occultengineering:ritual_dummy_craft_otherworld_detector"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:bone_block"
+    },
+    {
+      "item": "create:cogwheel"
+    },
+    {
+      "item": "occultengineering:sterling_silver_block"
+    },
+    {
+      "item": "occultism:golden_sacrificial_bowl"
+    }
+  ],
+  "result": {
+    "item": "occultengineering:mechanical_chamber"
+  }
+}

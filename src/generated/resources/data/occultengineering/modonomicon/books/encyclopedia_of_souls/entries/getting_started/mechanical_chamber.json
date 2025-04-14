@@ -20,6 +20,17 @@
       },
       "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_chamber.mechanical_chamber.text",
       "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_chamber.mechanical_chamber.title"
+    },
+    {
+      "type": "occultism:ritual_recipe",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "recipe_id_1": "occultengineering:ritual/craft_mechanical_chamber",
+      "text": "",
+      "title1": "",
+      "title2": ""
     }
   ],
   "parents": [

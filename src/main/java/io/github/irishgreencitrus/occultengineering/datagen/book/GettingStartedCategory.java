@@ -8,6 +8,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryParentModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookSpotlightPageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
+import com.klikli_dev.occultism.integration.modonomicon.pages.BookRitualRecipePageModel;
 import com.klikli_dev.occultism.integration.modonomicon.pages.BookSpiritFireRecipePageModel;
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.AllBlocks;
@@ -371,10 +372,16 @@ public class GettingStartedCategory extends CategoryProvider {
                 For more info, ponder the block.
                 """);
 
+        context().page("ritual");
+
+        var ritual = BookRitualRecipePageModel.builder()
+                .withRecipeId1(modLoc("ritual/craft_mechanical_chamber"))
+                .build();
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
                 .withLocation(entryMap.get(icon))
-                .withPages(mechanicalChamber);
+                .withPages(mechanicalChamber, ritual);
     }
 
     private BookEntryModel makePulverizerEntry(CategoryEntryMap entryMap, char icon) {
