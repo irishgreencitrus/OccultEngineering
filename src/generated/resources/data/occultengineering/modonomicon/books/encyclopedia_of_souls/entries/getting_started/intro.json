@@ -1,0 +1,38 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 1,
+  "category": "occultengineering:getting_started",
+  "description": "book.occultengineering.encyclopedia_of_souls.getting_started.intro.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "occultengineering:encyclopedia_of_souls"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.intro.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.intro.intro.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.intro.intro.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.intro.help.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.intro.help.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -12,
+  "y": -2
+}

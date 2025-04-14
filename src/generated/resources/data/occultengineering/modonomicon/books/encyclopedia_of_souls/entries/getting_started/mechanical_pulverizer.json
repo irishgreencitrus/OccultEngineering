@@ -1,0 +1,22 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "occultengineering:getting_started",
+  "description": "",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "occultengineering:mechanical_pulverizer"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_pulverizer.name",
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "occultengineering:getting_started/sterling_silver",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -9,
+  "y": 2
+}

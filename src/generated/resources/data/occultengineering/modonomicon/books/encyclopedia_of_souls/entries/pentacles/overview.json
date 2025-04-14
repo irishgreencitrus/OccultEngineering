@@ -1,0 +1,27 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 1,
+  "category": "occultengineering:pentacles",
+  "description": "",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "minecraft:book"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.pentacles.overview.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "This section contains the list of Pentacles added by Occult Engineering.\n\\\nEach Pentacle in this section requires the use of the Mechanical Chamber, and will not work\nwith the Golden Sacrificial Bowl.\n\\\nOther than that, the Pentacles work the same way as in Occultism.\n",
+      "title": "Pentacles",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": 0,
+  "y": 0
+}

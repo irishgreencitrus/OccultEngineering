@@ -1,0 +1,70 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 2,
+  "category": "occultengineering:getting_started",
+  "description": "",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "create:cogwheel"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_recipes.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_recipes.title",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_recipes2.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "create:encased_fan"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_fan_catalyst.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_fan_catalyst.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "create:mechanical_arm"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_arm_interaction.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.basics.new_arm_interaction.title"
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "occultengineering:getting_started/intro",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -9,
+  "y": -2
+}

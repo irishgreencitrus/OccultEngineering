@@ -6,9 +6,9 @@
   "background_width": 512,
   "entry_textures": "modonomicon:textures/gui/entry_textures.png",
   "icon": {
-    "item": "occultism:pentacle"
+    "item": "occultengineering:encyclopedia_of_souls"
   },
-  "name": "book.occultengineering.encyclopedia_of_souls.pentacles.name",
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.name",
   "show_category_button": true,
-  "sort_number": 2
+  "sort_number": 1
 }

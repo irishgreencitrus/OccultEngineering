@@ -1,0 +1,22 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "occultengineering:getting_started",
+  "description": "",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "occultengineering:sterling_silver_ingot"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.sterling_silver.name",
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "occultengineering:getting_started/spirit_solution",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -12,
+  "y": 2
+}
