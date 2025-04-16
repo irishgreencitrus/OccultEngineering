@@ -11,8 +11,8 @@
       "item": "occultism:chalk_white_impure"
     },
     {
-      "fluid": "occultengineering:spirit_solution",
       "amount": 500,
+      "fluid": "occultengineering:spirit_solution",
       "nbt": {}
     }
   ],

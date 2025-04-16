@@ -2,23 +2,23 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "tag": "forge:dusts/copper"
+      "tag": "forge:dusts/zinc"
     },
     {
-      "tag": "forge:dusts/copper"
+      "tag": "forge:dusts/zinc"
     },
     {
       "item": "occultism:chalk_white_impure"
     },
     {
+      "amount": 250,
       "fluid": "occultengineering:spirit_solution",
-      "amount": 100,
       "nbt": {}
     }
   ],
   "results": [
     {
-      "item": "occultengineering:chalk_copper_impure"
+      "item": "occultengineering:chalk_zinc_impure"
     }
   ]
 }

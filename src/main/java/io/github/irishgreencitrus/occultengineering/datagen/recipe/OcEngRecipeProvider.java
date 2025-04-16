@@ -1,9 +1,13 @@
 package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
+import com.simibubi.create.AllTags;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,7 +42,25 @@ public class OcEngRecipeProvider extends RecipeProvider {
         protected I() {
         }
 
+        static TagKey<Item> copper() {
+            return Tags.Items.INGOTS_COPPER;
+        }
 
+        static TagKey<Item> silverDust() {
+            return AllTags.forgeItemTag("dusts/silver");
+        }
+
+        static TagKey<Item> copperDust() {
+            return AllTags.forgeItemTag("dusts/copper");
+        }
+
+        static TagKey<Item> zincDust() {
+            return AllTags.forgeItemTag("dusts/zinc");
+        }
+
+        static TagKey<Item> brassDust() {
+            return AllTags.forgeItemTag("dusts/brass");
+        }
     }
 
     @FunctionalInterface

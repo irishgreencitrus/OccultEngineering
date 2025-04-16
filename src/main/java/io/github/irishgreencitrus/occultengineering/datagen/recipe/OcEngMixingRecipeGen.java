@@ -2,6 +2,7 @@ package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
@@ -12,7 +13,11 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
+
+import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.copperDust;
+import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.silverDust;
 
 @SuppressWarnings("unused")
 public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
@@ -40,7 +45,25 @@ public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
             MIX_PUCA =
                     bookOfBindingSpirit(
                             OccultEngineering.asResource("book_of_binding_puca"),
-                            OccultEngineeringItems.BOOK_OF_BINDING_PUCA, 50, Items.RED_DYE);
+                            OccultEngineeringItems.BOOK_OF_BINDING_PUCA, 50, Items.RED_DYE),
+
+    SPIRIT_SOLUTION_FROM_FRUIT = create(OccultEngineering.asResource("spirit_solution_from_fruit"), b ->
+            b.require(OccultismItems.DATURA::get)
+                    .require(Fluids.WATER, 100)
+                    .requiresHeat(HeatCondition.HEATED)
+                    .output(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), 100)),
+
+    SPIRIT_SOLUTION_FROM_ESSENCE = create(OccultEngineering.asResource("spirit_solution_from_essence"), b ->
+            b.require(OccultismItems.OTHERWORLD_ESSENCE::get)
+                    .require(Fluids.WATER, 1000)
+                    .requiresHeat(HeatCondition.HEATED)
+                    .output(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), 1000)),
+
+    STERLING_SILVER_INGOT = create(OccultEngineering.asResource("sterling_silver_ingot"), b ->
+            b.require(copperDust())
+                    .require(silverDust())
+                    .requiresHeat(HeatCondition.HEATED)
+                    .output(OccultEngineeringItems.STERLING_SILVER_INGOT));
 
     private GeneratedRecipe bookOfBindingStandard(ResourceLocation loc, ItemLike outputBook, ItemLike... dyes) {
         bookOfBindingFromRaw(loc, outputBook, null, dyes);

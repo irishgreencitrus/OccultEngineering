@@ -6,14 +6,15 @@
       "item": "occultism:datura"
     },
     {
+      "amount": 100,
       "fluid": "minecraft:water",
-      "amount": 100
+      "nbt": {}
     }
   ],
   "results": [
     {
-      "fluid": "occultengineering:spirit_solution",
-      "amount": 100
+      "amount": 100,
+      "fluid": "occultengineering:spirit_solution"
     }
   ]
 }

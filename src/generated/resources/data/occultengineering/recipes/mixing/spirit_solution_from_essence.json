@@ -6,14 +6,15 @@
       "item": "occultism:otherworld_essence"
     },
     {
+      "amount": 1000,
       "fluid": "minecraft:water",
-      "amount": 1000
+      "nbt": {}
     }
   ],
   "results": [
     {
-      "fluid": "occultengineering:spirit_solution",
-      "amount": 1000
+      "amount": 1000,
+      "fluid": "occultengineering:spirit_solution"
     }
   ]
 }

@@ -7,7 +7,7 @@
   "pentacle_id": "occultism:craft_foliot",
   "duration": 300,
   "ritual_dummy": {
-    "item": "occultengineering:ritual_dummy_craft_otherworld_detector"
+    "item": "occultengineering:ritual_dummy_craft_mechanical_chamber"
   },
   "ingredients": [
     {

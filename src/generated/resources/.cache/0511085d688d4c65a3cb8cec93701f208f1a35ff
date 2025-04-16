@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-16T13:03:50.3019186	Create's Processing Recipes: mixing
+// 1.20.1	2025-04-16T20:52:37.4585881	Create's Processing Recipes: mixing
 b7901c4f5e1af593109779d37ae3be82fcf451db data/occultengineering/recipes/mixing/book_of_binding_afrit.json
 392e37db098513fc4eecd88a8d4a589ed99f29cd data/occultengineering/recipes/mixing/book_of_binding_afrit_from_empty.json
 15f4feaf7fde6e21dd09083ef79723502e21174c data/occultengineering/recipes/mixing/book_of_binding_djinni.json
@@ -9,3 +9,6 @@ b7901c4f5e1af593109779d37ae3be82fcf451db data/occultengineering/recipes/mixing/b
 53a1ca951fd36a5569fc877d5460d085e489e3dd data/occultengineering/recipes/mixing/book_of_binding_marid_from_empty.json
 9fb14f7d2cdc235c9971a94421e0c2cf86c917dd data/occultengineering/recipes/mixing/book_of_binding_puca.json
 75a3726294737ae45d9dd2093845ffd6b4c741b8 data/occultengineering/recipes/mixing/book_of_binding_puca_from_empty.json
+c92afc3f4f41753b08f94f64ed63ab34d916a474 data/occultengineering/recipes/mixing/spirit_solution_from_essence.json
+6edde9304d58be16006daae39a699e723c66d4ff data/occultengineering/recipes/mixing/spirit_solution_from_fruit.json
+3f9b91d2e926fca29c84fb2c40a820d0232b6421 data/occultengineering/recipes/mixing/sterling_silver_ingot.json

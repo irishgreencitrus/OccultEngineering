@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngCompactingRecipeGen;
 import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngFillingRecipeGen;
 import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngMixingRecipeGen;
 import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngStandardRecipeGen;
@@ -25,6 +26,7 @@ public class DataProviders {
         var generator = event.getGenerator();
         var output = generator.getPackOutput();
 
+        generator.addProvider(event.includeServer(), new OcEngCompactingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output));
