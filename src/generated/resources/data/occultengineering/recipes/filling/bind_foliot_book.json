@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "occultism:book_of_binding_foliot"
+    },
+    {
+      "amount": 25,
+      "fluid": "occultengineering:spirit_solution",
+      "nbt": {}
+    }
+  ],
+  "results": [
+    {
+      "item": "occultism:book_of_binding_bound_foliot"
+    }
+  ]
+}

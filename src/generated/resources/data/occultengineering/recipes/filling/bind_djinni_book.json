@@ -2,16 +2,17 @@
   "type": "create:filling",
   "ingredients": [
     {
-      "item": "occultengineering:book_of_binding_puca"
+      "item": "occultism:book_of_binding_djinni"
     },
     {
+      "amount": 25,
       "fluid": "occultengineering:spirit_solution",
-      "amount": 25
+      "nbt": {}
     }
   ],
   "results": [
     {
-      "item": "occultengineering:book_of_binding_bound_puca"
+      "item": "occultism:book_of_binding_bound_djinni"
     }
   ]
 }

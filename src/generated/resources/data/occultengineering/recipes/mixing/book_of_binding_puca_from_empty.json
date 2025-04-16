@@ -2,20 +2,15 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "item": "occultism:taboo_book"
-    },
-    {
-      "item": "occultism:purified_ink"
-    },
-    {
-      "item": "occultism:awakened_feather"
+      "item": "occultism:book_of_binding_empty"
     },
     {
       "item": "minecraft:red_dye"
     },
     {
+      "amount": 50,
       "fluid": "occultengineering:spirit_solution",
-      "amount": 50
+      "nbt": {}
     }
   ],
   "results": [

@@ -435,6 +435,14 @@ public class GettingStartedCategory extends CategoryProvider {
                 For more info ponder the block.
                 """);
 
+        /*
+        context().page("ritual");
+
+        var ritual = BookRitualRecipePageModel.builder()
+                .withRecipeId1(modLoc("ritual/craft_otherworld_detector"))
+                .build();
+         */
+
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(OccultEngineeringBlocks.OTHERWORLD_DETECTOR)
                 .withLocation(entryMap.get(icon))

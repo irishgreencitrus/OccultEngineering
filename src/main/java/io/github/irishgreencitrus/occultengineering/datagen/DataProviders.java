@@ -5,6 +5,9 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngFillingRecipeGen;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngMixingRecipeGen;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngStandardRecipeGen;
 import io.github.irishgreencitrus.occultengineering.ponder.OccultEngineeringPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -19,6 +22,13 @@ import java.util.function.BiConsumer;
 public class DataProviders {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
+        var generator = event.getGenerator();
+        var output = generator.getPackOutput();
+
+        generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output));
+
         OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             BiConsumer<String, String> langConsumer = provider::add;
 
