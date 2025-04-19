@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-14T20:14:00.3597827	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-04-18T11:56:06.4430209	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/brass_chalk.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/copper_chalk.json
 54e5140b2873f570b21b170cc10ae705191d81c3 assets/occultengineering/blockstates/mechanical_chamber.json
@@ -7,8 +7,8 @@ c7425898da94ffa2510cf08b2f338b58a6afb005 assets/occultengineering/blockstates/ot
 856ac890f84bc8a3d4cef2b356b8b06a0b52734a assets/occultengineering/blockstates/spirit_solution.json
 08355f710746582caf11291dc6255d447e4e9709 assets/occultengineering/blockstates/sterling_silver_block.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/zinc_chalk.json
-535ecd26a9a3186b3e804006be134521bc779ec7 assets/occultengineering/lang/en_ud.json
-f0e98ccafea3e24b4800d193e5b9627352c63a42 assets/occultengineering/lang/en_us.json
+adc2c260986c16627c2c341fb7b9efbac969f613 assets/occultengineering/lang/en_ud.json
+04689cf548fc8abd7be6b0e0768e5ad888fed0b1 assets/occultengineering/lang/en_us.json
 33df31259a8fc2623e750a8816895dd908ed031d assets/occultengineering/models/block/chalk_glyph/0.json
 e905b130222c6d2896593bbfda7c6abd45aece35 assets/occultengineering/models/block/chalk_glyph/1.json
 5ce3d22ecd375adb9234fb992673aaca6e195991 assets/occultengineering/models/block/chalk_glyph/10.json
@@ -35,6 +35,7 @@ bd9653b345c556c099be02dc105628f0e94317c0 assets/occultengineering/models/item/ch
 47988fb162664794c7172edec8268f24ad541b4a assets/occultengineering/models/item/chalk_copper_impure.json
 69053e3b2b849628f918514d40a127bf75f44735 assets/occultengineering/models/item/chalk_zinc.json
 0c861a19b158cdca456a461037524cad0182ecf4 assets/occultengineering/models/item/chalk_zinc_impure.json
+00632e5c708ea7179c744ed858fff349f25715ed assets/occultengineering/models/item/combined_goggles.json
 55fb88b8a311615d8020d049c6ec5c2364383889 assets/occultengineering/models/item/encyclopedia_of_souls.json
 4b0846246d9848f1dd907d139e0ddf7c93ca2758 assets/occultengineering/models/item/mechanical_chamber.json
 3b65e599223ce9d9905d3a754e679e116f039a71 assets/occultengineering/models/item/mechanical_pulverizer.json

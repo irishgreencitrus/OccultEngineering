@@ -26,6 +26,7 @@ public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
     }
 
     GeneratedRecipe
+
             MIX_FOLIOT =
             bookOfBindingStandard(
                     OccultEngineering.asResource("book_of_binding_foliot"),

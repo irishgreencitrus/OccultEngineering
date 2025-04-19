@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllTags;
+import com.simibubi.create.AllItems;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
@@ -45,23 +45,33 @@ import java.util.function.UnaryOperator;
 public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
     //Marker items = enterFolder("items");
 
+    String currentFolder = "";
+
     GeneratedRecipe
             ENCYCLOPEDIA_OF_SOULS = create(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS)
             .unlockedBy(OccultismItems.DICTIONARY_OF_SPIRITS::get)
             .viaShapeless(b ->
                     b.requires(OccultismItems.DICTIONARY_OF_SPIRITS::get)
                             .requires(AllBlocks.COGWHEEL)),
-            STERLING_SILVER_COMPACTING = metalCompacting(
-                    ImmutableList.of(OccultEngineeringItems.STERLING_SILVER_NUGGET, OccultEngineeringItems.STERLING_SILVER_INGOT, OccultEngineeringBlocks.STERLING_SILVER_BLOCK),
-                    ImmutableList.of(() -> AllTags.forgeItemTag("nuggets/sterling_silver"), () -> AllTags.forgeItemTag("ingots/sterling_silver"), () -> AllTags.forgeItemTag("storage_blocks/sterling_silver"))
-            );
 
+    STERLING_SILVER_COMPACTING = metalCompacting(
+            ImmutableList.of(OccultEngineeringItems.STERLING_SILVER_NUGGET,
+                    OccultEngineeringItems.STERLING_SILVER_INGOT,
+                    OccultEngineeringBlocks.STERLING_SILVER_BLOCK),
+            ImmutableList.of(I::sterlingNugget,
+                    I::sterlingIngot,
+                    I::sterlingBlock
+            )
+    ),
+
+    COMBINED_GOGGLES = create(OccultEngineeringItems.COMBINED_GOGGLES)
+            .unlockedBy(AllItems.GOGGLES::get)
+            .viaShapeless(b -> b.requires(OccultismItems.OTHERWORLD_GOGGLES::get)
+                    .requires(AllItems.GOGGLES));
 
     public OcEngStandardRecipeGen(PackOutput output) {
         super(output);
     }
-
-    String currentFolder = "";
 
     Marker enterFolder(String folder) {
         currentFolder = folder;
@@ -159,14 +169,86 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
                 .viaShapeless(b -> b.requires(item.get()));
     }
 
+    @MethodsReturnNonnullByDefault
+    @ParametersAreNonnullByDefault
+    private record ModdedCookingRecipeResult(FinishedRecipe wrapped, ResourceLocation outputOverride,
+                                             List<ICondition> conditions) implements FinishedRecipe {
+        @Override
+        public ResourceLocation getId() {
+            return wrapped.getId();
+        }
+
+        @Override
+        public RecipeSerializer<?> getType() {
+            return wrapped.getType();
+        }
+
+        @Override
+        @Nullable
+        public JsonObject serializeAdvancement() {
+            return wrapped.serializeAdvancement();
+        }
+
+        @Override
+        @Nullable
+        public ResourceLocation getAdvancementId() {
+            return wrapped.getAdvancementId();
+        }
+
+        @Override
+        public void serializeRecipeData(JsonObject object) {
+            wrapped.serializeRecipeData(object);
+            object.addProperty("result", outputOverride.toString());
+
+            JsonArray conds = new JsonArray();
+            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
+            object.add("conditions", conds);
+        }
+    }
+
+    @MethodsReturnNonnullByDefault
+    @ParametersAreNonnullByDefault
+    private record ConditionSupportingShapelessRecipeResult(FinishedRecipe wrapped, List<ICondition> conditions)
+            implements FinishedRecipe {
+        @Override
+        public ResourceLocation getId() {
+            return wrapped.getId();
+        }
+
+        @Override
+        public RecipeSerializer<?> getType() {
+            return wrapped.getType();
+        }
+
+        @Override
+        @Nullable
+        public JsonObject serializeAdvancement() {
+            return wrapped.serializeAdvancement();
+        }
+
+        @Override
+        @Nullable
+        public ResourceLocation getAdvancementId() {
+            return wrapped.getAdvancementId();
+        }
+
+        @Override
+        public void serializeRecipeData(@NotNull JsonObject pJson) {
+            wrapped.serializeRecipeData(pJson);
+
+            JsonArray conds = new JsonArray();
+            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
+            pJson.add("conditions", conds);
+        }
+    }
+
     class GeneratedRecipeBuilder {
 
-        private String path;
+        List<ICondition> recipeConditions;
+        private final String path;
         private String suffix;
         private Supplier<? extends ItemLike> result;
         private ResourceLocation compatDatagenOutput;
-        List<ICondition> recipeConditions;
-
         private Supplier<ItemPredicate> unlockedBy;
         private int amount;
 
@@ -293,12 +375,11 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         class GeneratedCookingRecipeBuilder {
 
             private final Supplier<Ingredient> ingredient;
-            private float exp;
-            private int cookingTime;
-
             private final RecipeSerializer<? extends AbstractCookingRecipe> FURNACE = RecipeSerializer.SMELTING_RECIPE,
                     SMOKER = RecipeSerializer.SMOKING_RECIPE, BLAST = RecipeSerializer.BLASTING_RECIPE,
                     CAMPFIRE = RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
+            private float exp;
+            private int cookingTime;
 
             GeneratedCookingRecipeBuilder(Supplier<Ingredient> ingredient) {
                 this.ingredient = ingredient;
@@ -361,79 +442,6 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
                             .getPath()));
                 });
             }
-        }
-    }
-
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    private record ModdedCookingRecipeResult(FinishedRecipe wrapped, ResourceLocation outputOverride,
-                                             List<ICondition> conditions) implements FinishedRecipe {
-        @Override
-        public ResourceLocation getId() {
-            return wrapped.getId();
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return wrapped.getType();
-        }
-
-        @Override
-        @Nullable
-        public JsonObject serializeAdvancement() {
-            return wrapped.serializeAdvancement();
-        }
-
-        @Override
-        @Nullable
-        public ResourceLocation getAdvancementId() {
-            return wrapped.getAdvancementId();
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject object) {
-            wrapped.serializeRecipeData(object);
-            object.addProperty("result", outputOverride.toString());
-
-            JsonArray conds = new JsonArray();
-            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
-            object.add("conditions", conds);
-        }
-    }
-
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    private record ConditionSupportingShapelessRecipeResult(FinishedRecipe wrapped, List<ICondition> conditions)
-            implements FinishedRecipe {
-        @Override
-        public ResourceLocation getId() {
-            return wrapped.getId();
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return wrapped.getType();
-        }
-
-        @Override
-        @Nullable
-        public JsonObject serializeAdvancement() {
-            return wrapped.serializeAdvancement();
-        }
-
-        @Override
-        @Nullable
-        public ResourceLocation getAdvancementId() {
-            return wrapped.getAdvancementId();
-        }
-
-        @Override
-        public void serializeRecipeData(@NotNull JsonObject pJson) {
-            wrapped.serializeRecipeData(pJson);
-
-            JsonArray conds = new JsonArray();
-            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
-            pJson.add("conditions", conds);
         }
     }
 

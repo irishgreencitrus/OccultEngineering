@@ -61,6 +61,18 @@ public class OcEngRecipeProvider extends RecipeProvider {
         static TagKey<Item> brassDust() {
             return AllTags.forgeItemTag("dusts/brass");
         }
+
+        static TagKey<Item> sterlingNugget() {
+            return AllTags.forgeItemTag("nuggets/sterling_silver");
+        }
+
+        static TagKey<Item> sterlingIngot() {
+            return AllTags.forgeItemTag("ingots/sterling_silver");
+        }
+
+        static TagKey<Item> sterlingBlock() {
+            return AllTags.forgeItemTag("storage_blocks/sterling_silver");
+        }
     }
 
     @FunctionalInterface

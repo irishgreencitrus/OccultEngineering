@@ -3,10 +3,13 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.klikli_dev.occultism.common.item.DummyTooltipItem;
 import com.klikli_dev.occultism.common.item.spirit.BookOfBindingItem;
 import com.klikli_dev.occultism.common.item.tool.ChalkItem;
+import com.simibubi.create.content.equipment.goggles.GogglesModel;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.item.BookOfBindingBoundGlintItem;
+import io.github.irishgreencitrus.occultengineering.item.CombinedGogglesItem;
 import io.github.irishgreencitrus.occultengineering.item.MechanicalGuideItem;
 import net.minecraft.world.item.Item;
 
@@ -71,6 +74,13 @@ public class OccultEngineeringItems {
     public static final ItemEntry<Item> STERLING_SILVER_NUGGET = REGISTRATE
             .item("sterling_silver_nugget", Item::new)
             .lang("Sterling Silver Nugget")
+            .register();
+
+    public static final ItemEntry<CombinedGogglesItem> COMBINED_GOGGLES = REGISTRATE
+            .item("combined_goggles", CombinedGogglesItem::new)
+            .properties(p -> p.stacksTo(1))
+            .onRegister(CreateRegistrate.itemModel(() -> GogglesModel::new))
+            .lang("Otherworldly Engineer's Goggles")
             .register();
 
 
