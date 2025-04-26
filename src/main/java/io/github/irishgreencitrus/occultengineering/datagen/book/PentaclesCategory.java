@@ -95,6 +95,7 @@ public class PentaclesCategory extends CategoryProvider {
         lang().add(context().pageTitle(), "Uses");
         lang().add(context().pageText(), "Craft Otherworld Detector");
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultismItems.PENTACLE.get())
                 .withLocation(entryMap.get(icon))
                 .withPages(

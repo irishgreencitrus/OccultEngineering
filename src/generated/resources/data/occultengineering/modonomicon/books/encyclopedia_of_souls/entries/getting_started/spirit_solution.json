@@ -2,7 +2,7 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "occultengineering:getting_started",
-  "description": "",
+  "description": "book.occultengineering.encyclopedia_of_souls.getting_started.spirit_solution.description",
   "hide_while_locked": false,
   "icon": {
     "item": "occultengineering:spirit_solution_bucket"

@@ -194,6 +194,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(AllBlocks.COGWHEEL)
                 .withLocation(entryMap.get(icon))
                 .withEntryBackground(0, 2)
@@ -242,6 +243,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get())
                 .withLocation(entryMap.get(icon))
                 .withPages(intro, intro2);
@@ -303,6 +305,7 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().pageTitle(), "Brass Chalk");
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringItems.COPPER_CHALK)
                 .withLocation(entryMap.get(icon))
                 .withPages(chalks, chalks2, purify_copper, purify_zinc, purify_brass);
@@ -342,6 +345,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringItems.STERLING_SILVER_INGOT)
                 .withLocation(entryMap.get(icon))
                 .withPages(sterlingSilver, uses);
@@ -379,6 +383,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 .build();
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
                 .withLocation(entryMap.get(icon))
                 .withPages(mechanicalChamber, ritual);
@@ -444,6 +449,7 @@ public class GettingStartedCategory extends CategoryProvider {
          */
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringBlocks.OTHERWORLD_DETECTOR)
                 .withLocation(entryMap.get(icon))
                 .withPages(otherworldDetector);
@@ -485,6 +491,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringItems.BOOK_OF_BINDING_PUCA)
                 .withLocation(entryMap.get(icon))
                 .withPages(puca, uses);

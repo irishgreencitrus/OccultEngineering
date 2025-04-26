@@ -5,7 +5,7 @@
   "condition": {
     "type": "modonomicon:true"
   },
-  "description": "",
+  "description": "book.occultengineering.encyclopedia_of_souls.pentacles.craft_puca.description",
   "hide_while_locked": false,
   "icon": {
     "item": "occultism:pentacle"

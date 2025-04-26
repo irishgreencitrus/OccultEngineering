@@ -78,7 +78,6 @@ public class MechanicalGuideItem extends ModonomiconItem {
                             stack.hasTag() ? NbtUtils.toPrettyComponent(Objects.requireNonNull(stack.getTag())) : Component.literal("{}"))
                     .withStyle(ChatFormatting.DARK_GRAY));
         }
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
