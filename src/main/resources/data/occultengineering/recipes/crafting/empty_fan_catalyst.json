@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create_connected"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "occultengineering:fan_enspirit_catalyst"
+    }
+  ],
+  "result": {
+    "item": "create_connected:empty_fan_catalyst"
+  }
+}

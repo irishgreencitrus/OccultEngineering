@@ -5,10 +5,7 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngCompactingRecipeGen;
-import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngFillingRecipeGen;
-import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngMixingRecipeGen;
-import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngStandardRecipeGen;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.*;
 import io.github.irishgreencitrus.occultengineering.ponder.OccultEngineeringPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -29,6 +26,7 @@ public class DataProviders {
         generator.addProvider(event.includeServer(), new OcEngCompactingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output));
+        generator.addProvider(event.includeServer(), new OcEngItemApplicationRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output));
 
         OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {

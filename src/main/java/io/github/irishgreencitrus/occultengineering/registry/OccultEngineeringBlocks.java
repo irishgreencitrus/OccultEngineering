@@ -2,18 +2,22 @@ package io.github.irishgreencitrus.occultengineering.registry;
 
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
+import com.simibubi.create.AllTags;
+import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.block.WrenchableBlock;
 import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlock;
 import io.github.irishgreencitrus.occultengineering.block.mechanical_pulverizer.PulverizerBlock;
 import io.github.irishgreencitrus.occultengineering.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.config.OcEngStress;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
@@ -21,6 +25,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
@@ -115,6 +120,22 @@ public class OccultEngineeringBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY))
             .lang("Block of Sterling Silver")
             .simpleItem()
+            .register();
+
+    public static final BlockEntry<WrenchableBlock> FAN_ENSPIRIT_CATALYST = REGISTRATE.block("fan_enspirit_catalyst", WrenchableBlock::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p
+                    .mapColor(MapColor.TERRACOTTA_YELLOW)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+                    .isRedstoneConductor((state, level, pos) -> false)
+            )
+            .transform(pickaxeOnly())
+            .blockstate((c, p) -> p.simpleBlock(c.getEntry(), AssetLookup.partialBaseModel(c, p)))
+            .tag(AllTags.AllBlockTags.FAN_TRANSPARENT.tag)
+            .lang("Fan Enspirit Catalyst")
+            .item()
+            .transform(customItemModel())
             .register();
 
     public static void register() {
