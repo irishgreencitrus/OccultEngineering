@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.20.1-0.8.1] - 2025-05-24
+### :bug: Bug Fixes
+- [`d56c63b`](https://github.com/irishgreencitrus/OccultEngineering/commit/d56c63b8171d0c04b3ae619b2be4697b34748991) - Fix Javadoc from failing my build (thanks Gradle) *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.7.0] - 2025-04-14
 ### :sparkles: New Features
 - [`8072514`](https://github.com/irishgreencitrus/OccultEngineering/commit/8072514b68fd7b8d88090529fb5f17d1318f54d7) - Add assets for Sterling Silver ingot and nuggets. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -49,3 +54,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [beta/v1.20.1-0.5.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.4.1...beta/v1.20.1-0.5.0
 [beta/v1.20.1-0.6.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.5.0...beta/v1.20.1-0.6.0
 [beta/v1.20.1-0.7.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.6.0...beta/v1.20.1-0.7.0
+[beta/v1.20.1-0.8.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.0...beta/v1.20.1-0.8.1
