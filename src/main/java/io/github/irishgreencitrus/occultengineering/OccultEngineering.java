@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import io.github.irishgreencitrus.occultengineering.compat.curios.OcEngCurios;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.registry.*;
 import net.createmod.catnip.lang.FontHelper;
@@ -57,6 +58,7 @@ public class OccultEngineering {
         OccultEngineeringConfig.register(modLoadingContext);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> OccultEngineeringClient.onCtorClient(modEventBus));
+        OcEngCurios.init(modEventBus);
         LOGGER.info("Setup is complete.");
     }
 
