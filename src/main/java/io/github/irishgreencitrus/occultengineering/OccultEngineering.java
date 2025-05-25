@@ -64,6 +64,7 @@ public class OccultEngineering {
 
     public static void init(final FMLCommonSetupEvent event) {
         OccultEngineeringFluids.registerFluidInteractions();
+        OccultEngineeringSchematic.register();
     }
 
     public static void onRegister(final RegisterEvent event) {

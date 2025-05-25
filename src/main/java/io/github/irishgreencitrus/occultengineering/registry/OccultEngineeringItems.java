@@ -8,9 +8,10 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import io.github.irishgreencitrus.occultengineering.item.BookOfBindingBoundGlintItem;
-import io.github.irishgreencitrus.occultengineering.item.CombinedGogglesItem;
-import io.github.irishgreencitrus.occultengineering.item.MechanicalGuideItem;
+import io.github.irishgreencitrus.occultengineering.content.item.BookOfBindingBoundGlintItem;
+import io.github.irishgreencitrus.occultengineering.content.item.CombinedGogglesItem;
+import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
+import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
 import net.minecraft.world.item.Item;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
@@ -83,10 +84,19 @@ public class OccultEngineeringItems {
             .lang("Otherworldly Engineer's Goggles")
             .register();
 
+    public static final ItemEntry<Item> EMPTY_PENTACLE_SCHEMATIC = REGISTRATE
+            .item("empty_pentacle_schematic", Item::new)
+            .properties(p -> p.stacksTo(1))
+            .lang("Empty Pentacle Schematic")
+            .register();
+
+    public static final ItemEntry<PentacleSchematicItem> PENTACLE_SCHEMATIC = REGISTRATE
+            .item("pentacle_schematic", PentacleSchematicItem::new)
+            .properties(p -> p.stacksTo(1))
+            .lang("Pentacle Schematic")
+            .register();
 
     // TODO: change texture of impure chalks
-
-    // TODO: move crafting recipes to datagen
 
     static {
         REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)

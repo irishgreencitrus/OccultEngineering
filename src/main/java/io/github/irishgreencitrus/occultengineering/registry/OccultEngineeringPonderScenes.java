@@ -3,7 +3,7 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import io.github.irishgreencitrus.occultengineering.ponder.OcEngPonders;
+import io.github.irishgreencitrus.occultengineering.content.ponder.OcEngPonders;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
 

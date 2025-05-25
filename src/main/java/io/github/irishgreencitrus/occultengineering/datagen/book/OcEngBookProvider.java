@@ -6,7 +6,7 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookModel;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.data.PackOutput;
 
-import static io.github.irishgreencitrus.occultengineering.item.MechanicalGuideItem.ENCYCLOPEDIA_OF_SOULS;
+import static io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem.ENCYCLOPEDIA_OF_SOULS;
 
 public class OcEngBookProvider extends BookProvider {
 

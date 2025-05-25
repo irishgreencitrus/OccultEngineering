@@ -6,8 +6,8 @@ import com.klikli_dev.occultism.common.block.storage.StorageControllerBlock;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.BlockArmInteractionPoint;
-import io.github.irishgreencitrus.occultengineering.kinetics.mechanicalArm.MechanicalChamberInteractionPoint;
+import io.github.irishgreencitrus.occultengineering.content.kinetics.mechanicalArm.BlockArmInteractionPoint;
+import io.github.irishgreencitrus.occultengineering.content.kinetics.mechanicalArm.MechanicalChamberInteractionPoint;
 import net.minecraft.core.Registry;
 
 public class OccultEngineeringArmInteractionPoints {

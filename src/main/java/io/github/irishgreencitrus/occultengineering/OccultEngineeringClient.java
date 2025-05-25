@@ -1,7 +1,7 @@
 package io.github.irishgreencitrus.occultengineering;
 
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
-import io.github.irishgreencitrus.occultengineering.ponder.OccultEngineeringPonderPlugin;
+import io.github.irishgreencitrus.occultengineering.content.ponder.OccultEngineeringPonderPlugin;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPartialModels;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.ponder.foundation.PonderIndex;

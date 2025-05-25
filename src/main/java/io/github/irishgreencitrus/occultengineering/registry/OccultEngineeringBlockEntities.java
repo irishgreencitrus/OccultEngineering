@@ -3,11 +3,11 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import dev.engine_room.flywheel.lib.model.Models;
-import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberBlockEntity;
-import io.github.irishgreencitrus.occultengineering.block.mechanical_chamber.MechanicalChamberRenderer;
-import io.github.irishgreencitrus.occultengineering.block.mechanical_pulverizer.PulverizerBlockEntity;
-import io.github.irishgreencitrus.occultengineering.block.mechanical_pulverizer.PulverizerRenderer;
-import io.github.irishgreencitrus.occultengineering.block.otherworld_detector.OtherworldDetectorBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberRenderer;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerRenderer;
+import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlockEntity;
 import net.minecraft.core.Direction;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
