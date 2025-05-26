@@ -8,6 +8,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_cha
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerRenderer;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlockEntity;
 import net.minecraft.core.Direction;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
@@ -32,6 +33,11 @@ public class OccultEngineeringBlockEntities {
                     .visual(() -> OrientedRotatingVisual.backHorizontal(OccultEngineeringPartialModels.SHAFT_QUARTER))
                     .validBlocks(OccultEngineeringBlocks.MECHANICAL_PULVERIZER)
                     .renderer(() -> PulverizerRenderer::new)
+                    .register();
+
+    public static final BlockEntityEntry<PentacleAltarBlockEntity> PENTACLE_ALTAR =
+            REGISTRATE.blockEntity("pentacle_altar", PentacleAltarBlockEntity::new)
+                    .validBlocks(OccultEngineeringBlocks.PENTACLE_ALTAR)
                     .register();
 
     public static void register() {

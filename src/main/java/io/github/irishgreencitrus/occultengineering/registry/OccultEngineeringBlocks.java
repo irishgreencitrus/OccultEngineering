@@ -15,6 +15,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.WrenchableBloc
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
+import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,6 +27,7 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.TagGen.axeOnly;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
@@ -136,6 +138,23 @@ public class OccultEngineeringBlocks {
             .lang("Fan Enspirit Catalyst")
             .item()
             .transform(customItemModel())
+            .register();
+
+    public static final BlockEntry<PentacleAltarBlock> PENTACLE_ALTAR = REGISTRATE.block("pentacle_altar", PentacleAltarBlock::new)
+            .initialProperties(SharedProperties::wooden)
+            .properties(p -> p
+                    .mapColor(MapColor.COLOR_RED)
+                    .requiresCorrectToolForDrops()
+            )
+            .transform(axeOnly())
+            .blockstate((c, p) -> p.simpleBlock(
+                    c.getEntry(),
+                    p.models().cubeBottomTop("pentacle_altar",
+                            p.modLoc("block/pentacle_altar_side"),
+                            p.modLoc("block/pentacle_altar_bottom"),
+                            p.modLoc("block/pentacle_altar_top"))))
+            .lang("Pentacle Altar")
+            .simpleItem()
             .register();
 
     public static void register() {

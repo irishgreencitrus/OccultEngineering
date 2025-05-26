@@ -64,10 +64,8 @@ legacyForge {
             systemProperty 'forge.logging.console.level', 'info'
             jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
 
-            //systemProperty("mixin.env.remapRefMap", "true")
-            //systemProperty("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
 
-            //programArgument("-mixin.config=create.mixins.json")
+            programArgument('-mixin.config=occultengineering.mixins.json')
 
             systemProperty 'mixin.debug.export', 'true'
             systemProperty 'mixin.debug.verbose', 'true'
@@ -97,7 +95,9 @@ legacyForge {
     }
 }
 
+def refmap
 mixin {
+    refmap = add sourceSets.main, "${mod_id}.refmap.json"
     config "${mod_id}.mixins.json"
 }
 
@@ -239,6 +239,7 @@ tasks.named('jar', Jar).configure {
                 "Specification-Version": "1", // We are version 1 of ourselves
                 "Implementation-Title": mod_name,
                 "Implementation-Version": project.jar.archiveVersion,
+                "MixinConfigs": "occultengineering.mixins.json",
                 "Implementation-Vendor": mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
