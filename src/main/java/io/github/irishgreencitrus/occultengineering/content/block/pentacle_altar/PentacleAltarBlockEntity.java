@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.utility.IInteractionChecker;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +24,6 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class PentacleAltarBlockEntity extends SmartBlockEntity implements MenuProvider, IInteractionChecker {
-    // TODO: write inventory to NBT tag
     public PentacleAltarInventory inventory;
 
     public PentacleAltarBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -46,6 +46,18 @@ public class PentacleAltarBlockEntity extends SmartBlockEntity implements MenuPr
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> list) {
 
+    }
+
+    @Override
+    protected void read(CompoundTag tag, boolean clientPacket) {
+        inventory.deserializeNBT(tag.getCompound("Inventory"));
+        super.read(tag, clientPacket);
+    }
+
+    @Override
+    protected void write(CompoundTag tag, boolean clientPacket) {
+        tag.put("Inventory", inventory.serializeNBT());
+        super.write(tag, clientPacket);
     }
 
     @Override
