@@ -64,7 +64,11 @@ public class PentacleAltarBlockEntity extends SmartBlockEntity implements MenuPr
     public boolean canPlayerUse(Player player) {
         if (level == null || level.getBlockEntity(worldPosition) != this)
             return false;
-        return player.distanceToSqr(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D) <= 64.0D;
+        return player.distanceToSqr(
+                worldPosition.getX() + 0.5D,
+                worldPosition.getY() + 0.5D,
+                worldPosition.getZ() + 0.5D
+        ) <= 64.0D;
     }
 
     @Override

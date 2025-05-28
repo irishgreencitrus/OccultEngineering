@@ -32,7 +32,6 @@ public class PentacleSchematicHandler implements IGuiOverlay {
         Optional<ItemStack> stack = findPentacleSchematicInHand(player);
         if (stack.isEmpty()) {
             active = false;
-
         }
     }
 

@@ -56,7 +56,8 @@ public class PentacleAltarMenu extends MenuBase<PentacleAltarBlockEntity> {
         inputSlot = new SlotItemHandler(contentHolder.inventory, 0, 21, 59) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
-                return OccultEngineeringItems.EMPTY_PENTACLE_SCHEMATIC.isIn(stack);
+                return OccultEngineeringItems.EMPTY_PENTACLE_SCHEMATIC.isIn(stack)
+                        || OccultEngineeringItems.PENTACLE_SCHEMATIC.isIn(stack);
             }
         };
 

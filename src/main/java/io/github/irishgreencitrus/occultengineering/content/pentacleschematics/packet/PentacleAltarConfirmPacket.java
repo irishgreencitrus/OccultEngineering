@@ -16,7 +16,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Objects;
 
 public class PentacleAltarConfirmPacket extends SimplePacketBase {
-    private String pentacleLocation;
+    private final String pentacleLocation;
 
     public PentacleAltarConfirmPacket(ResourceLocation location) {
         pentacleLocation = location.toString();

@@ -1,7 +1,8 @@
 package io.github.irishgreencitrus.occultengineering.content.item;
 
 import com.klikli_dev.modonomicon.data.MultiblockDataManager;
-import com.simibubi.create.content.schematics.cannon.MaterialChecklist;
+import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.createmod.catnip.nbt.NBTHelper;
@@ -60,24 +61,32 @@ public class PentacleSchematicItem extends Item {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
     }
 
+    private static PentaclePrinter printer;
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         var stack = player.getItemInHand(usedHand);
         if (usedHand != InteractionHand.MAIN_HAND)
             return InteractionResultHolder.fail(stack);
-        else if (stack.hasTag() && stack.getTag().contains("Pentacle")) {
-            var tag = stack.getTag();
+
+        var tag = stack.getTag();
+        if (tag == null) return InteractionResultHolder.fail(stack);
+        if (!tag.contains("Pentacle")) return InteractionResultHolder.fail(stack);
+
+        if (player.isShiftKeyDown() && player.onGround() && !tag.getBoolean("Deployed")) {
             tag.put("Position", NbtUtils.writeBlockPos(player.blockPosition()));
+            tag.putBoolean("Deployed", true);
+            player.displayClientMessage(
+                    Component.literal("Set schematic center position to ")
+                            .append(player.blockPosition().toShortString())
+                            .withStyle(ChatFormatting.GREEN),
+                    true);
             stack.setTag(tag);
 
             var schem = PentacleSchematic.fromStack(level, stack).get();
-            var mats = new MaterialChecklist();
-            mats.require(schem.getItemRequirement());
-            var clipboard = mats.createWrittenClipboard();
-            player.addItem(clipboard);
+            OccultEngineering.CURRENT_PENTACLE_PRINTER = new PentaclePrinter(level, schem);
         }
 
-        return super.use(level, player, usedHand);
+        return InteractionResultHolder.success(stack);
     }
 }

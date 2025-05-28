@@ -21,7 +21,7 @@ import java.util.Optional;
 public class PentacleSchematic {
     private Multiblock pentacle;
     private Level level;
-    private BlockPos position;
+    public final BlockPos position;
     private Pair<BlockPos, Collection<Multiblock.SimulateResult>> simulationResults;
 
     public static Optional<PentacleSchematic> fromStack(Level level, ItemStack stack) {
@@ -48,7 +48,23 @@ public class PentacleSchematic {
     }
 
     public void populateSimulation() {
-        simulationResults = pentacle.simulate(level, position, Rotation.NONE, false, false);
+        var results = pentacle.simulate(level, position, Rotation.NONE, false, false);
+
+        // If it doesn't count towards the total blocks, we don't need to place it.
+        // e.g. all pentacles in Occultism have an Otherstone-Stone checkerboard base pattern
+        //      which is just for viewing in the Dictionary.
+        simulationResults = Pair.of(
+                results.getFirst(),
+                results.getSecond()
+                        .stream()
+                        .filter(i -> i.getStateMatcher().countsTowardsTotalBlocks())
+                        .toList()
+        );
+    }
+
+    public Pair<BlockPos, Collection<Multiblock.SimulateResult>> getCurrentSimulationResult() {
+        populateSimulation();
+        return simulationResults;
     }
 
     public ItemRequirement getItemRequirement() {
@@ -62,16 +78,14 @@ public class PentacleSchematic {
         }
 
         for (Multiblock.SimulateResult r : simulationResults.getSecond()) {
-            if (!r.getStateMatcher().countsTowardsTotalBlocks()) continue;
             var targetState = r.getStateMatcher().getDisplayedState(level.getGameTime());
             if (r.getStateMatcher() instanceof TagMatcher tagMatcher) {
                 var tagAccess = (TagMatcherAccessor) tagMatcher;
-                OccultEngineering.LOGGER.info("Need to match {}", tagAccess.getTag().get().toString());
+                OccultEngineering.LOGGER.info("Need to match {}", tagAccess.getTag().get().location());
 
                 // We can get away with using a block tag as the items have to be able to be placed in order to even get here.
                 var tagRequirement = new BlockTagRequirement(
                         new ItemStack(tagMatcher.getDisplayedState(level.getGameTime()).getBlock()),
-                        ItemRequirement.ItemUseType.CONSUME,
                         tagAccess.getTag().get()
                 );
                 itemRequirement = itemRequirement.union(new ItemRequirement(tagRequirement));
@@ -79,7 +93,6 @@ public class PentacleSchematic {
                 var requirement = ItemRequirement.of(targetState, null);
                 itemRequirement = itemRequirement.union(requirement);
             }
-
         }
 
         return itemRequirement;

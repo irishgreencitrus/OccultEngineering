@@ -9,8 +9,9 @@ import net.minecraft.world.level.block.Block;
 public class BlockTagRequirement extends ItemRequirement.StackRequirement {
     TagKey<Block> tagKey;
 
-    public BlockTagRequirement(ItemStack stack, ItemRequirement.ItemUseType usage, TagKey<Block> tag) {
-        super(stack, usage);
+    public BlockTagRequirement(ItemStack stack, TagKey<Block> tag) {
+        // Since we're using block tags, the Item has to be consumed.
+        super(stack, ItemRequirement.ItemUseType.CONSUME);
         tagKey = tag;
     }
 

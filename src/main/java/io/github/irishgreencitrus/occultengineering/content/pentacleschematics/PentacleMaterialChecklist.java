@@ -6,7 +6,6 @@ import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
 import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides;
 import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides.ClipboardType;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
 import com.simibubi.create.foundation.utility.CreateLang;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -19,11 +18,13 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +37,17 @@ public class PentacleMaterialChecklist {
     public Object2IntMap<Item> gathered = new Object2IntArrayMap<>();
     public Object2IntMap<Item> required = new Object2IntArrayMap<>();
     public Object2IntMap<Item> damageRequired = new Object2IntArrayMap<>();
+
+    // We can also have blocks in pentacles that map to a tag, i.e. the candles in every Occultism pentacle
+    //  have the tag '#minecraft:candles'.
+    // So we need a way to properly display whether you have collected a tag item.
+    // TODO(maybe): we may need to have a least common tag system
+    //  If we have 2 tags in a pentacle, say '#occultism:candles' and '#minecraft:candles',
+    //  Occultism's White Candle (renamed Large Candle in 1.21 I believe), should first fill the requirement for '#occultism:candles'
+    //  if there are already enough '#minecraft:candles'. or something of the sort.
+    public Object2IntMap<TagKey<Block>> gatheredTag = new Object2IntArrayMap<>();
+    public Object2IntMap<TagKey<Block>> requiredTag = new Object2IntArrayMap<>();
+
     public boolean blocksNotLoaded;
 
     public void warnBlockNotLoaded() {
@@ -49,10 +61,15 @@ public class PentacleMaterialChecklist {
             return;
 
         for (ItemRequirement.StackRequirement stack : requirement.getRequiredItems()) {
-            if (stack.usage == ItemUseType.DAMAGE)
-                putOrIncrement(damageRequired, stack.stack);
-            if (stack.usage == ItemUseType.CONSUME)
-                putOrIncrement(required, stack.stack);
+            if (stack instanceof BlockTagRequirement btr) {
+                putOrIncrement(requiredTag, btr.tagKey);
+                continue;
+            }
+
+            switch (stack.usage) {
+                case DAMAGE -> putOrIncrement(damageRequired, stack.stack);
+                case CONSUME -> putOrIncrement(required, stack.stack);
+            }
         }
     }
 
@@ -66,13 +83,34 @@ public class PentacleMaterialChecklist {
             map.put(item, stack.getCount());
     }
 
+    private <T> void putOrIncrement(Object2IntMap<T> map, @Nullable T item) {
+        if (item == null) return;
+        map.put(item, map.getOrDefault(item, 0) + 1);
+    }
+
     public void collect(ItemStack stack) {
         Item item = stack.getItem();
         if (required.containsKey(item) || damageRequired.containsKey(item))
-            if (gathered.containsKey(item))
-                gathered.put(item, gathered.getInt(item) + stack.getCount());
-            else
-                gathered.put(item, stack.getCount());
+            gathered.put(item, gathered.getOrDefault(item, 0) + stack.getCount());
+        else for (var tag : requiredTag.keySet())
+            if (itemHasBlockTag(stack, tag)) {
+                // NOTE: may run into an issue if an item can match multiple tags in a pentacle.
+                var value = gatheredTag.getOrDefault(tag, 0);
+
+                // this could solve the issue however?
+                // if we have more than we need we try match the next tag
+                // also may create more problems than it solves
+                if (value >= requiredTag.getInt(tag)) continue;
+
+                gatheredTag.put(tag, value + stack.getCount());
+                return;
+            }
+    }
+
+    private boolean itemHasBlockTag(ItemStack stack, TagKey<Block> tag) {
+        if (!(stack.getItem() instanceof BlockItem blockItem)) return false;
+        Block block = blockItem.getBlock();
+        return block.defaultBlockState().is(tag);
     }
 
     public ItemStack createWrittenBook() {
@@ -91,7 +129,7 @@ public class PentacleMaterialChecklist {
         }
 
         List<Item> keys = new ArrayList<>(Sets.union(required.keySet(), damageRequired.keySet()));
-        Collections.sort(keys, (item1, item2) -> {
+        keys.sort((item1, item2) -> {
             Locale locale = Locale.ENGLISH;
             String name1 = item1.getDescription()
                     .getString()
@@ -126,6 +164,8 @@ public class PentacleMaterialChecklist {
             textComponent.append(itemEntry(new ItemStack(item), amount, true, true));
         }
 
+        // TODO: loop over tags
+
         for (Item item : completed) {
             if (itemsWritten == MAX_ENTRIES_PER_PAGE) {
                 itemsWritten = 0;
@@ -138,6 +178,8 @@ public class PentacleMaterialChecklist {
             itemsWritten++;
             textComponent.append(itemEntry(new ItemStack(item), getRequiredAmount(item), false, true));
         }
+
+        // TODO: loop over completed tags
 
         pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
 
@@ -204,6 +246,11 @@ public class PentacleMaterialChecklist {
                     .displayItem(new ItemStack(item), amount));
         }
 
+        for (TagKey<Block> blockTag : requiredTag.keySet()) {
+
+        }
+        // TODO: loop over tags
+
         for (Item item : completed) {
             if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
                 itemsWritten = 0;
@@ -217,6 +264,8 @@ public class PentacleMaterialChecklist {
             currentPage.add(new ClipboardEntry(true, itemEntry(new ItemStack(item), getRequiredAmount(item), false, false))
                     .displayItem(new ItemStack(item), 0));
         }
+
+        // TODO: loop over completed tags
 
         pages.add(currentPage);
         ClipboardEntry.saveAll(pages, clipboard);
@@ -232,7 +281,7 @@ public class PentacleMaterialChecklist {
     public int getRequiredAmount(Item item) {
         int amount = required.getOrDefault(item, 0);
         if (damageRequired.containsKey(item))
-            amount += Math.ceil(damageRequired.getInt(item) / (float) new ItemStack(item).getMaxDamage());
+            amount += (int) Math.ceil(damageRequired.getInt(item) / (float) new ItemStack(item).getMaxDamage());
         return amount;
     }
 
@@ -245,7 +294,7 @@ public class PentacleMaterialChecklist {
                         .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(item)))));
 
         if (!unfinished && forBook)
-            tc.append(" \u2714");
+            tc.append(" ✔");
         if (!unfinished || forBook)
             tc.withStyle(unfinished ? ChatFormatting.BLUE : ChatFormatting.DARK_GREEN);
         return tc.append(Component.literal("\n" + " x" + amount)
@@ -263,9 +312,9 @@ public class PentacleMaterialChecklist {
                         .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(representativeItem)))));
 
         if (!unfinished && forBook)
-            tc.append(" \u2714");
+            tc.append(" ✔");
         if (!unfinished || forBook)
-            tc.withStyle(unfinished ? ChatFormatting.BLUE : ChatFormatting.DARK_GREEN);
+            tc.withStyle(unfinished ? ChatFormatting.GOLD : ChatFormatting.DARK_GREEN);
         return tc.append(Component.literal("\n" + " x" + amount)
                         .withStyle(ChatFormatting.BLACK))
                 .append(Component.literal(" | " + stacks + "▤ +" + remainder + (forBook ? "\n" : ""))

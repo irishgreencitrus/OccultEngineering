@@ -354,19 +354,6 @@ public class OcEngPonders {
 
         var zombieLoc = util.vector().topOf(2, 0, 4);
 
-        /*
-        var zombieElement = scene.world().createEntity(w -> {
-            Zombie zombieEntity = EntityType.ZOMBIE.create(w);
-            zombieEntity.setNoGravity(true);
-            zombieEntity.setNoAi(true);
-            zombieEntity.setPose(Pose.STANDING);
-            zombieEntity.setPosRaw(zombieLoc.x, zombieLoc.y, zombieLoc.z);
-            zombieEntity.setItemSlot(EquipmentSlot.HEAD, new ItemStack(OccultismItems.OTHERWORLD_GOGGLES.get()));
-            zombieEntity.setYRot(zombieEntity.yRotO = 90);
-            return zombieEntity;
-        });
-         */
-
         scene.idle(4);
         scene.effects().indicateRedstone(detector);
         scene.world().toggleRedstonePower(detectorSelect);
@@ -379,10 +366,6 @@ public class OcEngPonders {
                 .placeNearTarget();
         scene.idle(70);
 
-        //scene.effects().emitParticles(zombieLoc, scene.effects().simpleParticleEmitter(ParticleTypes.SMOKE, Vec3.ZERO), 10, 1);
-        //scene.world().modifyEntity(zombieElement, Entity::discard);
-
-        //scene.idle(30);
         var nixieLoc = util.grid().at(2, 1, 0);
         scene.world().toggleRedstonePower(util.select().position(2, 1, 1));
         scene.world().modifyBlockEntityNBT(util.select().position(nixieLoc), NixieTubeBlockEntity.class, nbt -> nbt.putInt("RedstoneStrength", 15));
