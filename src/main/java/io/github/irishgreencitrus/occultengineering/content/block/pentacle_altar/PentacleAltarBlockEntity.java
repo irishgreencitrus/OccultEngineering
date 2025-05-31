@@ -3,7 +3,6 @@ package io.github.irishgreencitrus.occultengineering.content.block.pentacle_alta
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.IInteractionChecker;
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -73,7 +72,7 @@ public class PentacleAltarBlockEntity extends SmartBlockEntity implements MenuPr
 
     @Override
     public @NotNull Component getDisplayName() {
-        return OccultEngineering.lang().translate("gui.pentacleAltar.title").component();
+        return Component.translatable("gui.occultengineering.pentacle_altar.title");
     }
 
     @Override

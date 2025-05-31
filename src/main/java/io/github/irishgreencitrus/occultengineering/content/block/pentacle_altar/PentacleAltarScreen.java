@@ -28,18 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/*
-TODO: finish this class.
-    It should look similar to the Schematic Table, but choosing pentacles instead, obviously.
-    One Input for empty pentacle schematics, one output for complete ones.
-    You can click to place them on the ground just like a regular Create schematic.
-    Let's not use the Schematicannon to place them in survival though, we could add another input to the table
-    to place them. Instead of using gunpowder we could summon a Púca mob that would place the pentacles block by block for you.
-    Maybe include pumping spirit solution into the table, just to add another use for it?
-    As for buttons, we need a confirm button and that's basically it (considering pentacles won't be added after the game is running).
-    Maybe a Púca button to spawn the Púca?
-    We could combine the functionality of the schematicannon and the Schematic table in here, as we have less functionality
- */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAltarMenu> {
@@ -116,7 +104,7 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
         background.render(graphics, x, y);
 
         Component titleText;
-        titleText = Component.literal("Done!");
+        titleText = Component.translatable("gui.occultengineering.pentacle_altar.title");
         graphics.drawString(font, titleText, x + (background.getWidth() - 8 - font.width(titleText)) / 2, y + 4, 0x505050, false);
         GuiGameElement.of(renderedItem)
                 .<GuiGameElement.GuiRenderBuilder>at(x + background.getWidth(), y + background.getHeight() - 40, -200)

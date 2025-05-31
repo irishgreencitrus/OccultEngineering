@@ -1,9 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.content.item;
 
 import com.klikli_dev.modonomicon.data.MultiblockDataManager;
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
-import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
@@ -73,18 +71,15 @@ public class PentacleSchematicItem extends Item {
         if (tag == null) return InteractionResultHolder.fail(stack);
         if (!tag.contains("Pentacle")) return InteractionResultHolder.fail(stack);
 
-        if (player.isShiftKeyDown() && player.onGround() && !tag.getBoolean("Deployed")) {
+        if (player.isShiftKeyDown() && player.onGround()) {
             tag.put("Position", NbtUtils.writeBlockPos(player.blockPosition()));
             tag.putBoolean("Deployed", true);
             player.displayClientMessage(
-                    Component.literal("Set schematic center position to ")
+                    Component.literal("Set pentacle center position to ")
                             .append(player.blockPosition().toShortString())
                             .withStyle(ChatFormatting.GREEN),
                     true);
             stack.setTag(tag);
-
-            var schem = PentacleSchematic.fromStack(level, stack).get();
-            OccultEngineering.CURRENT_PENTACLE_PRINTER = new PentaclePrinter(level, schem);
         }
 
         return InteractionResultHolder.success(stack);

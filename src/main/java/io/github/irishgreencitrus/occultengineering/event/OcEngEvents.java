@@ -1,6 +1,5 @@
 package io.github.irishgreencitrus.occultengineering.event;
 
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.command.OcEngCommands;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -17,8 +16,5 @@ public class OcEngEvents {
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) return;
-        if (OccultEngineering.CURRENT_PENTACLE_PRINTER != null) {
-            OccultEngineering.CURRENT_PENTACLE_PRINTER.serverTick();
-        }
     }
 }

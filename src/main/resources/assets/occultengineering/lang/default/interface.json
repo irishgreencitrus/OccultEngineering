@@ -9,5 +9,7 @@
   "ritual.occultengineering.craft_otherworld_detector.conditions": "Not all requirements for this ritual are met.",
   "ritual.occultengineering.craft_otherworld_detector.finished": "Successfully crafted an otherworld detector.",
   "ritual.occultengineering.craft_otherworld_detector.interrupted": "Binding of Púca interrupted.",
-  "ritual.occultengineering.craft_otherworld_detector.started": "Started binding Púca into an otherworld detector."
+  "ritual.occultengineering.craft_otherworld_detector.started": "Started binding Púca into an otherworld detector.",
+  "gui.occultengineering.pentacle_altar.title": "Pentacle Altar",
+  "gui.occultengineering.pucalith.title": "Púcalith"
 }

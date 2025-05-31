@@ -9,6 +9,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pul
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerRenderer;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlockEntity;
 import net.minecraft.core.Direction;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
@@ -38,6 +39,11 @@ public class OccultEngineeringBlockEntities {
     public static final BlockEntityEntry<PentacleAltarBlockEntity> PENTACLE_ALTAR =
             REGISTRATE.blockEntity("pentacle_altar", PentacleAltarBlockEntity::new)
                     .validBlocks(OccultEngineeringBlocks.PENTACLE_ALTAR)
+                    .register();
+
+    public static final BlockEntityEntry<PucalithBlockEntity> PUCALITH =
+            REGISTRATE.blockEntity("pucalith", PucalithBlockEntity::new)
+                    .validBlocks(OccultEngineeringBlocks.PUCALITH)
                     .register();
 
     public static void register() {

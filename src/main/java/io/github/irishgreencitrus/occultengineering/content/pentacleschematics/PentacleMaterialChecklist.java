@@ -1,5 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.pentacleschematics;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
@@ -9,7 +10,11 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.utility.CreateLang;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -29,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PentacleMaterialChecklist {
     public static final int MAX_ENTRIES_PER_PAGE = 5;
@@ -45,8 +51,18 @@ public class PentacleMaterialChecklist {
     //  If we have 2 tags in a pentacle, say '#occultism:candles' and '#minecraft:candles',
     //  Occultism's White Candle (renamed Large Candle in 1.21 I believe), should first fill the requirement for '#occultism:candles'
     //  if there are already enough '#minecraft:candles'. or something of the sort.
-    public Object2IntMap<TagKey<Block>> gatheredTag = new Object2IntArrayMap<>();
+    public Object2IntMap<GatheredTagItem> gatheredTag = new Object2IntArrayMap<>();
     public Object2IntMap<TagKey<Block>> requiredTag = new Object2IntArrayMap<>();
+
+    public class GatheredTagItem {
+        public final TagKey<Block> tag;
+        public final Item item;
+
+        public GatheredTagItem(TagKey<Block> tag, Item stack) {
+            this.tag = tag;
+            this.item = stack;
+        }
+    }
 
     public boolean blocksNotLoaded;
 
@@ -88,21 +104,46 @@ public class PentacleMaterialChecklist {
         map.put(item, map.getOrDefault(item, 0) + 1);
     }
 
+    private ObjectSet<Object2IntMap.Entry<GatheredTagItem>> getAllGatheredTag(TagKey<Block> tag) {
+        return gatheredTag
+                .object2IntEntrySet()
+                .stream()
+                .filter(i -> i.getKey().tag == tag)
+                .collect(Collectors.toCollection(ObjectOpenHashSet::new));
+    }
+
+    private ObjectSet<Object2IntMap.Entry<GatheredTagItem>> getAllGatheredTag(Item item) {
+        return gatheredTag
+                .object2IntEntrySet()
+                .stream()
+                .filter(i -> i.getKey().item == item)
+                .collect(Collectors.toCollection(ObjectOpenHashSet::new));
+    }
+
     public void collect(ItemStack stack) {
         Item item = stack.getItem();
         if (required.containsKey(item) || damageRequired.containsKey(item))
             gathered.put(item, gathered.getOrDefault(item, 0) + stack.getCount());
         else for (var tag : requiredTag.keySet())
             if (itemHasBlockTag(stack, tag)) {
+                var gatheredItem = new GatheredTagItem(tag, stack.getItem());
                 // NOTE: may run into an issue if an item can match multiple tags in a pentacle.
-                var value = gatheredTag.getOrDefault(tag, 0);
+                var value = gatheredTag.getOrDefault(gatheredItem, 0);
+
+                var matchingTagCount = gatheredTag
+                        .keySet()
+                        .stream()
+                        .filter(t -> t.item == stack.getItem())
+                        .map(i -> gatheredTag.getOrDefault(i, 0))
+                        .reduce(Integer::sum)
+                        .orElse(0);
 
                 // this could solve the issue however?
                 // if we have more than we need we try match the next tag
                 // also may create more problems than it solves
-                if (value >= requiredTag.getInt(tag)) continue;
+                if (matchingTagCount >= requiredTag.getInt(tag)) continue;
 
-                gatheredTag.put(tag, value + stack.getCount());
+                gatheredTag.put(gatheredItem, value + stack.getCount());
                 return;
             }
     }
@@ -164,8 +205,6 @@ public class PentacleMaterialChecklist {
             textComponent.append(itemEntry(new ItemStack(item), amount, true, true));
         }
 
-        // TODO: loop over tags
-
         for (Item item : completed) {
             if (itemsWritten == MAX_ENTRIES_PER_PAGE) {
                 itemsWritten = 0;
@@ -178,8 +217,6 @@ public class PentacleMaterialChecklist {
             itemsWritten++;
             textComponent.append(itemEntry(new ItemStack(item), getRequiredAmount(item), false, true));
         }
-
-        // TODO: loop over completed tags
 
         pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
 
@@ -246,10 +283,33 @@ public class PentacleMaterialChecklist {
                     .displayItem(new ItemStack(item), amount));
         }
 
+        List<TagKey<Block>> completedTag = new ArrayList<>();
         for (TagKey<Block> blockTag : requiredTag.keySet()) {
+            int amount = requiredTag.getInt(blockTag);
+            var gatheredOf = getAllGatheredTag(blockTag);
+            if (!gatheredOf.isEmpty()) {
+                for (var entry : gatheredOf)
+                    amount -= entry.getIntValue();
+            }
+
+            if (amount <= 0) {
+                completedTag.add(blockTag);
+                continue;
+            }
+
+            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
+                itemsWritten = 0;
+                currentPage.add(new ClipboardEntry(false, Component.literal(">>>")
+                        .withStyle(ChatFormatting.DARK_GRAY)));
+                pages.add(currentPage);
+                currentPage = new ArrayList<>();
+            }
+
+            itemsWritten++;
+            currentPage.add(new ClipboardEntry(false, tagEntry(getRepresentativeItem(blockTag), blockTag, amount, true, false))
+                    .displayItem(getRepresentativeItem(blockTag), amount));
 
         }
-        // TODO: loop over tags
 
         for (Item item : completed) {
             if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
@@ -265,7 +325,19 @@ public class PentacleMaterialChecklist {
                     .displayItem(new ItemStack(item), 0));
         }
 
-        // TODO: loop over completed tags
+        for (TagKey<Block> blockTag : completedTag) {
+            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
+                itemsWritten = 0;
+                currentPage.add(new ClipboardEntry(true, Component.literal(">>>")
+                        .withStyle(ChatFormatting.DARK_GREEN)));
+                pages.add(currentPage);
+                currentPage = new ArrayList<>();
+            }
+
+            itemsWritten++;
+            currentPage.add(new ClipboardEntry(true, tagEntry(getRepresentativeItem(blockTag), blockTag, getRequiredAmount(blockTag), false, false))
+                    .displayItem(getRepresentativeItem(blockTag), 0));
+        }
 
         pages.add(currentPage);
         ClipboardEntry.saveAll(pages, clipboard);
@@ -283,6 +355,16 @@ public class PentacleMaterialChecklist {
         if (damageRequired.containsKey(item))
             amount += (int) Math.ceil(damageRequired.getInt(item) / (float) new ItemStack(item).getMaxDamage());
         return amount;
+    }
+
+    public int getRequiredAmount(TagKey<Block> blockTag) {
+        return requiredTag.getOrDefault(blockTag, 0);
+    }
+
+    private ItemStack getRepresentativeItem(TagKey<Block> tag) {
+        ImmutableList<Holder<Block>> all = ImmutableList.copyOf(BuiltInRegistries.BLOCK.getTagOrEmpty(tag));
+        if (all.isEmpty()) return ItemStack.EMPTY;
+        return new ItemStack(all.get(0).get());
     }
 
     private MutableComponent itemEntry(ItemStack item, int amount, boolean unfinished, boolean forBook) {
@@ -307,7 +389,8 @@ public class PentacleMaterialChecklist {
         int stacks = amount / 64;
         int remainder = amount % 64;
         MutableComponent tc = Component.empty();
-        tc.append(Component.literal(tag.toString())
+        var tagLocation = tag.location();
+        tc.append(Component.literal("Any #" + tagLocation.getNamespace() + ":" + tagLocation.getPath())
                 .setStyle(Style.EMPTY
                         .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(representativeItem)))));
 

@@ -26,15 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
-TODO: Pentacle printing.
-First, we load the pentacle schematic into some sort of block (a bit like the schematicannon)
-Next, we check whether we meet the requirements of the pentacle schematic.
-
- */
 public class PentaclePrinter {
-    private final PentacleSchematic schematic;
 
+    private PentacleSchematic schematic;
     private BlockPos anchor;
 
     // If we have a block state matcher, we can simply place the block state we get from the state matcher.
@@ -46,10 +40,15 @@ public class PentaclePrinter {
     private int currentPosIndex = 0;
     private Map<BlockPos, BlockState> blocksToPlace = new HashMap<>();
     private Map<BlockPos, TagKey<Block>> tagsToPlace = new HashMap<>();
+    private boolean initialised = false;
     private Level level;
 
-    public PentaclePrinter(Level level, PentacleSchematic schematic) {
-        this.level = level;
+    public PentaclePrinter() {
+        initialised = false;
+    }
+
+    public void initialise(PentacleSchematic schematic) {
+        this.level = schematic.getLevel();
         this.schematic = schematic;
         this.anchor = schematic.position;
         var simResults = schematic.getCurrentSimulationResult().getSecond();
@@ -77,6 +76,12 @@ public class PentaclePrinter {
                 blocksToPlace.put(result.getWorldPosition(), result.getStateMatcher().getDisplayedState(0));
             }
         }
+
+        this.initialised = true;
+    }
+
+    public boolean isInitialised() {
+        return initialised;
     }
 
     private int tickCount = 0;
@@ -91,7 +96,11 @@ public class PentaclePrinter {
 
     /// @return If a block was successfully placed
     public boolean placeNextBlock() {
-        if (currentPosIndex >= positionToPrint.size()) return false;
+        if (currentPosIndex >= positionToPrint.size()) {
+            this.initialised = false;
+            return false;
+        }
+
         var pos = positionToPrint.get(currentPosIndex);
         currentPosIndex++;
         if (blocksToPlace.containsKey(pos)) {
@@ -112,13 +121,16 @@ public class PentaclePrinter {
             setBlock(level, pos, state);
             return true;
         }
+
+        if (currentPosIndex == positionToPrint.size() - 1)
+            this.initialised = false;
+
         return false;
     }
 
     Direction[] validHorizontalDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 
     private void setBlock(Level level, BlockPos pos, BlockState state) {
-
         if (state.getBlock() instanceof ChalkGlyphBlock) {
             state = state.setValue(ChalkGlyphBlock.SIGN, level.getRandom().nextInt(ChalkGlyphBlock.MAX_SIGN + 1))
                     .setValue(BlockStateProperties.HORIZONTAL_FACING, validHorizontalDirections[level.getRandom().nextInt(validHorizontalDirections.length)]);
@@ -128,6 +140,7 @@ public class PentaclePrinter {
             state = state.setValue(CandleBlock.LIT, true);
         }
 
+        level.destroyBlock(pos, true);
         level.setBlock(pos, state, Block.UPDATE_ALL);
 
         try {

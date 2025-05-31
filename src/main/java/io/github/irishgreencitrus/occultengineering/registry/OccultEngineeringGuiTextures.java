@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 public enum OccultEngineeringGuiTextures implements ScreenElement, TextureSheetSegment {
     PENTACLE_ALTAR("schematics", 10, 139, 214, 85),
+    PUCALITH("schematics", 10, 8, 192, 123),
+    PUCALITH_CREATIVE_TANK("schematics", 208, 32, 16, 64),
+    PUCALITH_FULL_TANK("schematics", 224, 32, 16, 64),
     ;
     public static final int FONT_COLOR = 0x575F7A;
 

@@ -28,6 +28,7 @@ public class OccultEngineeringFluids {
                     .lang("Spirit Solution")
                     .properties(b -> b.viscosity(500).density(500))
                     .tag(OccultEngineeringTags.SPIRIT_SOLUTION_FLUID)
+                    .tag(OccultEngineeringTags.PUCALITH_FUEL)
                     .source(ForgeFlowingFluid.Source::new)
                     .bucket()
                     .build()

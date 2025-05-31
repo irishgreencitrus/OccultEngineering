@@ -18,6 +18,11 @@ public class OccultEngineeringTags {
             OccultEngineering.asResource("spirit_solution_fluid")
     );
 
+    public static final TagKey<Fluid> PUCALITH_FUEL = TagKey.create(
+            Registries.FLUID,
+            OccultEngineering.asResource("pucalith_fuel")
+    );
+
     public static final TagKey<Item> MECHANICAL_CHAMBER_INSERTABLE = TagKey.create(
             Registries.ITEM,
             OccultEngineering.asResource("mechanical_chamber_insertable")

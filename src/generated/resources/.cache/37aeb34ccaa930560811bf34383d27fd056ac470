@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-26T13:32:31.2355358	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-05-30T12:21:38.8463992	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/brass_chalk.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/copper_chalk.json
 47e991cab98678169796b54dc9e7bffb7f258c01 assets/occultengineering/blockstates/fan_enspirit_catalyst.json
@@ -6,11 +6,12 @@
 fdb885c51570bed361759cb6948cbfc08f6f038c assets/occultengineering/blockstates/mechanical_pulverizer.json
 c7425898da94ffa2510cf08b2f338b58a6afb005 assets/occultengineering/blockstates/otherworld_detector.json
 053dd66c672cdbfb2cad83e45ca76d3d0667d76c assets/occultengineering/blockstates/pentacle_altar.json
+fcb503c4b77a7af4580035449cc3426c17058598 assets/occultengineering/blockstates/pucalith.json
 856ac890f84bc8a3d4cef2b356b8b06a0b52734a assets/occultengineering/blockstates/spirit_solution.json
 08355f710746582caf11291dc6255d447e4e9709 assets/occultengineering/blockstates/sterling_silver_block.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/zinc_chalk.json
-39cbecd89d5dbdae59b9fba66eb2521a688300f9 assets/occultengineering/lang/en_ud.json
-7886e91c83c3e00bc4b587c3edb9bca080ca2b10 assets/occultengineering/lang/en_us.json
+53e4694fd8781060837fc3a9ddc4c8174d94c951 assets/occultengineering/lang/en_ud.json
+43f5012d9181413ba00a7d5862637fd8c108c780 assets/occultengineering/lang/en_us.json
 33df31259a8fc2623e750a8816895dd908ed031d assets/occultengineering/models/block/chalk_glyph/0.json
 e905b130222c6d2896593bbfda7c6abd45aece35 assets/occultengineering/models/block/chalk_glyph/1.json
 5ce3d22ecd375adb9234fb992673aaca6e195991 assets/occultengineering/models/block/chalk_glyph/10.json
@@ -27,6 +28,7 @@ af3adf84106fa25d684629edc6a647a9fc4a5c06 assets/occultengineering/models/block/c
 b6a3b2f7ec291f716de236e9bb49971fb055655f assets/occultengineering/models/block/otherworld_detector.json
 366199db05edc9d28cd889402f526c3809e6747e assets/occultengineering/models/block/otherworld_detector_powered.json
 013eb2cb02cbec370cf4d4cb438c521195cdf454 assets/occultengineering/models/block/pentacle_altar.json
+1f59d5eb856650bcb9adfc344b6c25b2b7bc2672 assets/occultengineering/models/block/pucalith.json
 7d184f3cec94194c9fa7e53679373371d4c190f9 assets/occultengineering/models/block/spirit_solution.json
 648da2f3ae523f5f676aad8b99bb2e18fcbd7312 assets/occultengineering/models/block/sterling_silver_block.json
 7827e2dd58d142ca2ca752755db51e380d3ece69 assets/occultengineering/models/item/book_of_binding_bound_puca.json
@@ -47,6 +49,7 @@ d8c14ef14839c8702f5bcb5e44aef575c62972cc assets/occultengineering/models/item/fa
 b95e5ac39988b3633224b3a6c72f90f1b9d4ac22 assets/occultengineering/models/item/otherworld_detector.json
 f98ee925e614c72cbc1858166800f3df1657a340 assets/occultengineering/models/item/pentacle_altar.json
 60ebe1a3bae399acc8b0ba10c2614568e33c4e7a assets/occultengineering/models/item/pentacle_schematic.json
+04f2e49034d3c52943d812e04240a9e6f9bf954e assets/occultengineering/models/item/pucalith.json
 7a83f7d8d4e4d6de77c99e611acc9ac9bc7fa9f1 assets/occultengineering/models/item/ritual_dummy_craft_mechanical_chamber.json
 7a83f7d8d4e4d6de77c99e611acc9ac9bc7fa9f1 assets/occultengineering/models/item/ritual_dummy_craft_otherworld_detector.json
 fa5f1a75fa91589a433e0434c5e27a7ff2b3bfcc assets/occultengineering/models/item/spirit_solution_bucket.json
@@ -56,7 +59,7 @@ a7d59931a6a590c36c1f8fea62cce6e7d7fb59a0 assets/occultengineering/models/item/st
 317313c1da3542021f23004b3e7424ac6489b164 assets/occultengineering/models/item/zinc_dust.json
 2fec9d993f2f667ed43164148746a28b073ea293 data/create/tags/blocks/fan_transparent.json
 0d54a883ca55d3d6c7ebdd49ba90c81d55456711 data/minecraft/tags/blocks/mineable/axe.json
-345e7c9b3b9aef02ad8946fa5e6dd90be0f5688b data/minecraft/tags/blocks/mineable/pickaxe.json
+0b443e5c768f8d478a062abe96a66d7124ac6511 data/minecraft/tags/blocks/mineable/pickaxe.json
 7006ec974cd0826b59d863126cc5c55d64999ab5 data/occultengineering/loot_tables/blocks/brass_chalk.json
 ae13028199cd6f49b2bfaa7166ef2f712d5fe1d0 data/occultengineering/loot_tables/blocks/copper_chalk.json
 39a2acd196ba5f2209dc014b7cc3c9257b436fe6 data/occultengineering/loot_tables/blocks/fan_enspirit_catalyst.json
@@ -64,6 +67,8 @@ ae13028199cd6f49b2bfaa7166ef2f712d5fe1d0 data/occultengineering/loot_tables/bloc
 a28db78486aa3973c86748c625992715a2a6250a data/occultengineering/loot_tables/blocks/mechanical_pulverizer.json
 5c362bdbd35a939d08b46a717709a878b553450b data/occultengineering/loot_tables/blocks/otherworld_detector.json
 0ebda05e5550892f9217c810e77a51665e5c8e30 data/occultengineering/loot_tables/blocks/pentacle_altar.json
+e10b2a6d669b589fd157e366ada3001c8b46c59a data/occultengineering/loot_tables/blocks/pucalith.json
 04f9e0b60a6187dcfa41d3c48abe5bd588892e2b data/occultengineering/loot_tables/blocks/sterling_silver_block.json
 943aec57643f1b03062b4e1e8fe0b20c3242cad9 data/occultengineering/loot_tables/blocks/zinc_chalk.json
+4486a2c53f984ad1537ad860be59e34dff4438c1 data/occultengineering/tags/fluids/pucalith_fuel.json
 4486a2c53f984ad1537ad860be59e34dff4438c1 data/occultengineering/tags/fluids/spirit_solution_fluid.json

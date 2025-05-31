@@ -4,7 +4,8 @@
   "package": "io.github.irishgreencitrus.occultengineering.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "accessor.TagMatcherAccessor"
+    "accessor.TagMatcherAccessor",
+    "accessor.TankSegmentAccessor"
   ],
   "client": [
   ],

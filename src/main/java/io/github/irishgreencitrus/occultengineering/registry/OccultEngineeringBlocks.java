@@ -16,6 +16,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_cha
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
+import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -154,6 +155,23 @@ public class OccultEngineeringBlocks {
                             p.modLoc("block/pentacle_altar_bottom"),
                             p.modLoc("block/pentacle_altar_top"))))
             .lang("Pentacle Altar")
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<PucalithBlock> PUCALITH = REGISTRATE.block("pucalith", PucalithBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .blockstate((c, p) -> p.simpleBlock(
+                    c.getEntry(),
+                    p.models().cubeBottomTop("pucalith",
+                            p.modLoc("block/pucalith_side"),
+                            p.modLoc("block/pucalith_bottom"),
+                            p.modLoc("block/pucalith_top"))
+            ))
+            .lang("Púcalith")
             .simpleItem()
             .register();
 

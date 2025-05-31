@@ -19,8 +19,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 public class PentacleSchematic {
-    private Multiblock pentacle;
-    private Level level;
+    private final Multiblock pentacle;
+    private final Level level;
     public final BlockPos position;
     private Pair<BlockPos, Collection<Multiblock.SimulateResult>> simulationResults;
 
@@ -45,6 +45,10 @@ public class PentacleSchematic {
         this.pentacle = pentacle;
         this.level = level;
         this.position = position;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 
     public void populateSimulation() {
