@@ -28,10 +28,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -53,17 +53,6 @@ public class PentacleMaterialChecklist {
     //  if there are already enough '#minecraft:candles'. or something of the sort.
     public Object2IntMap<GatheredTagItem> gatheredTag = new Object2IntArrayMap<>();
     public Object2IntMap<TagKey<Block>> requiredTag = new Object2IntArrayMap<>();
-
-    public class GatheredTagItem {
-        public final TagKey<Block> tag;
-        public final Item item;
-
-        public GatheredTagItem(TagKey<Block> tag, Item stack) {
-            this.tag = tag;
-            this.item = stack;
-        }
-    }
-
     public boolean blocksNotLoaded;
 
     public void warnBlockNotLoaded() {
@@ -160,8 +149,7 @@ public class PentacleMaterialChecklist {
         CompoundTag tag = book.getOrCreateTag();
         ListTag pages = new ListTag();
 
-        int itemsWritten = 0;
-        MutableComponent textComponent;
+        MutableComponent textComponent = Component.empty();
 
         if (blocksNotLoaded) {
             textComponent = Component.literal("\n" + ChatFormatting.RED);
@@ -169,56 +157,24 @@ public class PentacleMaterialChecklist {
             pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
         }
 
-        List<Item> keys = new ArrayList<>(Sets.union(required.keySet(), damageRequired.keySet()));
-        keys.sort((item1, item2) -> {
-            Locale locale = Locale.ENGLISH;
-            String name1 = item1.getDescription()
-                    .getString()
-                    .toLowerCase(locale);
-            String name2 = item2.getDescription()
-                    .getString()
-                    .toLowerCase(locale);
-            return name1.compareTo(name2);
-        });
+        var checklistEntries = getChecklistEntries();
 
-        textComponent = Component.empty();
-        List<Item> completed = new ArrayList<>();
-        for (Item item : keys) {
-            int amount = getRequiredAmount(item);
-            if (gathered.containsKey(item))
-                amount -= gathered.getInt(item);
+        int itemsWritten = 0;
 
-            if (amount <= 0) {
-                completed.add(item);
-                continue;
-            }
-
-            if (itemsWritten == MAX_ENTRIES_PER_PAGE) {
-                itemsWritten = 0;
-                textComponent.append(Component.literal("\n >>>")
-                        .withStyle(ChatFormatting.BLUE));
-                pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
-                textComponent = Component.empty();
-            }
-
-            itemsWritten++;
-            textComponent.append(itemEntry(new ItemStack(item), amount, true, true));
-        }
-
-        for (Item item : completed) {
+        for (var entry : checklistEntries) {
             if (itemsWritten == MAX_ENTRIES_PER_PAGE) {
                 itemsWritten = 0;
                 textComponent.append(Component.literal("\n >>>")
                         .withStyle(ChatFormatting.DARK_GREEN));
-                pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
+                pages.add(toBookPage(textComponent));
                 textComponent = Component.empty();
             }
 
             itemsWritten++;
-            textComponent.append(itemEntry(new ItemStack(item), getRequiredAmount(item), false, true));
+            textComponent.append(entry.format(true));
         }
 
-        pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
+        pages.add(toBookPage(textComponent));
 
         tag.put("pages", pages);
         tag.putBoolean("readonly", true);
@@ -234,10 +190,14 @@ public class PentacleMaterialChecklist {
         return book;
     }
 
+    private StringTag toBookPage(Component component) {
+        return StringTag.valueOf(Component.Serializer.toJson(component));
+    }
+
     public ItemStack createWrittenClipboard() {
         ItemStack clipboard = AllBlocks.CLIPBOARD.asStack();
         CompoundTag tag = clipboard.getOrCreateTag();
-        int itemsWritten = 0;
+
 
         List<List<ClipboardEntry>> pages = new ArrayList<>();
         List<ClipboardEntry> currentPage = new ArrayList<>();
@@ -247,8 +207,42 @@ public class PentacleMaterialChecklist {
                     .withStyle(ChatFormatting.RED)));
         }
 
-        List<Item> keys = new ArrayList<>(Sets.union(required.keySet(), damageRequired.keySet()));
-        Collections.sort(keys, (item1, item2) -> {
+
+        var checklistEntries = getChecklistEntries();
+
+        int itemsWritten = 0;
+
+        for (var entry : checklistEntries) {
+            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
+                itemsWritten = 0;
+                currentPage.add(new ClipboardEntry(true, Component.literal(">>>")
+                        .withStyle(ChatFormatting.DARK_GREEN)));
+                pages.add(currentPage);
+                currentPage = new ArrayList<>();
+            }
+
+            itemsWritten++;
+            currentPage.add(new ClipboardEntry(true, entry.format(false))
+                    .displayItem(entry.item, 0));
+        }
+
+        pages.add(currentPage);
+        ClipboardEntry.saveAll(pages, clipboard);
+        ClipboardOverrides.switchTo(ClipboardType.WRITTEN, clipboard);
+
+        clipboard.getOrCreateTagElement("display")
+                .putString("Name", Component.Serializer.toJson(CreateLang.translateDirect("materialChecklist")
+                        .setStyle(Style.EMPTY.withItalic(Boolean.FALSE))));
+
+        tag.putBoolean("Readonly", true);
+        clipboard.setTag(tag);
+        return clipboard;
+    }
+
+    public List<ChecklistEntry> getChecklistEntries() {
+        List<Item> allRequired = new ArrayList<>(Sets.union(required.keySet(), damageRequired.keySet()));
+
+        allRequired.sort((item1, item2) -> {
             Locale locale = Locale.ENGLISH;
             String name1 = item1.getDescription()
                     .getString()
@@ -259,32 +253,22 @@ public class PentacleMaterialChecklist {
             return name1.compareTo(name2);
         });
 
-        List<Item> completed = new ArrayList<>();
-        for (Item item : keys) {
+        List<ChecklistEntry> checklistEntries = new ArrayList<>();
+
+        List<Item> completedItem = new ArrayList<>();
+        for (var item : allRequired) {
             int amount = getRequiredAmount(item);
             if (gathered.containsKey(item))
                 amount -= gathered.getInt(item);
 
-            if (amount <= 0) {
-                completed.add(item);
-                continue;
-            }
+            if (amount <= 0)
+                completedItem.add(item);
 
-            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
-                itemsWritten = 0;
-                currentPage.add(new ClipboardEntry(false, Component.literal(">>>")
-                        .withStyle(ChatFormatting.DARK_GRAY)));
-                pages.add(currentPage);
-                currentPage = new ArrayList<>();
-            }
-
-            itemsWritten++;
-            currentPage.add(new ClipboardEntry(false, itemEntry(new ItemStack(item), amount, true, false))
-                    .displayItem(new ItemStack(item), amount));
+            checklistEntries.add(new ChecklistItemEntry(item, amount));
         }
 
         List<TagKey<Block>> completedTag = new ArrayList<>();
-        for (TagKey<Block> blockTag : requiredTag.keySet()) {
+        for (var blockTag : requiredTag.keySet()) {
             int amount = requiredTag.getInt(blockTag);
             var gatheredOf = getAllGatheredTag(blockTag);
             if (!gatheredOf.isEmpty()) {
@@ -297,57 +281,18 @@ public class PentacleMaterialChecklist {
                 continue;
             }
 
-            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
-                itemsWritten = 0;
-                currentPage.add(new ClipboardEntry(false, Component.literal(">>>")
-                        .withStyle(ChatFormatting.DARK_GRAY)));
-                pages.add(currentPage);
-                currentPage = new ArrayList<>();
-            }
-
-            itemsWritten++;
-            currentPage.add(new ClipboardEntry(false, tagEntry(getRepresentativeItem(blockTag), blockTag, amount, true, false))
-                    .displayItem(getRepresentativeItem(blockTag), amount));
-
+            checklistEntries.add(new ChecklistTagEntry(blockTag, getRepresentativeItem(blockTag), amount));
         }
 
-        for (Item item : completed) {
-            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
-                itemsWritten = 0;
-                currentPage.add(new ClipboardEntry(true, Component.literal(">>>")
-                        .withStyle(ChatFormatting.DARK_GREEN)));
-                pages.add(currentPage);
-                currentPage = new ArrayList<>();
-            }
-
-            itemsWritten++;
-            currentPage.add(new ClipboardEntry(true, itemEntry(new ItemStack(item), getRequiredAmount(item), false, false))
-                    .displayItem(new ItemStack(item), 0));
+        for (var item : completedItem) {
+            checklistEntries.add(new ChecklistItemEntry(item, getRequiredAmount(item), false));
         }
 
-        for (TagKey<Block> blockTag : completedTag) {
-            if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
-                itemsWritten = 0;
-                currentPage.add(new ClipboardEntry(true, Component.literal(">>>")
-                        .withStyle(ChatFormatting.DARK_GREEN)));
-                pages.add(currentPage);
-                currentPage = new ArrayList<>();
-            }
-
-            itemsWritten++;
-            currentPage.add(new ClipboardEntry(true, tagEntry(getRepresentativeItem(blockTag), blockTag, getRequiredAmount(blockTag), false, false))
-                    .displayItem(getRepresentativeItem(blockTag), 0));
+        for (var blockTag : completedTag) {
+            checklistEntries.add(new ChecklistTagEntry(blockTag, getRepresentativeItem(blockTag), getRequiredAmount(blockTag), false));
         }
 
-        pages.add(currentPage);
-        ClipboardEntry.saveAll(pages, clipboard);
-        ClipboardOverrides.switchTo(ClipboardType.WRITTEN, clipboard);
-        clipboard.getOrCreateTagElement("display")
-                .putString("Name", Component.Serializer.toJson(CreateLang.translateDirect("materialChecklist")
-                        .setStyle(Style.EMPTY.withItalic(Boolean.FALSE))));
-        tag.putBoolean("Readonly", true);
-        clipboard.setTag(tag);
-        return clipboard;
+        return checklistEntries;
     }
 
     public int getRequiredAmount(Item item) {
@@ -367,41 +312,97 @@ public class PentacleMaterialChecklist {
         return new ItemStack(all.get(0).get());
     }
 
-    private MutableComponent itemEntry(ItemStack item, int amount, boolean unfinished, boolean forBook) {
-        int stacks = amount / 64;
-        int remainder = amount % 64;
-        MutableComponent tc = Component.empty();
-        tc.append(Component.translatable(item.getDescriptionId())
-                .setStyle(Style.EMPTY
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(item)))));
+    public abstract static class ChecklistEntry {
+        public final ItemStack item;
+        public final int amount;
+        public boolean unfinished;
 
-        if (!unfinished && forBook)
-            tc.append(" ✔");
-        if (!unfinished || forBook)
-            tc.withStyle(unfinished ? ChatFormatting.BLUE : ChatFormatting.DARK_GREEN);
-        return tc.append(Component.literal("\n" + " x" + amount)
-                        .withStyle(ChatFormatting.BLACK))
-                .append(Component.literal(" | " + stacks + "▤ +" + remainder + (forBook ? "\n" : ""))
-                        .withStyle(ChatFormatting.GRAY));
+
+        private ChecklistEntry(ItemStack item, int amount, boolean unfinished) {
+            this.unfinished = unfinished;
+            this.item = item;
+            this.amount = amount;
+        }
+
+        private int stackCount() {
+            return amount / 64;
+        }
+
+        private int stackRemainder() {
+            return amount % 64;
+        }
+
+        public MutableComponent format(boolean forBook) {
+            MutableComponent tc = Component.empty();
+
+            tc.append(getEntryName()
+                    .setStyle(Style.EMPTY
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(item)))));
+
+            if (!unfinished && forBook)
+                tc.append(" ✔");
+
+            if (!unfinished || forBook)
+                tc.withStyle(unfinished ? ChatFormatting.BLUE : ChatFormatting.DARK_GREEN);
+
+            return tc.append(Component.literal("\n" + " x" + amount)
+                            .withStyle(ChatFormatting.BLACK))
+                    .append(Component.literal(" | " + stackCount() + "▤ +" + stackRemainder() + (forBook ? "\n" : ""))
+                            .withStyle(ChatFormatting.GRAY));
+        }
+
+        public abstract @NotNull MutableComponent getEntryName();
     }
 
-    private MutableComponent tagEntry(ItemStack representativeItem, TagKey<Block> tag, int amount, boolean unfinished, boolean forBook) {
-        int stacks = amount / 64;
-        int remainder = amount % 64;
-        MutableComponent tc = Component.empty();
-        var tagLocation = tag.location();
-        tc.append(Component.literal("Any #" + tagLocation.getNamespace() + ":" + tagLocation.getPath())
-                .setStyle(Style.EMPTY
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(representativeItem)))));
+    public class GatheredTagItem {
+        public final TagKey<Block> tag;
+        public final Item item;
 
-        if (!unfinished && forBook)
-            tc.append(" ✔");
-        if (!unfinished || forBook)
-            tc.withStyle(unfinished ? ChatFormatting.GOLD : ChatFormatting.DARK_GREEN);
-        return tc.append(Component.literal("\n" + " x" + amount)
-                        .withStyle(ChatFormatting.BLACK))
-                .append(Component.literal(" | " + stacks + "▤ +" + remainder + (forBook ? "\n" : ""))
-                        .withStyle(ChatFormatting.GRAY));
+        public GatheredTagItem(TagKey<Block> tag, Item stack) {
+            this.tag = tag;
+            this.item = stack;
+        }
     }
 
+    private class ChecklistItemEntry extends ChecklistEntry {
+        private ChecklistItemEntry(Item item, int amount) {
+            this(new ItemStack(item), amount, true);
+        }
+
+        private ChecklistItemEntry(Item item, int amount, boolean unfinished) {
+            this(new ItemStack(item), amount, unfinished);
+        }
+
+        private ChecklistItemEntry(ItemStack item, int amount, boolean unfinished) {
+            super(item, amount, unfinished);
+        }
+
+        @Override
+        public @NotNull MutableComponent getEntryName() {
+            return Component.translatable(item.getDescriptionId());
+        }
+    }
+
+    private class ChecklistTagEntry extends ChecklistEntry {
+        TagKey<Block> tag;
+
+        private ChecklistTagEntry(TagKey<Block> tag, ItemStack representative, int amount) {
+            this(tag, representative, amount, true);
+        }
+
+        private ChecklistTagEntry(TagKey<Block> tag, Item item, int amount, boolean unfinished) {
+            this(tag, new ItemStack(item), amount, unfinished);
+        }
+
+        private ChecklistTagEntry(TagKey<Block> tag, ItemStack item, int amount, boolean unfinished) {
+            super(item, amount, unfinished);
+            this.tag = tag;
+        }
+
+        @Override
+        public @NotNull MutableComponent getEntryName() {
+            var tl = tag.location();
+            return Component.literal("Any #" + tl.getNamespace() + ":" + tl.getPath());
+        }
+    }
 }
