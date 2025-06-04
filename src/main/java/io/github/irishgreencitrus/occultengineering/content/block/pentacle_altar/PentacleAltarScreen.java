@@ -1,8 +1,8 @@
 package io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar;
 
 import com.google.common.collect.ImmutableList;
-import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
-import com.klikli_dev.modonomicon.data.MultiblockDataManager;
+import com.klikli_dev.occultism.registry.OccultismRecipes;
+import com.mojang.datafixers.util.Pair;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
@@ -26,7 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -51,14 +50,23 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
         super.init();
         int x = leftPos;
         int y = topPos + 2;
-        // TODO: we might have an issue if other mods use Modonomicon's multiblocks as well,
-        //  so we could add a way to distinguish between only pentacles
-        Map<ResourceLocation, Multiblock> multiblocks = MultiblockDataManager.get().getMultiblocks();
+
+        var multiblocks = getMenu()
+                .player
+                .level()
+                .getRecipeManager()
+                .getAllRecipesFor(OccultismRecipes.RITUAL_TYPE.get())
+                .stream()
+                .map(i -> new Pair<>(i.getPentacleId(), i.getPentacle()))
+                .distinct()
+                .collect(Pair.toMap());
+
         List<ResourceLocation> optionList = multiblocks
                 .keySet()
                 .stream()
                 .sorted()
                 .toList();
+
         List<? extends Component> visibleOptions = optionList
                 .stream()
                 .map(it -> Component.translatable("multiblock." + it.getNamespace() + "." + it.getPath()))
