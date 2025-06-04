@@ -85,7 +85,6 @@ public class PentacleSchematic {
             var targetState = r.getStateMatcher().getDisplayedState(level.getGameTime());
             if (r.getStateMatcher() instanceof TagMatcher tagMatcher) {
                 var tagAccess = (TagMatcherAccessor) tagMatcher;
-                OccultEngineering.LOGGER.info("Need to match {}", tagAccess.getTag().get().location());
 
                 // We can get away with using a block tag as the items have to be able to be placed in order to even get here.
                 var tagRequirement = new BlockTagRequirement(

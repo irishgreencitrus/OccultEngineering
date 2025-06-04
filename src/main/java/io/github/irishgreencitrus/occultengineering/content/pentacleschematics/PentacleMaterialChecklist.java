@@ -78,6 +78,18 @@ public class PentacleMaterialChecklist {
         }
     }
 
+    public void clear() {
+        damageRequired.clear();
+        required.clear();
+
+        gathered.clear();
+
+        gatheredTag.clear();
+        requiredTag.clear();
+
+        blocksNotLoaded = false;
+    }
+
     private void putOrIncrement(Object2IntMap<Item> map, ItemStack stack) {
         Item item = stack.getItem();
         if (item == Items.AIR)
@@ -165,7 +177,7 @@ public class PentacleMaterialChecklist {
             if (itemsWritten == MAX_ENTRIES_PER_PAGE) {
                 itemsWritten = 0;
                 textComponent.append(Component.literal("\n >>>")
-                        .withStyle(ChatFormatting.DARK_GREEN));
+                        .withStyle(entry.unfinished ? ChatFormatting.DARK_GRAY : ChatFormatting.DARK_GREEN));
                 pages.add(toBookPage(textComponent));
                 textComponent = Component.empty();
             }
@@ -178,7 +190,7 @@ public class PentacleMaterialChecklist {
 
         tag.put("pages", pages);
         tag.putBoolean("readonly", true);
-        tag.putString("author", "Schematicannon");
+        tag.putString("author", "Púcalith");
         tag.putString("title", ChatFormatting.BLUE + "Material Checklist");
         textComponent = CreateLang.translateDirect("materialChecklist")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)
@@ -215,14 +227,14 @@ public class PentacleMaterialChecklist {
         for (var entry : checklistEntries) {
             if (itemsWritten == MAX_ENTRIES_PER_CLIPBOARD_PAGE) {
                 itemsWritten = 0;
-                currentPage.add(new ClipboardEntry(true, Component.literal(">>>")
-                        .withStyle(ChatFormatting.DARK_GREEN)));
+                currentPage.add(new ClipboardEntry(!entry.unfinished, Component.literal(">>>")
+                        .withStyle(entry.unfinished ? ChatFormatting.DARK_GRAY : ChatFormatting.DARK_GREEN)));
                 pages.add(currentPage);
                 currentPage = new ArrayList<>();
             }
 
             itemsWritten++;
-            currentPage.add(new ClipboardEntry(true, entry.format(false))
+            currentPage.add(new ClipboardEntry(!entry.unfinished, entry.format(false))
                     .displayItem(entry.item, 0));
         }
 
@@ -261,10 +273,12 @@ public class PentacleMaterialChecklist {
             if (gathered.containsKey(item))
                 amount -= gathered.getInt(item);
 
-            if (amount <= 0)
+            if (amount <= 0) {
                 completedItem.add(item);
+                continue;
+            }
 
-            checklistEntries.add(new ChecklistItemEntry(item, amount));
+            checklistEntries.add(new ChecklistItemEntry(item, amount, true));
         }
 
         List<TagKey<Block>> completedTag = new ArrayList<>();
@@ -281,7 +295,7 @@ public class PentacleMaterialChecklist {
                 continue;
             }
 
-            checklistEntries.add(new ChecklistTagEntry(blockTag, getRepresentativeItem(blockTag), amount));
+            checklistEntries.add(new ChecklistTagEntry(blockTag, getRepresentativeItem(blockTag), amount, true));
         }
 
         for (var item : completedItem) {
@@ -365,10 +379,6 @@ public class PentacleMaterialChecklist {
     }
 
     private class ChecklistItemEntry extends ChecklistEntry {
-        private ChecklistItemEntry(Item item, int amount) {
-            this(new ItemStack(item), amount, true);
-        }
-
         private ChecklistItemEntry(Item item, int amount, boolean unfinished) {
             this(new ItemStack(item), amount, unfinished);
         }
@@ -385,10 +395,6 @@ public class PentacleMaterialChecklist {
 
     private class ChecklistTagEntry extends ChecklistEntry {
         TagKey<Block> tag;
-
-        private ChecklistTagEntry(TagKey<Block> tag, ItemStack representative, int amount) {
-            this(tag, representative, amount, true);
-        }
 
         private ChecklistTagEntry(TagKey<Block> tag, Item item, int amount, boolean unfinished) {
             this(tag, new ItemStack(item), amount, unfinished);
