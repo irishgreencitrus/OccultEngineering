@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -72,8 +73,8 @@ public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
         inputClipboard = new SlotItemHandler(contentHolder.inventory, slot++, 113, 21) {
             @Override
             public boolean mayPlace(@NotNull ItemStack stack) {
-                // TODO: add books once that is done
-                return AllBlocks.CLIPBOARD.isIn(stack);
+                return AllBlocks.CLIPBOARD.isIn(stack)
+                        || stack.is(Items.BOOK) || stack.is(Items.WRITTEN_BOOK) || stack.is(Items.WRITABLE_BOOK);
             }
         };
 
@@ -91,7 +92,7 @@ public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
 
         int inventoryY = OccultEngineeringGuiTextures.PUCALITH.getHeight() + 4 + 18;
 
-        addPlayerSlots(28, inventoryY);
+        addPlayerSlots(27, inventoryY);
     }
 
     @Override
@@ -110,7 +111,7 @@ public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
             moveItemStackTo(stack, 4, slots.size(), false);
         } else {
             moveItemStackTo(stack, 0, 1, false);
-            moveItemStackTo(stack, 3, 4, false);
+            moveItemStackTo(stack, 2, 3, false);
         }
         return ItemStack.EMPTY;
     }

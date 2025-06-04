@@ -1,5 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.block.pucalith;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -10,6 +11,7 @@ import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.P
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringTags;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,13 +26,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvider, IInteractionChecker, IHaveGoggleInformation {
+    public static final int NEIGHBOUR_CHECK_MAX = 100;
+
     public PucalithInventory inventory;
 
     // fluid
@@ -38,10 +45,17 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
 
     // printer
     public PentaclePrinter printer;
+    public PentacleSchematic schematic;
     public PentacleMaterialChecklist checklist;
-    private boolean updateChecklist = false;
+
+    // sync
+    public boolean sendUpdate = false;
+    public boolean shouldUpdateChecklist = false;
+    public int neighborCheckCooldown = 0;
+
     public BlockPos previousTarget;
     public boolean hasCreativeCrate = false;
+    public LinkedHashSet<LazyOptional<IItemHandler>> attachedInventories;
 
     public final int MAX_TANK_CAPACITY_MB = 2000;
 
@@ -50,6 +64,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         inventory = new PucalithInventory();
         printer = new PentaclePrinter();
         checklist = new PentacleMaterialChecklist();
+        attachedInventories = new LinkedHashSet<>();
         internalTank.getPrimaryTank().getTotalUnits(0);
     }
 
@@ -74,11 +89,21 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
     public void tick() {
         super.tick();
 
+        if (neighborCheckCooldown-- <= 0) {
+            neighborCheckCooldown = NEIGHBOUR_CHECK_MAX;
+            findInventories();
+        }
+
         // TODO: search for inventories near the pucalith
         if (level.isClientSide)
             return;
 
         tickBookPrinter();
+
+        if (sendUpdate) {
+            sendUpdate = false;
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 6);
+        }
     }
 
     public void tickBookPrinter() {
@@ -93,6 +118,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
             if (!schematicItem.isEmpty()) {
                 var schem = PentacleSchematic.fromStack(level, schematicItem);
                 schem.ifPresent(schematic -> {
+                    this.schematic = schematic;
                     checklist = new PentacleMaterialChecklist();
                     checklist.require(schematic.getItemRequirement());
 
@@ -103,28 +129,74 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         }
 
         if (clipboard.isEmpty() || outputFull) {
-            updateChecklist = true;
+            shouldUpdateChecklist = true;
             return;
         }
 
         // TODO: add a short timer to this, like the schematicannon
-        if (updateChecklist) {
+        if (shouldUpdateChecklist) {
             updateChecklist();
         }
 
-        updateChecklist = false;
+        shouldUpdateChecklist = false;
         ItemStack extractedItem = inventory.extractItem(clipboardIn, 1, false);
 
-        // TODO: don't assume the checklist is a clipboard.
-        ItemStack stack = checklist.createWrittenClipboard();
+        ItemStack stack = AllBlocks.CLIPBOARD.isIn(extractedItem) ? checklist.createWrittenClipboard() : checklist.createWrittenBook();
 
         stack.setCount(inventory.getStackInSlot(clipboardOut).getCount() + 1);
         inventory.setStackInSlot(clipboardOut, stack);
     }
 
+    public void findInventories() {
+        hasCreativeCrate = false;
+        attachedInventories.clear();
+        for (Direction face : Iterate.directions) {
+            var rel = worldPosition.relative(face);
+            if (level == null || !level.isLoaded(rel)) continue;
+
+            if (AllBlocks.CREATIVE_CRATE.has(level.getBlockState(rel))) {
+                hasCreativeCrate = true;
+                return;
+            }
+
+            var be = level.getBlockEntity(rel);
+            if (be == null) continue;
+
+            LazyOptional<IItemHandler> itemHandler = be.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite());
+            if (itemHandler.isPresent()) {
+                attachedInventories.add(itemHandler);
+            }
+        }
+    }
+
     public void updateChecklist() {
         // TODO: update the checklist based on items in attached inventories
+        checklist.clear();
 
+        if (schematic == null) return;
+        checklist.require(schematic.getItemRequirement());
+
+        findInventories();
+
+        for (var cap : attachedInventories) {
+            if (!cap.isPresent()) continue;
+
+            IItemHandler inventory = cap.orElse(EmptyHandler.INSTANCE);
+
+            for (int slot = 0; slot < inventory.getSlots(); slot++) {
+                ItemStack stack = inventory.getStackInSlot(slot);
+                if (inventory.extractItem(slot, 1, true).isEmpty()) continue;
+
+                checklist.collect(stack);
+            }
+        }
+        sendUpdate = true;
+    }
+
+    @Override
+    public void lazyTick() {
+        super.lazyTick();
+        findInventories();
     }
 
     @Override
