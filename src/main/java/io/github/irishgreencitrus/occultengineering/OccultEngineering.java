@@ -55,10 +55,12 @@ public class OccultEngineering {
         OccultEngineeringBlocks.register();
         OccultEngineeringBlockEntities.register();
         OccultEngineeringMenuTypes.register();
+        OccultEngineeringEntities.register();
         OccultEngineeringPackets.registerPackets();
 
         OccultEngineeringConfig.register(modLoadingContext);
 
+        modEventBus.addListener(OccultEngineeringEntities::registerEntityAttributes);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> OccultEngineeringClient.onCtorClient(modEventBus));
         OcEngCurios.init(modEventBus);
         LOGGER.info("Setup is complete.");
