@@ -1,7 +1,5 @@
 package io.github.irishgreencitrus.occultengineering.content.entity;
 
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
@@ -61,15 +59,5 @@ public class PucaEntity extends LivingEntity implements GeoEntity {
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.5)
                 .add(Attributes.ARMOR, 2.0);
-    }
-
-    @Override
-    public boolean shouldShowName() {
-        return hasCustomName() && isCustomNameVisible();
-    }
-
-    @Override
-    public ResourceLocation getLootTable() {
-        return OccultEngineering.asResource("blocks/brass_chalk");
     }
 }

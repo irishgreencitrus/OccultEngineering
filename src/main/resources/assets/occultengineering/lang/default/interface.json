@@ -11,5 +11,6 @@
   "ritual.occultengineering.craft_otherworld_detector.interrupted": "Binding of Púca interrupted.",
   "ritual.occultengineering.craft_otherworld_detector.started": "Started binding Púca into an otherworld detector.",
   "gui.occultengineering.pentacle_altar.title": "Pentacle Altar",
-  "gui.occultengineering.pucalith.title": "Púcalith"
+  "gui.occultengineering.pucalith.title": "Púcalith",
+  "entity.occultengineering.puca": "Púca"
 }

@@ -55,7 +55,7 @@ public class OccultEngineering {
         OccultEngineeringBlocks.register();
         OccultEngineeringBlockEntities.register();
         OccultEngineeringMenuTypes.register();
-        OccultEngineeringEntities.register();
+        OccultEngineeringEntities.register(modEventBus);
         OccultEngineeringPackets.registerPackets();
 
         OccultEngineeringConfig.register(modLoadingContext);
