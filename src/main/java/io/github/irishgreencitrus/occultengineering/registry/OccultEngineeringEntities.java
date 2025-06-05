@@ -1,8 +1,8 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import io.github.irishgreencitrus.occultengineering.content.entity.PucaEntity;
-import io.github.irishgreencitrus.occultengineering.content.entity.PucaRenderer;
+import io.github.irishgreencitrus.occultengineering.content.entity.puca.PucaEntity;
+import io.github.irishgreencitrus.occultengineering.content.entity.puca.PucaRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -17,7 +17,7 @@ public class OccultEngineeringEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, OccultEngineering.MODID);
 
     public static final NonNullLazy<EntityType<PucaEntity>> PUCA_TYPE = NonNullLazy.of(
-            () -> EntityType.Builder.of(PucaEntity::new, MobCategory.CREATURE)
+            () -> EntityType.Builder.of(PucaEntity::genericPuca, MobCategory.CREATURE)
                     .sized(0.625f, 1.875f)
                     .clientTrackingRange(8)
                     .build(OccultEngineering.asResource("puca").toString())

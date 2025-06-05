@@ -13,6 +13,7 @@ import io.github.irishgreencitrus.occultengineering.content.item.CombinedGoggles
 import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
@@ -94,6 +95,12 @@ public class OccultEngineeringItems {
             .item("pentacle_schematic", PentacleSchematicItem::new)
             .properties(p -> p.stacksTo(1))
             .lang("Pentacle Schematic")
+            .register();
+
+    public static final ItemEntry<ForgeSpawnEggItem> SPAWN_EGG_PUCA = REGISTRATE
+            .item("puca_spawn_egg", p -> new ForgeSpawnEggItem(OccultEngineeringEntities.PUCA_TYPE::get, 0x242424, 0xd69c13, p))
+            .model((c, p) -> p.withExistingParent(c.getName(), p.mcLoc("item/template_spawn_egg")))
+            .lang("Púca Spawn Egg")
             .register();
 
     // TODO: change texture of impure chalks

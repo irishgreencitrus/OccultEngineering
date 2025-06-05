@@ -1,13 +1,16 @@
-package io.github.irishgreencitrus.occultengineering.content.entity;
+package io.github.irishgreencitrus.occultengineering.content.entity.puca;
 
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringEntities;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -15,7 +18,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
@@ -40,7 +42,7 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     }
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-    private final Purpose currentPurpose;
+    private Purpose currentPurpose;
     private ItemStack heldItem;
 
     @SuppressWarnings("unchecked")
@@ -50,6 +52,16 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         currentPurpose = Purpose.NONE;
     }
 
+    public PucaEntity(Level level, ItemStack heldItem, BlockState stateToPlace, BlockPos pos) {
+        this(OccultEngineeringEntities.PUCA.get(), level);
+        currentPurpose = Purpose.PLACE_PENTACLE;
+        this.heldItem = heldItem;
+    }
+
+    // Required to make the entity builder happy
+    public static PucaEntity genericPuca(EntityType<?> entityType, Level level) {
+        return new PucaEntity(entityType, level);
+    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
@@ -62,11 +74,10 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return LivingEntity.createLivingAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
-                .add(Attributes.ARMOR, 2.0)
-                .add(Attributes.FOLLOW_RANGE, 50.0);
+                .add(Attributes.ARMOR, 2.0);
     }
 
     @Override
@@ -81,7 +92,7 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     public BrainActivityGroup<PucaEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
                 new LookAtTarget<>(),
-                new MoveToWalkTarget<>()
+                new HopToWalkTarget<>()
         );
     }
 

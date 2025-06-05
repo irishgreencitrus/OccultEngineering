@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.entity;
+package io.github.irishgreencitrus.occultengineering.content.entity.puca;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.util.Mth;

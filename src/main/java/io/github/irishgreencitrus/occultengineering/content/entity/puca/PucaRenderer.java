@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.entity;
+package io.github.irishgreencitrus.occultengineering.content.entity.puca;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
