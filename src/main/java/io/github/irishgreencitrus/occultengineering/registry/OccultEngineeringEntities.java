@@ -2,8 +2,10 @@ package io.github.irishgreencitrus.occultengineering.registry;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.entity.PucaEntity;
+import io.github.irishgreencitrus.occultengineering.content.entity.PucaRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -29,5 +31,9 @@ public class OccultEngineeringEntities {
 
     public static void registerEntityAttributes(final EntityAttributeCreationEvent event) {
         event.put(PUCA.get(), PucaEntity.createAttributes().build());
+    }
+
+    public static void clientRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(PUCA.get(), PucaRenderer::new);
     }
 }

@@ -2,6 +2,7 @@ package io.github.irishgreencitrus.occultengineering;
 
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.ponder.OccultEngineeringPonderPlugin;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringEntities;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPartialModels;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -14,6 +15,7 @@ public class OccultEngineeringClient {
         OccultEngineeringPartialModels.register();
 
         modEventBus.addListener(OccultEngineeringClient::setup);
+        modEventBus.addListener(OccultEngineeringEntities::clientRegisterRenderers);
         OccultEngineering.LOGGER.info("Client setup is complete.");
     }
 

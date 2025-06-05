@@ -1,5 +1,45 @@
 {
-  "format_version": "1.8.0",
-  "animations": {},
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true,
+			"animation_length": 4.0417,
+			"bones": {
+				"LeftPaw": {
+					"rotation": {
+						"0.0": {
+							"vector": [
+								20,
+								0,
+								-10
+							]
+						},
+						"2.0": {
+							"vector": [
+								37.5,
+								0,
+								-10
+							],
+							"easing": "easeInOutSine"
+						},
+						"4.0": {
+							"vector": [
+								20,
+								0,
+								-10
+							],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		},
+		"idle_all_fours": {
+			"loop": true
+		},
+		"jump": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
 }

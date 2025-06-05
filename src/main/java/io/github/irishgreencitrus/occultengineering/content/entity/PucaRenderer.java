@@ -7,6 +7,4 @@ public class PucaRenderer extends GeoEntityRenderer<PucaEntity> {
     public PucaRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new PucaModel());
     }
-
-
 }
