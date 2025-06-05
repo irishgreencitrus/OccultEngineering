@@ -27,6 +27,10 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -42,8 +46,10 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     }
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-    private Purpose currentPurpose;
-    private ItemStack heldItem;
+
+    protected Purpose currentPurpose;
+    protected ItemStack heldItem;
+    protected boolean hasJumped = false;
 
     @SuppressWarnings("unchecked")
     public PucaEntity(EntityType<?> entityType, Level level) {
@@ -63,9 +69,25 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         return new PucaEntity(entityType, level);
     }
 
+    public void jumpNow() {
+        this.jumpControl.jump();
+        hasJumped = true;
+    }
+
+    public boolean getHasJumped() {
+        return hasJumped;
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "main", 1, this::animPredicate));
 
+    }
+
+    public PlayState animPredicate(AnimationState<PucaEntity> animState) {
+        if (!animState.getAnimatable().onGround())
+            return animState.setAndContinue(RawAnimation.begin().thenPlay("jump"));
+        return animState.setAndContinue(RawAnimation.begin().thenPlay("idle"));
     }
 
     @Override
@@ -119,6 +141,14 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     @Override
     protected void customServerAiStep() {
         tickBrain(this);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (onGround()) {
+            hasJumped = false;
+        }
     }
 
     @Override

@@ -2,7 +2,9 @@ package io.github.irishgreencitrus.occultengineering.content.block.pucalith;
 
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
+import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
+import com.simibubi.create.foundation.gui.widget.IconButton;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringGuiTextures;
 import net.createmod.catnip.gui.element.GuiGameElement;
@@ -23,6 +25,9 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
     private final ItemStack renderedItem = OccultEngineeringBlocks.PUCALITH.asStack();
     private List<Rect2i> extraAreas = Collections.emptyList();
 
+    private IconButton stopButton;
+    private IconButton playPauseButton;
+
     public PucalithScreen(PucalithMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         background = OccultEngineeringGuiTextures.PUCALITH;
@@ -34,7 +39,11 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
         setWindowOffset(-11, 8);
         super.init();
         int x = leftPos;
-        int y = topPos + 2;
+        int y = topPos;
+
+        stopButton = new IconButton(x + 91, y + 73, AllIcons.I_STOP);
+        playPauseButton = new IconButton(x + 110, y + 73, AllIcons.I_PLAY);
+        addRenderableWidgets(playPauseButton, stopButton);
 
         extraAreas = ImmutableList.of(
                 new Rect2i(x + background.getWidth(), y + background.getHeight() - 40, 48, 48)

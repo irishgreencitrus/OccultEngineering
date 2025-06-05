@@ -94,8 +94,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
             findInventories();
         }
 
-        // TODO: search for inventories near the pucalith
-        if (level.isClientSide)
+        if (level == null || level.isClientSide)
             return;
 
         tickBookPrinter();
@@ -170,7 +169,6 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
     }
 
     public void updateChecklist() {
-        // TODO: update the checklist based on items in attached inventories
         checklist.clear();
 
         if (schematic == null) return;

@@ -4,14 +4,14 @@ import com.google.common.collect.ImmutableList;
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
 import com.klikli_dev.modonomicon.multiblock.matcher.TagMatcher;
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
+import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
 import com.simibubi.create.content.schematics.SchematicPrinter;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import io.github.irishgreencitrus.occultengineering.mixin.accessor.TagMatcherAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Comparator;
@@ -38,9 +39,8 @@ public class PentaclePrinter {
 
     private List<BlockPos> positionToPrint;
     private int currentPosIndex = 0;
-    private Map<BlockPos, BlockState> blocksToPlace = new HashMap<>();
-    private Map<BlockPos, TagKey<Block>> tagsToPlace = new HashMap<>();
-    private boolean initialised = false;
+    private Map<BlockPos, Either<BlockState, TagKey<Block>>> toPlace = new HashMap<>();
+    private boolean initialised;
     private Level level;
 
     public PentaclePrinter() {
@@ -71,9 +71,9 @@ public class PentaclePrinter {
             //  but edit here if I'm proven wrong.
             if (result.getStateMatcher() instanceof TagMatcher tm) {
                 var tagAccessor = (TagMatcherAccessor) tm;
-                tagsToPlace.put(result.getWorldPosition(), tagAccessor.getTag().get());
+                toPlace.put(result.getWorldPosition(), Either.right(tagAccessor.getTag().get()));
             } else {
-                blocksToPlace.put(result.getWorldPosition(), result.getStateMatcher().getDisplayedState(0));
+                toPlace.put(result.getWorldPosition(), Either.left(result.getStateMatcher().getDisplayedState(0)));
             }
         }
 
@@ -86,46 +86,54 @@ public class PentaclePrinter {
 
     private int tickCount = 0;
 
-    public void serverTick() {
-        if (tickCount % 20 == 0) {
-            placeNextBlock();
-            tickCount = 0;
-        }
-        tickCount++;
-    }
-
     /// @return If a block was successfully placed
     public boolean placeNextBlock() {
-        if (currentPosIndex >= positionToPrint.size()) {
+        if (!hasNextPlace()) {
             this.initialised = false;
             return false;
         }
 
-        var pos = positionToPrint.get(currentPosIndex);
-        currentPosIndex++;
-        if (blocksToPlace.containsKey(pos)) {
-            var state = blocksToPlace.get(pos);
+        var pos = positionToPrint.get(currentPosIndex++);
 
-            setBlock(level, pos, state);
-            return true;
+        assert toPlace.containsKey(pos);
 
-        } else if (tagsToPlace.containsKey(pos)) {
-            var tag = tagsToPlace.get(pos);
-            ImmutableList<Holder<Block>> all = ImmutableList.copyOf(BuiltInRegistries.BLOCK.getTagOrEmpty(tag));
+        var nextToPlace = toPlace.get(pos);
+
+        if (nextToPlace.left().isPresent()) {
+            setBlock(level, pos, nextToPlace.left().get());
+        } else {
+            var tag = nextToPlace.right().get();
+            ImmutableList<Block> all = ImmutableList.copyOf(ForgeRegistries.BLOCKS.tags().getTag(tag));
 
             if (all.isEmpty()) {
                 return false;
             }
 
-            var state = all.get(0).get().defaultBlockState();
+            var state = all.get(0).defaultBlockState();
             setBlock(level, pos, state);
-            return true;
         }
+        return true;
+    }
 
-        if (currentPosIndex == positionToPrint.size() - 1)
-            this.initialised = false;
+    public boolean hasNextPlace() {
+        return (currentPosIndex < positionToPrint.size() && currentPosIndex > 0) || !isInitialised();
+    }
 
-        return false;
+    public Either<BlockState, TagKey<Block>> getNextStateToPlace() {
+        return toPlace.get(
+                positionToPrint.get(currentPosIndex)
+        );
+    }
+
+    public Pair<BlockPos, Either<BlockState, TagKey<Block>>> getNextToPlace() {
+        var pos = positionToPrint.get(currentPosIndex);
+        return Pair.of(pos, toPlace.get(pos));
+    }
+
+    public Pair<BlockPos, Either<BlockState, TagKey<Block>>> popNextToPlace() {
+        var x = getNextToPlace();
+        currentPosIndex++;
+        return x;
     }
 
     Direction[] validHorizontalDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};

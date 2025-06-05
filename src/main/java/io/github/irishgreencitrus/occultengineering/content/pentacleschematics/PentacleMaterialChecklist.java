@@ -326,6 +326,16 @@ public class PentacleMaterialChecklist {
         return new ItemStack(all.get(0).get());
     }
 
+    public static class GatheredTagItem {
+        public final TagKey<Block> tag;
+        public final Item item;
+
+        public GatheredTagItem(TagKey<Block> tag, Item stack) {
+            this.tag = tag;
+            this.item = stack;
+        }
+    }
+
     public abstract static class ChecklistEntry {
         public final ItemStack item;
         public final int amount;
@@ -366,16 +376,6 @@ public class PentacleMaterialChecklist {
         }
 
         public abstract @NotNull MutableComponent getEntryName();
-    }
-
-    public class GatheredTagItem {
-        public final TagKey<Block> tag;
-        public final Item item;
-
-        public GatheredTagItem(TagKey<Block> tag, Item stack) {
-            this.tag = tag;
-            this.item = stack;
-        }
     }
 
     private class ChecklistItemEntry extends ChecklistEntry {
