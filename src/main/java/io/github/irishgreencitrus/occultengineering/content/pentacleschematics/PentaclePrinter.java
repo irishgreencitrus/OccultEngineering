@@ -84,12 +84,18 @@ public class PentaclePrinter {
         return initialised;
     }
 
-    private int tickCount = 0;
+    public void deinit() {
+        initialised = false;
+        level = null;
+        schematic = null;
+        anchor = null;
+        toPlace.clear();
+    }
 
     /// @return If a block was successfully placed
     public boolean placeNextBlock() {
         if (!hasNextPlace()) {
-            this.initialised = false;
+            deinit();
             return false;
         }
 
@@ -156,6 +162,20 @@ public class PentaclePrinter {
                     .setPlacedBy(level, pos, state, null, new ItemStack(state.getBlock()));
         } catch (Exception ignore) {
         }
+    }
+
+    public ItemRequirement getStillToPlaceRequrement() {
+        if (!initialised) return ItemRequirement.INVALID;
+        var newRequirement = ItemRequirement.NONE;
+        var currentRequirement = schematic.getItemRequirement();
+
+        // TODO: finish this
+        //  we need to remove all the requirements that are filled by already placed blocks.
+        for (var requirement : currentRequirement.getRequiredItems()) {
+            currentRequirement = currentRequirement.union(new ItemRequirement(requirement));
+
+        }
+        return newRequirement;
     }
 
     public ItemRequirement getCurrentRequirement() {

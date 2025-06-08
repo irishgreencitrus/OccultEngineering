@@ -1,9 +1,21 @@
 package io.github.irishgreencitrus.occultengineering.content.entity.puca;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Dynamic;
+import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.content.entity.brain.DynamicBrain;
+import io.github.irishgreencitrus.occultengineering.content.entity.brain.DynamicBrainSupplantable;
+import io.github.irishgreencitrus.occultengineering.content.entity.puca.brain.PucaBrain;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBrains;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringEntities;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,17 +25,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.SmartBrain;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
-import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -39,28 +44,27 @@ import java.util.List;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOwner<PucaEntity> {
-    enum Purpose {
-        NONE,
-        PLACE_PENTACLE
-    }
-
+public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOwner<PucaEntity>, DynamicBrainSupplantable {
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    protected Purpose currentPurpose;
+
+    // This needs to be nullable, as the super() constructor calls some of these
+    // methods before we have a chance to set the brain up.
+    protected @Nullable PucaBrain dynamicBrain;
     protected ItemStack heldItem;
     protected boolean hasJumped = false;
+
+    protected static final EntityDataAccessor<String> DYNAMIC_BRAIN_ID = SynchedEntityData.defineId(PucaEntity.class, EntityDataSerializers.STRING);
 
     @SuppressWarnings("unchecked")
     public PucaEntity(EntityType<?> entityType, Level level) {
         super((EntityType<? extends PathfinderMob>) entityType, level);
         heldItem = ItemStack.EMPTY;
-        currentPurpose = Purpose.NONE;
+        supplantBrain(OccultEngineeringBrains.PUCA_WANDER.get().create(this));
     }
 
     public PucaEntity(Level level, ItemStack heldItem, BlockState stateToPlace, BlockPos pos) {
         this(OccultEngineeringEntities.PUCA.get(), level);
-        currentPurpose = Purpose.PLACE_PENTACLE;
         this.heldItem = heldItem;
     }
 
@@ -72,6 +76,8 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     public void jumpNow() {
         this.jumpControl.jump();
         hasJumped = true;
+
+        triggerAnim("main", "jump");
     }
 
     public boolean getHasJumped() {
@@ -80,13 +86,14 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "main", 1, this::animPredicate));
+        controllerRegistrar.add(new AnimationController<>(this, "main", 1, this::animPredicate)
+                .triggerableAnim("jump", RawAnimation.begin().thenPlayAndHold("jump")));
 
     }
 
     public PlayState animPredicate(AnimationState<PucaEntity> animState) {
         if (!animState.getAnimatable().onGround())
-            return animState.setAndContinue(RawAnimation.begin().thenPlay("jump"));
+            return PlayState.CONTINUE;
         return animState.setAndContinue(RawAnimation.begin().thenPlay("idle"));
     }
 
@@ -102,44 +109,53 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
                 .add(Attributes.ARMOR, 2.0);
     }
 
+
+    @Override
+    protected Brain.Provider<?> brainProvider() {
+        return new SmartBrainProvider<>(this, true);
+    }
+
+    @Override
+    public void handleAdditionalBrainSetup(SmartBrain<? extends PucaEntity> brain) {
+        if (dynamicBrain != null) {
+            dynamicBrain.onBrainSetup(brain);
+        }
+    }
+
     @Override
     public List<? extends ExtendedSensor<? extends PucaEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<>(),
-                new HurtBySensor<>()
-        );
+        return dynamicBrain != null ? dynamicBrain.getSensors() : ImmutableList.of();
     }
 
     @Override
     public BrainActivityGroup<PucaEntity> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
-                new LookAtTarget<>(),
-                new HopToWalkTarget<>()
-        );
+        return dynamicBrain != null ? dynamicBrain.getCoreTasks() : BrainActivityGroup.empty();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public BrainActivityGroup<PucaEntity> getIdleTasks() {
-        return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<PucaEntity>(
-                        new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()
-                ),
-                new OneRandomBehaviour<>(
-                        new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))
-                )
-        );
+        return dynamicBrain != null ? dynamicBrain.getIdleTasks() : BrainActivityGroup.empty();
     }
 
-    @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
+    public void supplantBrain(DynamicBrain<? extends LivingEntity> newBrain) {
+        OccultEngineering.LOGGER.info("Supplanting {}", newBrain.brainID.toString());
+        if (dynamicBrain != null) {
+            dynamicBrain.onCleanup();
+        }
+        dynamicBrain = (PucaBrain) newBrain;
+        remakeBrain();
+    }
+
+    public void remakeBrain() {
+        NbtOps nbtops = NbtOps.INSTANCE;
+        this.brain = this.makeBrain(new Dynamic<>(nbtops, nbtops.createMap(ImmutableMap.of(nbtops.createString("memories"), nbtops.emptyMap()))));
     }
 
     @Override
     protected void customServerAiStep() {
+        if (dynamicBrain != null) {
+            dynamicBrain.tick();
+        }
         tickBrain(this);
     }
 
@@ -173,5 +189,21 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         if (equipmentSlot == EquipmentSlot.MAINHAND) {
             heldItem = itemStack;
         }
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DYNAMIC_BRAIN_ID, "");
+    }
+
+    @Override
+    public CompoundTag serializeNBT() {
+        return super.serializeNBT();
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        super.deserializeNBT(nbt);
     }
 }

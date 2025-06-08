@@ -21,4 +21,8 @@ public class BlockTagRequirement extends ItemRequirement.StackRequirement {
         Block block = blockItem.getBlock();
         return block.defaultBlockState().is(tagKey);
     }
+
+    public boolean matches(TagKey<Block> blockTag) {
+        return tagKey.equals(blockTag);
+    }
 }

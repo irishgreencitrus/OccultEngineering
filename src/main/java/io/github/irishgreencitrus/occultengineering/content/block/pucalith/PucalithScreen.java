@@ -5,8 +5,10 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
+import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PucalithSendOptionPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringGuiTextures;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
     protected OccultEngineeringGuiTextures background;
@@ -27,6 +30,7 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
 
     private IconButton stopButton;
     private IconButton playPauseButton;
+    private IconButton exitCheckmarkButton;
 
     public PucalithScreen(PucalithMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -42,7 +46,22 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
         int y = topPos;
 
         stopButton = new IconButton(x + 91, y + 73, AllIcons.I_STOP);
-        playPauseButton = new IconButton(x + 110, y + 73, AllIcons.I_PLAY);
+        stopButton.withCallback(() -> {
+            sendStateUpdate(PucalithSendOptionPacket.Option.STOP);
+        });
+
+        playPauseButton = new IconButton(x + 110, y + 73,
+                getMenu().contentHolder.state == PucalithBlockEntity.State.RUNNING
+                        ? AllIcons.I_PAUSE : AllIcons.I_PLAY);
+        playPauseButton.withCallback(() -> {
+            var oldState = getMenu().contentHolder.state;
+            playPauseButton.setIcon(oldState == PucalithBlockEntity.State.RUNNING ? AllIcons.I_PLAY : AllIcons.I_PAUSE);
+            sendStateUpdate(PucalithSendOptionPacket.Option.PLAY);
+        });
+
+        exitCheckmarkButton = new IconButton(x + 159, y + 99, AllIcons.I_CONFIRM);
+        exitCheckmarkButton.withCallback(() -> Objects.requireNonNull(getMinecraft().player).closeContainer());
+
         addRenderableWidgets(playPauseButton, stopButton);
 
         extraAreas = ImmutableList.of(
@@ -81,6 +100,10 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
         }
         int fillHeight = (int) Math.floor(sprite.getHeight() * amount);
         graphics.blit(sprite.location, x + 10, y + 22 + (sprite.getHeight() - fillHeight), sprite.getStartX(), sprite.getStartY() + (sprite.getHeight() - fillHeight), sprite.getWidth(), fillHeight);
+    }
+
+    protected void sendStateUpdate(PucalithSendOptionPacket.Option option) {
+        OccultEngineeringPackets.getChannel().sendToServer(new PucalithSendOptionPacket(option));
     }
 
     @Override

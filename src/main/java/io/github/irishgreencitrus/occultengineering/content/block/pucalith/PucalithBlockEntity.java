@@ -6,21 +6,26 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.IInteractionChecker;
+import io.github.irishgreencitrus.occultengineering.content.entity.puca.PucaEntity;
 import io.github.irishgreencitrus.occultengineering.content.fluid.FilteredFluidTankBehaviour;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleMaterialChecklist;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
+import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic.ParseResult;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringTags;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,9 +39,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.UUID;
 
 public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvider, IInteractionChecker, IHaveGoggleInformation {
     public static final int NEIGHBOUR_CHECK_MAX = 100;
+
+    public enum State {
+        STOPPED,
+        PAUSED,
+        RUNNING
+    }
+
+    public State state;
 
     public PucalithInventory inventory;
 
@@ -46,7 +60,11 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
     // printer
     public PentaclePrinter printer;
     public PentacleSchematic schematic;
+    public ParseResult schematicParseResult;
     public PentacleMaterialChecklist checklist;
+
+    public PucaEntity pucaEntity;
+    public UUID pucaUUID;
 
     // sync
     public boolean sendUpdate = false;
@@ -66,6 +84,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         checklist = new PentacleMaterialChecklist();
         attachedInventories = new LinkedHashSet<>();
         internalTank.getPrimaryTank().getTotalUnits(0);
+        this.state = State.STOPPED;
     }
 
     public class PucalithInventory extends ItemStackHandler {
@@ -99,13 +118,20 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
 
         tickBookPrinter();
 
+        for (int skipsLeft = 1000; skipsLeft >= 0; skipsLeft--) {
+            var shouldTryAgain = tickPentaclePrinter();
+            if (!shouldTryAgain) break;
+        }
+
         if (sendUpdate) {
             sendUpdate = false;
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 6);
         }
     }
 
-    public void tickBookPrinter() {
+    //region Book Printer
+
+    protected void tickBookPrinter() {
         int clipboardIn = 2;
         int clipboardOut = 3;
 
@@ -116,7 +142,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         if (!printer.isInitialised()) {
             if (!schematicItem.isEmpty()) {
                 var schem = PentacleSchematic.fromStack(level, schematicItem);
-                schem.ifPresent(schematic -> {
+                schem.ifLeft(schematic -> {
                     this.schematic = schematic;
                     checklist = new PentacleMaterialChecklist();
                     checklist.require(schematic.getItemRequirement());
@@ -146,6 +172,36 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         inventory.setStackInSlot(clipboardOut, stack);
     }
 
+    public void updateChecklist() {
+        checklist.clear();
+
+        if (schematic == null) return;
+        if (printer.isInitialised()) {
+            checklist.require(printer.getStillToPlaceRequrement());
+        } else {
+            checklist.require(schematic.getItemRequirement());
+        }
+
+        findInventories();
+
+        for (var cap : attachedInventories) {
+            if (!cap.isPresent()) continue;
+
+            IItemHandler inventory = cap.orElse(EmptyHandler.INSTANCE);
+
+            for (int slot = 0; slot < inventory.getSlots(); slot++) {
+                ItemStack stack = inventory.getStackInSlot(slot);
+                if (inventory.extractItem(slot, 1, true).isEmpty()) continue;
+
+                checklist.collect(stack);
+            }
+        }
+        sendUpdate = true;
+    }
+
+    //endregion
+
+    //region Pentacle Printer
     public void findInventories() {
         hasCreativeCrate = false;
         attachedInventories.clear();
@@ -168,27 +224,100 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         }
     }
 
-    public void updateChecklist() {
-        checklist.clear();
+    /**
+     * @return Whether we should try placing a block again this tick (when skips are implemented properly)
+     */
+    protected boolean tickPentaclePrinter() {
+        assert level != null;
+        assert !level.isClientSide();
 
-        if (schematic == null) return;
-        checklist.require(schematic.getItemRequirement());
+        ItemStack blueprintItem = inventory.getStackInSlot(0);
 
-        findInventories();
+        if (blueprintItem.isEmpty() && state != State.STOPPED && inventory.getStackInSlot(1).isEmpty()) {
+            state = State.STOPPED;
+            sendUpdate = true;
+            return false;
+        }
 
-        for (var cap : attachedInventories) {
-            if (!cap.isPresent()) continue;
+        if (state == State.STOPPED) {
+            if (printer.isInitialised())
+                resetPrinter();
+            return false;
+        }
 
-            IItemHandler inventory = cap.orElse(EmptyHandler.INSTANCE);
+        if (!printer.isInitialised()) {
+            initPrinter(blueprintItem);
+            return false;
+        }
 
-            for (int slot = 0; slot < inventory.getSlots(); slot++) {
-                ItemStack stack = inventory.getStackInSlot(slot);
-                if (inventory.extractItem(slot, 1, true).isEmpty()) continue;
+        // TODO: if the pentacle isn't loaded, return out of this function
 
-                checklist.collect(stack);
+        // spawn or find the puca if it doesn't exist
+        if (pucaEntity == null) {
+            if (pucaUUID == null) {
+                // TODO: change this so it holds the next block
+                pucaEntity = new PucaEntity(level, ItemStack.EMPTY, Blocks.BEDROCK.defaultBlockState(), BlockPos.ZERO);
+                pucaUUID = pucaEntity.getUUID();
+                level.addFreshEntity(pucaEntity);
+            } else {
+                var e = ((ServerLevel) level).getEntity(pucaUUID);
+                if (e instanceof PucaEntity pe) {
+                    pucaEntity = pe;
+                } else {
+                    pucaUUID = null;
+                    pucaEntity = null;
+                    return false;
+                }
             }
         }
+        // TODO: cooldown from last block placed
+        // TODO: check we have enough spirit solution in the tank
+
+        var requirement = printer.getStillToPlaceRequrement();
+        // TODO: check we can place the next block
+        // TODO: pick out our next item from the inventory
+        // TODO: tell the puca to walk to where the next block needs to be placed and place it
         sendUpdate = true;
+
+
+        return false;
+    }
+
+    protected void initPrinter(ItemStack stack) {
+        var schem = PentacleSchematic.fromStack(level, stack);
+        sendUpdate = true;
+        if (schem.left().isEmpty()) {
+            // we had some sort of error loading the schematic
+            state = State.STOPPED;
+            schematicParseResult = schem.right().orElseThrow();
+            return;
+        }
+
+        schematic = schem.left().get();
+        printer.initialise(schematic);
+
+        state = State.PAUSED;
+        schematicParseResult = ParseResult.OK;
+    }
+
+    public void resetPrinter() {
+        printer.deinit();
+        checklist.clear();
+        schematic = null;
+
+    }
+    //endregion
+
+    public void onPlayButton() {
+
+    }
+
+    public void onPauseButton() {
+
+    }
+
+    public void onStopButton() {
+
     }
 
     @Override
@@ -197,15 +326,24 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         findInventories();
     }
 
+    private final String INVENTORY_TAG = "Inventory";
+    private final String PUCA_UUID_TAG = "PucaUUID";
+
     @Override
     protected void read(CompoundTag tag, boolean clientPacket) {
-        inventory.deserializeNBT(tag.getCompound("Inventory"));
+        inventory.deserializeNBT(tag.getCompound(INVENTORY_TAG));
+        if (tag.hasUUID(PUCA_UUID_TAG))
+            pucaUUID = NbtUtils.loadUUID(tag.getCompound(PUCA_UUID_TAG));
+
         super.read(tag, clientPacket);
     }
 
     @Override
     protected void write(CompoundTag tag, boolean clientPacket) {
-        tag.put("Inventory", inventory.serializeNBT());
+        tag.put(INVENTORY_TAG, inventory.serializeNBT());
+        if (pucaUUID != null)
+            tag.put(PUCA_UUID_TAG, NbtUtils.createUUID(pucaUUID));
+
         super.write(tag, clientPacket);
     }
 
