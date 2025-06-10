@@ -62,7 +62,7 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
         exitCheckmarkButton = new IconButton(x + 159, y + 99, AllIcons.I_CONFIRM);
         exitCheckmarkButton.withCallback(() -> Objects.requireNonNull(getMinecraft().player).closeContainer());
 
-        addRenderableWidgets(playPauseButton, stopButton);
+        addRenderableWidgets(playPauseButton, stopButton, exitCheckmarkButton);
 
         extraAreas = ImmutableList.of(
                 new Rect2i(x + background.getWidth(), y + background.getHeight() - 40, 48, 48)

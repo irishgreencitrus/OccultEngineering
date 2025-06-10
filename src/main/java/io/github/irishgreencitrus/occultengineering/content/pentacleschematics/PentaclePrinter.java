@@ -122,7 +122,8 @@ public class PentaclePrinter {
     }
 
     public boolean hasNextPlace() {
-        return (currentPosIndex < positionToPrint.size() && currentPosIndex > 0) || !isInitialised();
+        if (!isInitialised()) return false;
+        return currentPosIndex < positionToPrint.size() && currentPosIndex >= 0;
     }
 
     public Either<BlockState, TagKey<Block>> getNextStateToPlace() {

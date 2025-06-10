@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,6 +29,7 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrain;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -51,7 +53,10 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     // This needs to be nullable, as the super() constructor calls some of these
     // methods before we have a chance to set the brain up.
     protected @Nullable PucaBrain dynamicBrain;
-    protected ItemStack heldItem;
+    public @Nullable BlockPos returnHomePosition;
+    public @Nullable BlockPos nextTargetPos;
+    public @Nullable BlockState nextBlockState;
+    public @NotNull ItemStack heldItem = ItemStack.EMPTY;
     protected boolean hasJumped = false;
 
     protected static final EntityDataAccessor<String> DYNAMIC_BRAIN_ID = SynchedEntityData.defineId(PucaEntity.class, EntityDataSerializers.STRING);
@@ -59,8 +64,6 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     @SuppressWarnings("unchecked")
     public PucaEntity(EntityType<?> entityType, Level level) {
         super((EntityType<? extends PathfinderMob>) entityType, level);
-        heldItem = ItemStack.EMPTY;
-        supplantBrain(OccultEngineeringBrains.PUCA_WANDER.get().create(this));
     }
 
     public PucaEntity(Level level, ItemStack heldItem, BlockState stateToPlace, BlockPos pos) {
@@ -70,7 +73,9 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
 
     // Required to make the entity builder happy
     public static PucaEntity genericPuca(EntityType<?> entityType, Level level) {
-        return new PucaEntity(entityType, level);
+        var e = new PucaEntity(entityType, level);
+        e.supplantBrain(OccultEngineeringBrains.PUCA_WANDER.get().create(e));
+        return e;
     }
 
     public void jumpNow() {
@@ -146,6 +151,11 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         remakeBrain();
     }
 
+    public boolean dynamicBrainIs(ResourceLocation brainLoc) {
+        if (dynamicBrain == null) return false;
+        return dynamicBrain.brainID.equals(brainLoc);
+    }
+
     public void remakeBrain() {
         NbtOps nbtops = NbtOps.INSTANCE;
         this.brain = this.makeBrain(new Dynamic<>(nbtops, nbtops.createMap(ImmutableMap.of(nbtops.createString("memories"), nbtops.emptyMap()))));
@@ -165,6 +175,16 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         if (onGround()) {
             hasJumped = false;
         }
+    }
+
+    public void setReturnHomePosition(BlockPos position) {
+        this.returnHomePosition = position;
+    }
+
+    public void setNextPlacePosition(BlockPos position, BlockState state, ItemStack heldItem) {
+        this.nextTargetPos = position;
+        this.nextBlockState = state;
+        this.heldItem = heldItem;
     }
 
     @Override
@@ -191,6 +211,7 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         }
     }
 
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -198,12 +219,23 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     }
 
     @Override
-    public CompoundTag serializeNBT() {
-        return super.serializeNBT();
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        if (dynamicBrain != null)
+            compound.putString("DynamicBrainID", dynamicBrain.brainID.toString());
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        super.deserializeNBT(nbt);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.contains("DynamicBrainID")) {
+            var brainFactory = OccultEngineeringBrains.REGISTRY.get().getValue(ResourceLocation.tryParse(compound.getString("DynamicBrainID")));
+            if (brainFactory != null) {
+                var brain = brainFactory.create(this);
+                if (brain != null) {
+                    this.supplantBrain(brain);
+                }
+            }
+        }
     }
 }

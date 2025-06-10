@@ -6,12 +6,14 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import com.simibubi.create.foundation.utility.IInteractionChecker;
+import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.entity.puca.PucaEntity;
 import io.github.irishgreencitrus.occultengineering.content.fluid.FilteredFluidTankBehaviour;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleMaterialChecklist;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic.ParseResult;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBrains;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringTags;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
@@ -250,13 +252,16 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
             return false;
         }
 
-        // TODO: if the pentacle isn't loaded, return out of this function
+        if (!level.isLoaded(schematic.position)) {
+            return false;
+        }
 
         // spawn or find the puca if it doesn't exist
         if (pucaEntity == null) {
             if (pucaUUID == null) {
                 // TODO: change this so it holds the next block
                 pucaEntity = new PucaEntity(level, ItemStack.EMPTY, Blocks.BEDROCK.defaultBlockState(), BlockPos.ZERO);
+                pucaEntity.moveTo(this.getBlockPos().getCenter());
                 pucaUUID = pucaEntity.getUUID();
                 level.addFreshEntity(pucaEntity);
             } else {
@@ -270,8 +275,28 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
                 }
             }
         }
+
+        if (pucaEntity.nextBlockState != null) return false;
+
         // TODO: cooldown from last block placed
         // TODO: check we have enough spirit solution in the tank
+        if (getTankUsage() <= 0) {
+            return false;
+        }
+        if (!printer.hasNextPlace()) return false;
+        var nextToPlace = printer.popNextToPlace();
+        OccultEngineering.LOGGER.warn("Placing {} next", nextToPlace.toString());
+        if (nextToPlace.getSecond().left().isEmpty()) return false;
+
+        var state = nextToPlace.getSecond().orThrow();
+
+        pucaEntity.setNextPlacePosition(nextToPlace.getFirst(), state, new ItemStack(state.getBlock()));
+        pucaEntity.setReturnHomePosition(this.worldPosition);
+
+        if (!pucaEntity.dynamicBrainIs(OccultEngineeringBrains.PUCA_CONSTRUCT.getId())) {
+            OccultEngineering.LOGGER.warn("Pentacle printer summoning entity with brain {}", OccultEngineeringBrains.PUCA_CONSTRUCT.getId().toString());
+            pucaEntity.supplantBrain(OccultEngineeringBrains.PUCA_CONSTRUCT.get().create(pucaEntity));
+        }
 
         var requirement = printer.getStillToPlaceRequrement();
         // TODO: check we can place the next block
@@ -309,15 +334,15 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
     //endregion
 
     public void onPlayButton() {
-
+        state = State.RUNNING;
     }
 
     public void onPauseButton() {
-
+        state = State.PAUSED;
     }
 
     public void onStopButton() {
-
+        state = State.STOPPED;
     }
 
     @Override
@@ -328,12 +353,15 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
 
     private final String INVENTORY_TAG = "Inventory";
     private final String PUCA_UUID_TAG = "PucaUUID";
+    private final String CURRENT_STATE_TAG = "CurrentState";
 
     @Override
     protected void read(CompoundTag tag, boolean clientPacket) {
         inventory.deserializeNBT(tag.getCompound(INVENTORY_TAG));
         if (tag.hasUUID(PUCA_UUID_TAG))
-            pucaUUID = NbtUtils.loadUUID(tag.getCompound(PUCA_UUID_TAG));
+            pucaUUID = NbtUtils.loadUUID(tag.get(PUCA_UUID_TAG));
+        if (tag.contains(CURRENT_STATE_TAG))
+            state = State.valueOf(tag.getString(CURRENT_STATE_TAG));
 
         super.read(tag, clientPacket);
     }
@@ -343,6 +371,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         tag.put(INVENTORY_TAG, inventory.serializeNBT());
         if (pucaUUID != null)
             tag.put(PUCA_UUID_TAG, NbtUtils.createUUID(pucaUUID));
+        tag.putString(CURRENT_STATE_TAG, state.toString());
 
         super.write(tag, clientPacket);
     }

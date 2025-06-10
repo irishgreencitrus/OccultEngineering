@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PentacleAltarConfirmPacket;
+import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PucalithSendOptionPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -18,16 +19,16 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum OccultEngineeringPackets {
     // CLIENT TO SERVER
-    PENTACLE_ALTAR_CONFIRM(PentacleAltarConfirmPacket.class, PentacleAltarConfirmPacket::new, PLAY_TO_SERVER);
+    PENTACLE_ALTAR_CONFIRM(PentacleAltarConfirmPacket.class, PentacleAltarConfirmPacket::new, PLAY_TO_SERVER),
+    PUCALITH_SEND_OPTION(PucalithSendOptionPacket.class, PucalithSendOptionPacket::new, PLAY_TO_SERVER);
 
     public static final ResourceLocation CHANNEL_NAME = OccultEngineering.asResource("main");
     public static final int NETWORK_VERSION = 1;
     public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
-    private PacketType<?> packetType;
+    private final PacketType<?> packetType;
 
     <T extends SimplePacketBase> OccultEngineeringPackets(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection networkDirection) {
         packetType = new PacketType<>(type, factory, networkDirection);
-
     }
 
 
@@ -35,7 +36,7 @@ public enum OccultEngineeringPackets {
 
     public static void registerPackets() {
         channel = NetworkRegistry.ChannelBuilder
-                .named(OccultEngineering.asResource("channel"))
+                .named(CHANNEL_NAME)
                 .serverAcceptedVersions(NETWORK_VERSION_STR::equals)
                 .clientAcceptedVersions(NETWORK_VERSION_STR::equals)
                 .networkProtocolVersion(() -> NETWORK_VERSION_STR)

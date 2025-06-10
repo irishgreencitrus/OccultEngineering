@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.entity.brain.DynamicBrainFactory;
 import io.github.irishgreencitrus.occultengineering.content.entity.puca.PucaEntity;
+import io.github.irishgreencitrus.occultengineering.content.entity.puca.brain.PucaConstructionBrain;
 import io.github.irishgreencitrus.occultengineering.content.entity.puca.brain.PucaEmptyBrain;
 import io.github.irishgreencitrus.occultengineering.content.entity.puca.brain.PucaWanderBrain;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,6 +22,9 @@ public class OccultEngineeringBrains {
 
     public static final RegistryObject<DynamicBrainFactory<PucaEntity>> PUCA_EMPTY = BRAINS.register("puca_empty",
             () -> new DynamicBrainFactory<>(PucaEmptyBrain::new, PucaEntity.class));
+
+    public static final RegistryObject<DynamicBrainFactory<PucaEntity>> PUCA_CONSTRUCT = BRAINS.register("puca_construct",
+            () -> new DynamicBrainFactory<>(PucaConstructionBrain::new, PucaEntity.class));
 
     public static final RegistryObject<DynamicBrainFactory<PucaEntity>> PUCA_WANDER = BRAINS.register("puca_wander",
             () -> new DynamicBrainFactory<>(PucaWanderBrain::new, PucaEntity.class));
