@@ -77,6 +77,8 @@
   "entity.occultengineering.puca": "ɐɔúԀ",
   "fluid.occultengineering.spirit_solution": "uoıʇnןoS ʇıɹıdS",
   "gui.occultengineering.pentacle_altar.title": "ɹɐʇןⱯ ǝןɔɐʇuǝԀ",
+  "gui.occultengineering.pentacle_schematic.place_hint": "%1$s oʇ uoıʇısod ɹǝʇuǝɔ ǝןɔɐʇuǝd ʇǝS",
+  "gui.occultengineering.pentacle_schematic.place_hint_creative": "˙ǝɔɐןd oʇ uıɐbɐ ʞɔıןɔ ʇɟıɥS ˙%1$s oʇ uoıʇısod ɹǝʇuǝɔ ǝןɔɐʇuǝd ʇǝS",
   "gui.occultengineering.pucalith.title": "ɥʇıןɐɔúԀ",
   "item.occultengineering.book_of_binding_bound_puca": ")punoᗺ( ɐɔúԀ :buıpuıᗺ ɟo ʞooᗺ",
   "item.occultengineering.book_of_binding_bound_puca.tooltip": "%s ɐɔúd ǝɥʇ uoɯɯns oʇ pǝsn ǝq uɐƆ",

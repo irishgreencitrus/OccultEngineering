@@ -12,5 +12,7 @@
   "ritual.occultengineering.craft_otherworld_detector.started": "Started binding Púca into an otherworld detector.",
   "gui.occultengineering.pentacle_altar.title": "Pentacle Altar",
   "gui.occultengineering.pucalith.title": "Púcalith",
-  "entity.occultengineering.puca": "Púca"
+  "entity.occultengineering.puca": "Púca",
+  "gui.occultengineering.pentacle_schematic.place_hint": "Set pentacle center position to %1$s",
+  "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place."
 }

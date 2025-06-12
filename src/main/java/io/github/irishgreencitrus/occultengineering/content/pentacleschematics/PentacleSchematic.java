@@ -127,7 +127,10 @@ public class PentacleSchematic {
     }
 
     public void instantPlace() {
-        pentacle.place(level, position, Rotation.NONE);
+        var printer = new PentaclePrinter();
+        printer.initialise(this);
+        if (printer.isInitialised())
+            printer.placeAll();
     }
 
 }

@@ -106,7 +106,7 @@ public class PentaclePrinter {
         var nextToPlace = toPlace.get(pos);
 
         if (nextToPlace.left().isPresent()) {
-            setBlock(level, pos, nextToPlace.left().get());
+            setBlock(pos, nextToPlace.left().get());
         } else {
             var tag = nextToPlace.right().get();
             ImmutableList<Block> all = ImmutableList.copyOf(ForgeRegistries.BLOCKS.tags().getTag(tag));
@@ -116,7 +116,7 @@ public class PentaclePrinter {
             }
 
             var state = all.get(0).defaultBlockState();
-            setBlock(level, pos, state);
+            setBlock(pos, state);
         }
         return true;
     }
@@ -145,7 +145,7 @@ public class PentaclePrinter {
 
     Direction[] validHorizontalDirections = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
 
-    private void setBlock(Level level, BlockPos pos, BlockState state) {
+    private void setBlock(BlockPos pos, BlockState state) {
         if (state.getBlock() instanceof ChalkGlyphBlock) {
             state = state.setValue(ChalkGlyphBlock.SIGN, level.getRandom().nextInt(ChalkGlyphBlock.MAX_SIGN + 1))
                     .setValue(BlockStateProperties.HORIZONTAL_FACING, validHorizontalDirections[level.getRandom().nextInt(validHorizontalDirections.length)]);
@@ -162,6 +162,12 @@ public class PentaclePrinter {
             state.getBlock()
                     .setPlacedBy(level, pos, state, null, new ItemStack(state.getBlock()));
         } catch (Exception ignore) {
+        }
+    }
+
+    public void placeAll() {
+        while (hasNextPlace()) {
+            placeNextBlock();
         }
     }
 

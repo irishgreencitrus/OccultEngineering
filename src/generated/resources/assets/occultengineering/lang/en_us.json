@@ -77,6 +77,8 @@
   "entity.occultengineering.puca": "Púca",
   "fluid.occultengineering.spirit_solution": "Spirit Solution",
   "gui.occultengineering.pentacle_altar.title": "Pentacle Altar",
+  "gui.occultengineering.pentacle_schematic.place_hint": "Set pentacle center position to %1$s",
+  "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place.",
   "gui.occultengineering.pucalith.title": "Púcalith",
   "item.occultengineering.book_of_binding_bound_puca": "Book of Binding: Púca (Bound)",
   "item.occultengineering.book_of_binding_bound_puca.tooltip": "Can be used to summon the púca %s",

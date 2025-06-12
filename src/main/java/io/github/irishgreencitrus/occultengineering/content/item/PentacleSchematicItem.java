@@ -2,6 +2,7 @@ package io.github.irishgreencitrus.occultengineering.content.item;
 
 import com.klikli_dev.modonomicon.data.MultiblockDataManager;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
+import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
@@ -72,13 +73,31 @@ public class PentacleSchematicItem extends Item {
         if (!tag.contains("Pentacle")) return InteractionResultHolder.fail(stack);
 
         if (player.isShiftKeyDown() && player.onGround()) {
+            if (player.isCreative()) {
+                if (tag.contains("Deployed") && tag.contains("Position")) {
+                    var deployed = tag.getBoolean("Deployed");
+                    var tagPos = NbtUtils.readBlockPos(tag.getCompound("Position"));
+                    if (deployed && tagPos.equals(player.blockPosition())) {
+                        var schem = PentacleSchematic.fromStack(level, stack);
+                        if (schem.left().isEmpty()) {
+                            return InteractionResultHolder.fail(stack);
+                        }
+                        schem.orThrow().instantPlace();
+                        return InteractionResultHolder.success(stack);
+                    }
+                }
+                player.displayClientMessage(
+                        Component.translatable("gui.occultengineering.pentacle_schematic.place_hint_creative", player.blockPosition().toShortString())
+                                .withStyle(ChatFormatting.GREEN),
+                        true);
+            } else {
+                player.displayClientMessage(
+                        Component.translatable("gui.occultengineering.pentacle_schematic.place_hint", player.blockPosition().toShortString())
+                                .withStyle(ChatFormatting.GREEN),
+                        true);
+            }
             tag.put("Position", NbtUtils.writeBlockPos(player.blockPosition()));
             tag.putBoolean("Deployed", true);
-            player.displayClientMessage(
-                    Component.literal("Set pentacle center position to ")
-                            .append(player.blockPosition().toShortString())
-                            .withStyle(ChatFormatting.GREEN),
-                    true);
             stack.setTag(tag);
         }
 
