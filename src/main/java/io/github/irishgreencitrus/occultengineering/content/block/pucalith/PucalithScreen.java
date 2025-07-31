@@ -80,7 +80,7 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
         background.render(graphics, x, y);
 
         PucalithBlockEntity be = menu.contentHolder;
-        float amount = (float) be.getTankUsage() / be.getTankCapacity();
+        float amount = (float) be.getTankRemaining() / be.getTankCapacity();
         renderFuelTank(graphics, x, y, amount);
 
         Component titleText;
