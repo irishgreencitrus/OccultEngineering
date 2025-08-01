@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import io.github.irishgreencitrus.occultengineering.compat.curios.OcEngCurios;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportNetworkHandler;
 import io.github.irishgreencitrus.occultengineering.registry.*;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.LangBuilder;
@@ -27,6 +28,8 @@ public class OccultEngineering {
     public static final String MODID = "occultengineering";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE;
+
+    public static final PhlogiportNetworkHandler PHLOGIPORT_NETWORK = new PhlogiportNetworkHandler();
 
     static {
         assert OccultEngineeringCreativeModeTab.CREATIVE_TAB.getKey() != null;

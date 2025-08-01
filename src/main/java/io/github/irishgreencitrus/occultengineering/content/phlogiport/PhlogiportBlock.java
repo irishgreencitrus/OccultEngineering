@@ -1,0 +1,49 @@
+package io.github.irishgreencitrus.occultengineering.content.phlogiport;
+
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+
+public class PhlogiportBlock extends Block implements IBE<PhlogiportBlockEntity>, IWrenchable {
+
+    public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
+
+
+    public PhlogiportBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(defaultBlockState().setValue(OPEN, false));
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return onBlockEntityUse(level, pos, be -> be.use(player));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(OPEN));
+    }
+
+    @Override
+    public Class<PhlogiportBlockEntity> getBlockEntityClass() {
+
+        return PhlogiportBlockEntity.class;
+    }
+
+    @Override
+    public BlockEntityType<PhlogiportBlockEntity> getBlockEntityType() {
+        return OccultEngineeringBlockEntities.PHLOGIPORT.get();
+    }
+}

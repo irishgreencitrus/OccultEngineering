@@ -17,6 +17,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pul
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -172,6 +173,23 @@ public class OccultEngineeringBlocks {
                             p.modLoc("block/pucalith_top"))
             ))
             .lang("Púcalith")
+            .simpleItem()
+            .register();
+
+    public static final BlockEntry<PhlogiportBlock> PHLOGIPORT = REGISTRATE.block("phlogiport", PhlogiportBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .requiresCorrectToolForDrops())
+            .transform(pickaxeOnly())
+            .blockstate((c, p) -> p.simpleBlock(
+                    c.getEntry(),
+                    p.models().cubeBottomTop("phlogiport",
+                            p.modLoc("block/pucalith_bottom"),
+                            p.modLoc("block/pentacle_altar_top"),
+                            p.modLoc("block/pentacle_altar_top"))
+            ))
+            .lang("Phlogiport")
             .simpleItem()
             .register();
 
