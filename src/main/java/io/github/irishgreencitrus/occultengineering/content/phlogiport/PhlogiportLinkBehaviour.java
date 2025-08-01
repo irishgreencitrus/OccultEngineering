@@ -20,7 +20,8 @@ public class PhlogiportLinkBehaviour extends BlockEntityBehaviour implements IPh
     }
 
     public void update(String address, boolean acceptsPackages) {
-        if (Objects.equals(this.address, address)) return;
+        if (address == null || address.isBlank()) return;
+        if (Objects.equals(this.address, address) && this.acceptsPackages == acceptsPackages) return;
 
         getHandler().removeFromNetwork(getWorld(), this);
         this.acceptsPackages = acceptsPackages;

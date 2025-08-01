@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "occultengineering:block/pentacle_altar_top",
+    "side": "occultengineering:block/pucalith_bottom",
+    "top": "occultengineering:block/pentacle_altar_top"
+  }
+}

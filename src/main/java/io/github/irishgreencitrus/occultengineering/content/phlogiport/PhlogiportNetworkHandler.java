@@ -31,10 +31,14 @@ public class PhlogiportNetworkHandler {
     }
 
     public void addToNetwork(LevelAccessor world, IPhlogiportNetworkable phlogiport) {
+        if (phlogiport.getAddress() == null) return;
+        OccultEngineering.LOGGER.info("Adding {} @ {} to phlogiport in {}", phlogiport.getAddress(), phlogiport.getLocation(), WorldHelper.getDimensionID(world));
         getNetworkOf(world, phlogiport).add(phlogiport);
     }
 
     public void removeFromNetwork(LevelAccessor world, IPhlogiportNetworkable phlogiport) {
+        if (phlogiport.getAddress() == null) return;
+        OccultEngineering.LOGGER.info("Removing {} @ {} to phlogiport in {}", phlogiport.getAddress(), phlogiport.getLocation(), WorldHelper.getDimensionID(world));
         var network = getNetworkOf(world, phlogiport);
         network.remove(phlogiport);
         if (network.isEmpty()) {
@@ -45,24 +49,32 @@ public class PhlogiportNetworkHandler {
     }
 
     public @Nullable IPhlogiportNetworkable findMatchingPhlogiport(LevelAccessor world, IPhlogiportNetworkable sender, String destinationAddress) {
+        if (Objects.equals(sender.getAddress(), destinationAddress)) return null;
+
         var worldNetwork = getNetworkFor(world);
         // TODO: implement wildcards...
         if (!worldNetwork.containsKey(destinationAddress)) return null;
 
+
         var possiblePhlogiports = worldNetwork.get(destinationAddress);
         if (possiblePhlogiports.isEmpty()) return null;
+
 
         var maybePort = possiblePhlogiports
                 .stream()
                 .skip(randomInstance.nextInt(possiblePhlogiports.size()))
                 .findFirst();
+
         if (maybePort.isEmpty()) return null;
+
         var port = maybePort.get();
 
         // Don't send packages to ourselves.
         if (sender == port) return null;
-        // More than 121 blocks away? Don't send a package.
-        if (sender.getLocation().distSqr(port.getLocation()) > 11) return null;
+
+        // More than 128 blocks away? Don't send a package.
+        if (sender.getLocation().distSqr(port.getLocation()) > 16384) return null;
+
 
         // I have no idea why this isn't exposed in LevelAccessor, but it is in Level.
         // Basically Level.isLoaded(Position)

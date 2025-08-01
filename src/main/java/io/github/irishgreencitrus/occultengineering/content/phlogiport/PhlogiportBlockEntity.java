@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PhlogiportBlockEntity extends PackagePortBlockEntity {
     public PhlogiportBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -34,6 +35,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
 
     @Override
     public void filterChanged() {
+        super.filterChanged();
         link.update(addressFilter, acceptsPackages);
     }
 
@@ -42,6 +44,14 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         super.addBehaviours(behaviours);
         link = new PhlogiportLinkBehaviour(this);
         behaviours.add(link);
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (level == null) return;
+        if (level.isClientSide()) return;
+        link.update(addressFilter, acceptsPackages);
     }
 
     @Override
@@ -56,16 +66,15 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
     protected void trySendingPackage() {
         if (level == null) return;
 
-        var inventory = itemHandler.resolve().orElse(null);
-        if (inventory == null) return;
-
         for (int i = 0; i < inventory.getSlots(); i++) {
             var stack = inventory.extractItem(i, 1, true);
             if (stack.isEmpty()) continue;
-            if (PackageItem.isPackage(stack)) continue;
+            if (!PackageItem.isPackage(stack)) continue;
 
             var address = PackageItem.getAddress(stack);
+
             if (address.isEmpty()) continue;
+            if (Objects.equals(address, this.addressFilter)) continue;
 
             var matchingPort = link.getMatchingPhlogiport(address);
             if (matchingPort == null) continue;
@@ -85,8 +94,6 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
             OccultEngineering.LOGGER.info("Inserted an item to a Phlogiport!");
             break;
         }
-
-
     }
 
     @Override
