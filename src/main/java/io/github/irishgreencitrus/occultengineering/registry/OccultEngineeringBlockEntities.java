@@ -11,6 +11,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.otherworld_det
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportRenderer;
 import net.minecraft.core.Direction;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
@@ -50,6 +51,7 @@ public class OccultEngineeringBlockEntities {
     public static final BlockEntityEntry<PhlogiportBlockEntity> PHLOGIPORT =
             REGISTRATE.blockEntity("phlogiport", PhlogiportBlockEntity::new)
                     .validBlocks(OccultEngineeringBlocks.PHLOGIPORT)
+                    .renderer(() -> PhlogiportRenderer::new)
                     .register();
 
     public static void register() {

@@ -7,11 +7,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.Objects;
 
-public class PhlogiportBlockEntity extends PackagePortBlockEntity {
+public class PhlogiportBlockEntity extends PackagePortBlockEntity implements GeoBlockEntity {
+    protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.phlogiport.idle");
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public PhlogiportBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         target = null; // We don't use the target, but we use everything else.
@@ -97,5 +107,15 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
 
     @Override
     protected void onOpenChange(boolean b) {
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, (state) -> state.setAndContinue(IDLE_ANIM)));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }
