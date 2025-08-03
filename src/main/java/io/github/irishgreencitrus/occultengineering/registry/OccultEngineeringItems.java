@@ -103,6 +103,16 @@ public class OccultEngineeringItems {
             .lang("Púca Spawn Egg")
             .register();
 
+    public static final ItemEntry<Item> PHLOGISTON = REGISTRATE
+            .item("phlogiston", Item::new)
+            .lang("Phlogiston")
+            .register();
+
+    public static final ItemEntry<Item> SILVER_PHLOGISTATE = REGISTRATE
+            .item("silver_phlogistate", Item::new)
+            .lang("Silver Phlogistate")
+            .register();
+
     // TODO: change texture of impure chalks
 
     static {

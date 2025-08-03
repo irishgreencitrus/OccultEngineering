@@ -38,12 +38,16 @@ public class PhlogiportBlock extends Block implements IBE<PhlogiportBlockEntity>
 
     @Override
     public Class<PhlogiportBlockEntity> getBlockEntityClass() {
-
         return PhlogiportBlockEntity.class;
     }
 
     @Override
     public BlockEntityType<PhlogiportBlockEntity> getBlockEntityType() {
         return OccultEngineeringBlockEntities.PHLOGIPORT.get();
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        IBE.onRemove(state, level, pos, newState);
     }
 }

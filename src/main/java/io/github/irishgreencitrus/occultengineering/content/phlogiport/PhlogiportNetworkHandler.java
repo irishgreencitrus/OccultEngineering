@@ -10,15 +10,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class PhlogiportNetworkHandler {
     private static final Map<LevelAccessor, Map<String, Set<IPhlogiportNetworkable>>> phlogiportNetwork = new IdentityHashMap<>();
-    public final AtomicInteger globalNetworkVersion = new AtomicInteger();
-    public final Random randomInstance = new Random();
+    private static final Random randomInstance = new Random();
 
     public void onLoadWorld(LevelAccessor world) {
         phlogiportNetwork.put(world, new HashMap<>());
@@ -32,13 +30,11 @@ public class PhlogiportNetworkHandler {
 
     public void addToNetwork(LevelAccessor world, IPhlogiportNetworkable phlogiport) {
         if (phlogiport.getAddress() == null) return;
-        OccultEngineering.LOGGER.info("Adding {} @ {} to phlogiport in {}", phlogiport.getAddress(), phlogiport.getLocation(), WorldHelper.getDimensionID(world));
         getNetworkOf(world, phlogiport).add(phlogiport);
     }
 
     public void removeFromNetwork(LevelAccessor world, IPhlogiportNetworkable phlogiport) {
         if (phlogiport.getAddress() == null) return;
-        OccultEngineering.LOGGER.info("Removing {} @ {} to phlogiport in {}", phlogiport.getAddress(), phlogiport.getLocation(), WorldHelper.getDimensionID(world));
         var network = getNetworkOf(world, phlogiport);
         network.remove(phlogiport);
         if (network.isEmpty()) {

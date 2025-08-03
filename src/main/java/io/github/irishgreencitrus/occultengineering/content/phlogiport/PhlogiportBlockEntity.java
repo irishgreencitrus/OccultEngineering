@@ -3,7 +3,6 @@ package io.github.irishgreencitrus.occultengineering.content.phlogiport;
 import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.packagePort.PackagePortBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,6 +58,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         super.lazyTick();
         if (level == null) return;
         if (level.isClientSide()) return;
+
         trySendingPackage();
 
     }
@@ -90,8 +90,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                 }
             } else continue;
 
-            // We did it!
-            OccultEngineering.LOGGER.info("Inserted an item to a Phlogiport!");
+            // We did it, don't send another package till the next lazyTick()
             break;
         }
     }
