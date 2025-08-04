@@ -1,19 +1,18 @@
 package io.github.irishgreencitrus.occultengineering.content.phlogiport;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class PhlogiportRenderer extends GeoBlockRenderer<PhlogiportBlockEntity> {
-    public PhlogiportRenderer(BlockEntityRendererProvider.Context ctx) {
-        super(new PhlogiportModel());
+public class PhlogiportRenderer extends SmartBlockEntityRenderer<PhlogiportBlockEntity> {
+
+    public PhlogiportRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
-    public RenderType getRenderType(PhlogiportBlockEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.translucent();
+    protected void renderSafe(PhlogiportBlockEntity blockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+
     }
 }

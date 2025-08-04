@@ -18,7 +18,6 @@ import io.github.irishgreencitrus.occultengineering.content.block.otherworld_det
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlock;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -179,17 +178,14 @@ public class OccultEngineeringBlocks {
 
     public static final BlockEntry<PhlogiportBlock> PHLOGIPORT = REGISTRATE.block("phlogiport", PhlogiportBlock::new)
             .initialProperties(SharedProperties::softMetal)
-            .properties(p ->
-                    p.noOcclusion().mapColor(MapColor.COLOR_GRAY).requiresCorrectToolForDrops())
-            .addLayer(() -> RenderType::translucent)
-            .properties(p -> p
-                    .mapColor(MapColor.COLOR_YELLOW)
-                    .requiresCorrectToolForDrops())
             .transform(pickaxeOnly())
+            .properties(p ->
+                    p.noOcclusion()
+                            .mapColor(MapColor.COLOR_GRAY)
+                            .requiresCorrectToolForDrops())
+            .blockstate((c, p) -> p.simpleBlock(c.get(), AssetLookup.standardModel(c, p)))
             .lang("Phlogiport")
-            .item()
-            .model(AssetLookup::customItemModel)
-            .build()
+            .simpleItem()
             .register();
 
 

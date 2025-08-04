@@ -1,14 +1,13 @@
 {
-  "format_version": "1.21.6",
   "credit": "Made with Blockbench",
-  "render_type": "transparent",
+  "render_type": "translucent",
   "texture_size": [
     128,
     128
   ],
   "textures": {
-    "0": "../block/phlogiport",
-    "particle": "../block/phlogiport"
+    "0": "occultengineering:block/phlogiport",
+    "particle": "occultengineering:block/sterling_silver_block"
   },
   "elements": [
     {

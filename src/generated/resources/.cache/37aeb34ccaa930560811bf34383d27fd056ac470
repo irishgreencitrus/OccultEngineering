@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-03T20:24:45.5415591	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.20.1	2025-08-04T11:44:34.8538002	Registrate Provider for occultengineering [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/brass_chalk.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/copper_chalk.json
 47e991cab98678169796b54dc9e7bffb7f258c01 assets/occultengineering/blockstates/fan_enspirit_catalyst.json
@@ -29,7 +29,6 @@ af3adf84106fa25d684629edc6a647a9fc4a5c06 assets/occultengineering/models/block/c
 b6a3b2f7ec291f716de236e9bb49971fb055655f assets/occultengineering/models/block/otherworld_detector.json
 366199db05edc9d28cd889402f526c3809e6747e assets/occultengineering/models/block/otherworld_detector_powered.json
 013eb2cb02cbec370cf4d4cb438c521195cdf454 assets/occultengineering/models/block/pentacle_altar.json
-1a74102948cfb667434bf18722735f4cb9b1d147 assets/occultengineering/models/block/phlogiport.json
 1f59d5eb856650bcb9adfc344b6c25b2b7bc2672 assets/occultengineering/models/block/pucalith.json
 7d184f3cec94194c9fa7e53679373371d4c190f9 assets/occultengineering/models/block/spirit_solution.json
 648da2f3ae523f5f676aad8b99bb2e18fcbd7312 assets/occultengineering/models/block/sterling_silver_block.json
@@ -51,7 +50,7 @@ d8c14ef14839c8702f5bcb5e44aef575c62972cc assets/occultengineering/models/item/fa
 b95e5ac39988b3633224b3a6c72f90f1b9d4ac22 assets/occultengineering/models/item/otherworld_detector.json
 f98ee925e614c72cbc1858166800f3df1657a340 assets/occultengineering/models/item/pentacle_altar.json
 60ebe1a3bae399acc8b0ba10c2614568e33c4e7a assets/occultengineering/models/item/pentacle_schematic.json
-c217e87e7303982421a195706e726c2ae6d862a3 assets/occultengineering/models/item/phlogiport.json
+332855d021cd378a7b9a087fe832b9364777fc3e assets/occultengineering/models/item/phlogiport.json
 6d266e5e2e5dbea7b14c2f4b882f2220e931b0c7 assets/occultengineering/models/item/phlogiston.json
 04f2e49034d3c52943d812e04240a9e6f9bf954e assets/occultengineering/models/item/pucalith.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/occultengineering/models/item/puca_spawn_egg.json
