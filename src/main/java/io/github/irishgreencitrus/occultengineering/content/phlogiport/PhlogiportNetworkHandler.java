@@ -1,5 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.phlogiport;
 
+import com.simibubi.create.content.logistics.box.PackageItem;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import net.createmod.catnip.levelWrappers.WorldHelper;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
 @FieldsAreNonnullByDefault
@@ -40,53 +42,60 @@ public class PhlogiportNetworkHandler {
         network.remove(phlogiport);
         if (network.isEmpty()) {
             getNetworkFor(world).remove(phlogiport.getAddress());
-            return;
         }
-        updateNetworkOf(world, phlogiport);
     }
 
     public @Nullable IPhlogiportNetworkable findMatchingPhlogiport(LevelAccessor world, IPhlogiportNetworkable sender, String destinationAddress) {
         if (Objects.equals(sender.getAddress(), destinationAddress)) return null;
 
         var worldNetwork = getNetworkFor(world);
-        // TODO: implement wildcards...
-        if (!worldNetwork.containsKey(destinationAddress)) return null;
 
+        Set<IPhlogiportNetworkable> possiblePhlogiports;
 
-        var possiblePhlogiports = worldNetwork.get(destinationAddress);
+        if (worldNetwork.containsKey(destinationAddress))
+            possiblePhlogiports = worldNetwork.get(destinationAddress);
+        else
+            possiblePhlogiports = worldNetwork
+                    .values()
+                    .stream()
+                    .flatMap(Set::stream)
+                    .filter(p ->
+                            PackageItem.matchAddress(destinationAddress, p.getAddress()))
+                    .collect(Collectors.toSet());
+
         if (possiblePhlogiports.isEmpty()) return null;
 
-
-        var maybePort = possiblePhlogiports
-                .stream()
-                .skip(randomInstance.nextInt(possiblePhlogiports.size()))
-                .findFirst();
-
-        if (maybePort.isEmpty()) return null;
-
-        var port = maybePort.get();
-
         // Don't send packages to ourselves.
-        if (sender == port) return null;
+        possiblePhlogiports.remove(sender);
 
         // Don't send a package if we're too far away.
-        var distance = OccultEngineeringConfig.server().phlogiportRangeBlocks.get();
-        if (sender.getLocation().distSqr(port.getLocation()) > (distance * distance)) return null;
+        possiblePhlogiports.removeIf(receiver -> isInRange(sender, receiver));
 
+        // This may never actually matter, because we *should* remove
+        // every Phlogiport from the network when they are unloaded.
 
-        // I have no idea why this isn't exposed in LevelAccessor, but it is in Level.
-        // Basically Level.isLoaded(Position)
-        var isLoaded = world.getChunkSource()
-                .hasChunk(
-                        SectionPos.blockToSectionCoord(port.getLocation().getX()),
-                        SectionPos.blockToSectionCoord(port.getLocation().getZ()));
+        // Let's keep this check here just in case something completely fails.
 
-        if (!isLoaded) return null;
-        return port;
+        // Don't send a package if the chunk is unloaded.
+        possiblePhlogiports.removeIf(receiver ->
+                world.getChunkSource()
+                        .hasChunk(
+                                SectionPos.blockToSectionCoord(receiver.getLocation().getX()),
+                                SectionPos.blockToSectionCoord(receiver.getLocation().getZ()))
+        );
+
+        if (possiblePhlogiports.isEmpty()) return null;
+
+        return possiblePhlogiports
+                .stream()
+                .skip(randomInstance.nextInt(possiblePhlogiports.size()))
+                .findFirst()
+                .orElse(null);
     }
 
-    public void updateNetworkOf(LevelAccessor world, IPhlogiportNetworkable phlogiport) {
-        // TODO, although we may not need it.
+    public static boolean isInRange(IPhlogiportNetworkable sender, IPhlogiportNetworkable receiver) {
+        var distance = OccultEngineeringConfig.server().phlogiportRangeBlocks.get();
+        return sender.getLocation().distSqr(receiver.getLocation()) <= (distance * distance);
     }
 
     public Set<IPhlogiportNetworkable> getNetworkOf(LevelAccessor world, IPhlogiportNetworkable phlogiport) {

@@ -5,10 +5,17 @@ import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.packagePort.PackagePortBlockEntity;
 import com.simibubi.create.content.logistics.packagerLink.WiFiParticle;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
@@ -63,7 +70,6 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         if (level.isClientSide()) return;
 
         trySendingPackage();
-
     }
 
     protected void trySendingPackage() {
@@ -88,21 +94,14 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
             if (be instanceof PhlogiportBlockEntity pbe) {
                 var remainder = ItemHandlerHelper.insertItemStacked(pbe.inventory, stack, false);
                 var serverLevel = (ServerLevel) level;
-                var distance = pbe.getBlockPos().distManhattan(this.getBlockPos());
-                var center = this.getBlockPos().getCenter().add(0, 10d / 16d, 0);
-                var otherCenter = pbe.getBlockPos().getCenter().add(0, 10d / 16d, 0);
-                /*
-                serverLevel.playLocalSound(this.getBlockPos(), SoundEvent.createVariableRangeEvent(OccultismSounds.POOF.getId()), SoundSource.BLOCKS, 1f, 1f, false);
-                 */
 
-                // TODO: add a packet because this only works on the client
-                AllSoundEvents.STOCK_LINK.playAt(level, center, 1.0f, 1.0f, false);
-                //serverLevel.sendParticles(new VibrationParticleOption(new BlockPositionSource(pbe.getBlockPos()), distance / 2), center.x, center.y, center.z, 1, 0, 0, 0, 1);
-                serverLevel.sendParticles(new WiFiParticle.Data(), center.x, center.y, center.z, 1, 0, 0, 0, 1);
-                serverLevel.sendParticles(new WiFiParticle.Data(), otherCenter.x, otherCenter.y, otherCenter.z, 1, 0, 0, 0, 1);
-                //serverLevel.addParticle(new WiFiParticle.Data(), otherCenter.x, otherCenter.y, otherCenter.z, 1,1,1);
+
                 if (remainder.isEmpty()) {
                     inventory.extractItem(i, 1, false);
+
+                    OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, 64, new PhlogiportSendEffectPacket(worldPosition, false, true));
+                    OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, 64, new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
+
                     level.blockEntityChanged(worldPosition);
                 }
             } else continue;
@@ -114,5 +113,21 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
 
     @Override
     protected void onOpenChange(boolean b) {
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void playEffect(boolean isReceiver, boolean success) {
+        if (level == null || !level.isClientSide) return;
+        var clientLevel = (ClientLevel) level;
+
+        var pos = Vec3.atCenterOf(worldPosition);
+
+        if (isReceiver) {
+            AllSoundEvents.FROGPORT_DEPOSIT.playAt(level, pos, 0.5F, 1.0F, false);
+            clientLevel.addParticle(ParticleTypes.END_ROD, pos.x, pos.y, pos.z, 1, 1, 1);
+        } else {
+            AllSoundEvents.STOCK_LINK.playAt(clientLevel, pos, 0.5f, 2.0f, false);
+            clientLevel.addParticle(new WiFiParticle.Data(), pos.x, pos.y, pos.z, 1, 1, 1);
+        }
     }
 }
