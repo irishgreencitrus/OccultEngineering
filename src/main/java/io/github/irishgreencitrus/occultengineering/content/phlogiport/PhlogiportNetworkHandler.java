@@ -1,6 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.content.phlogiport;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import net.createmod.catnip.levelWrappers.WorldHelper;
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -68,8 +69,9 @@ public class PhlogiportNetworkHandler {
         // Don't send packages to ourselves.
         if (sender == port) return null;
 
-        // More than 128 blocks away? Don't send a package.
-        if (sender.getLocation().distSqr(port.getLocation()) > 16384) return null;
+        // Don't send a package if we're too far away.
+        var distance = OccultEngineeringConfig.server().phlogiportRangeBlocks.get();
+        if (sender.getLocation().distSqr(port.getLocation()) > (distance * distance)) return null;
 
 
         // I have no idea why this isn't exposed in LevelAccessor, but it is in Level.
