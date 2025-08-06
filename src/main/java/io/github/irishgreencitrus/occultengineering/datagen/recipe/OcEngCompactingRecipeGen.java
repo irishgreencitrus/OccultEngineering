@@ -2,12 +2,14 @@ package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.material.Fluids;
 
 import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.*;
 
@@ -45,7 +47,13 @@ public class OcEngCompactingRecipeGen extends ProcessingRecipeGen {
 
     SPIRIT_SOLUTION_FROM_SEEDS = create(OccultEngineering.asResource("spirit_solution_from_seeds"), b ->
             b.require(OccultismItems.DATURA_SEEDS::get)
-                    .output(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), 10));
+                    .output(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), 10)),
+
+    PHLOGISTON = create(OccultEngineering.asResource("phlogiston"), b ->
+            b.require(Fluids.LAVA, 100)
+                    .require(OccultismItems.AFRIT_ESSENCE.get())
+                    .requiresHeat(HeatCondition.HEATED)
+                    .output(OccultEngineeringItems.PHLOGISTON));
 
     public OcEngCompactingRecipeGen(PackOutput generator) {
         super(generator);

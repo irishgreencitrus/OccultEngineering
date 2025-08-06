@@ -71,6 +71,8 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
                 .stream()
                 .map(it -> Component.translatable("multiblock." + it.getNamespace() + "." + it.getPath()))
                 .toList();
+
+        visibleOptions = List.of();
         // Form translation keys like "multiblock.occultengineering.craft_puca"
 
         var pentaclesLabel = new Label(x + 51, y + 26, Component.empty()).withShadow();

@@ -64,7 +64,12 @@ public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
             b.require(copperDust())
                     .require(silverDust())
                     .requiresHeat(HeatCondition.HEATED)
-                    .output(OccultEngineeringItems.STERLING_SILVER_INGOT));
+                    .output(OccultEngineeringItems.STERLING_SILVER_INGOT)),
+
+    SILVER_PHLOGISTATE = create(OccultEngineering.asResource("silver_phlogistate"), b ->
+            b.require(OccultEngineeringItems.STERLING_SILVER_INGOT)
+                    .require(OccultEngineeringItems.PHLOGISTON)
+                    .output(OccultEngineeringItems.SILVER_PHLOGISTATE));
 
     private GeneratedRecipe bookOfBindingStandard(ResourceLocation loc, ItemLike outputBook, ItemLike... dyes) {
         bookOfBindingFromRaw(loc, outputBook, null, dyes);
