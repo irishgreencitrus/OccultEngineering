@@ -19,6 +19,10 @@ import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REG
 
 @SuppressWarnings("unused")
 public class OccultEngineeringItems {
+    static {
+        REGISTRATE.setCreativeTab(OccultEngineeringCreativeModeTab.CREATIVE_TAB);
+    }
+
     public static final ItemEntry<MechanicalGuideItem> ENCYCLOPEDIA_OF_SOULS = REGISTRATE.item("encyclopedia_of_souls", MechanicalGuideItem::new)
             .lang("Encyclopedia of Souls")
             .register();
