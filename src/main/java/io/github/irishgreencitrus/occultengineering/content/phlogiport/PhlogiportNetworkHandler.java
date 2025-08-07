@@ -50,47 +50,42 @@ public class PhlogiportNetworkHandler {
 
         var worldNetwork = getNetworkFor(world);
 
-        Set<IPhlogiportNetworkable> possiblePhlogiports;
+        Set<IPhlogiportNetworkable> possiblePhlogiports = worldNetwork.get(destinationAddress);
 
-        if (worldNetwork.containsKey(destinationAddress))
-            possiblePhlogiports = worldNetwork.get(destinationAddress);
-        else
+        if (possiblePhlogiports == null || possiblePhlogiports.isEmpty()) {
             possiblePhlogiports = worldNetwork
                     .values()
                     .stream()
                     .flatMap(Set::stream)
-                    .filter(p ->
-                            PackageItem.matchAddress(destinationAddress, p.getAddress()))
+                    .filter(p -> PackageItem.matchAddress(destinationAddress, p.getAddress()))
                     .collect(Collectors.toSet());
+        }
+
 
         if (possiblePhlogiports.isEmpty()) return null;
 
-        // Don't send packages to ourselves.
-        possiblePhlogiports.remove(sender);
-
-        // Don't send a package if we're too far away.
-        possiblePhlogiports.removeIf(receiver -> isInRange(sender, receiver));
-
-        // This may never actually matter, because we *should* remove
-        // every Phlogiport from the network when they are unloaded.
-
-        // Let's keep this check here just in case something completely fails.
-
-        // Don't send a package if the chunk is unloaded.
-        possiblePhlogiports.removeIf(receiver ->
-                world.getChunkSource()
-                        .hasChunk(
-                                SectionPos.blockToSectionCoord(receiver.getLocation().getX()),
-                                SectionPos.blockToSectionCoord(receiver.getLocation().getZ()))
-        );
-
-        if (possiblePhlogiports.isEmpty()) return null;
-
-        return possiblePhlogiports
+        List<IPhlogiportNetworkable> validReceivers = possiblePhlogiports
                 .stream()
-                .skip(randomInstance.nextInt(possiblePhlogiports.size()))
-                .findFirst()
-                .orElse(null);
+                // Don't send packages to ones that aren't receiving
+                .filter(IPhlogiportNetworkable::isReceiving)
+                // Don't send packages to ourselves.
+                .filter(r -> !r.equals(sender))
+                // Don't send a package if we're too far away.
+                .filter(r -> isInRange(r, sender))
+                // Don't send a package if the chunk is unloaded. (This check may never matter, test it).
+                .filter(r ->
+                        world.getChunkSource()
+                                .hasChunk(
+                                        SectionPos.blockToSectionCoord(r.getLocation().getX()),
+                                        SectionPos.blockToSectionCoord(r.getLocation().getZ()))
+                )
+                .toList();
+
+
+        if (validReceivers.isEmpty()) return null;
+
+        return validReceivers
+                .get(randomInstance.nextInt(validReceivers.size()));
     }
 
     public static boolean isInRange(IPhlogiportNetworkable sender, IPhlogiportNetworkable receiver) {

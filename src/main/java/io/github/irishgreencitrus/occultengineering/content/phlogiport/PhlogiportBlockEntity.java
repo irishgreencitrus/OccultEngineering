@@ -28,6 +28,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
     }
 
     private PhlogiportLinkBehaviour link;
+    private boolean inventoryFull = false;
 
     /*
         When I recieve a package, notify the PhlogiportNetworkHandler.
@@ -42,10 +43,14 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         than having greedy addresses (which would work the opposite way)
      */
 
+    private boolean shouldAcceptPackage() {
+        return !inventoryFull;
+    }
+
     @Override
     public void filterChanged() {
         super.filterChanged();
-        link.update(addressFilter, acceptsPackages);
+        link.update(addressFilter, shouldAcceptPackage());
     }
 
     @Override
@@ -60,7 +65,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         super.onLoad();
         if (level == null) return;
         if (level.isClientSide()) return;
-        link.update(addressFilter, acceptsPackages);
+        link.update(addressFilter, shouldAcceptPackage());
     }
 
     @Override
@@ -75,9 +80,15 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
     protected void trySendingPackage() {
         if (level == null) return;
 
+        var inventoryFull = true;
         for (int i = 0; i < inventory.getSlots(); i++) {
             var stack = inventory.extractItem(i, 1, true);
-            if (stack.isEmpty()) continue;
+
+            if (stack.isEmpty()) {
+                inventoryFull = false;
+                continue;
+            }
+
             if (!PackageItem.isPackage(stack)) continue;
 
             var address = PackageItem.getAddress(stack);
@@ -99,15 +110,23 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                 if (remainder.isEmpty()) {
                     inventory.extractItem(i, 1, false);
 
+                    inventoryFull = false;
+
                     OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, 64, new PhlogiportSendEffectPacket(worldPosition, false, true));
                     OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, 64, new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
 
                     level.blockEntityChanged(worldPosition);
+                    level.blockEntityChanged(pbe.worldPosition);
                 }
             } else continue;
 
             // We did it, don't send another package till the next lazyTick()
             break;
+        }
+
+        if (inventoryFull != this.inventoryFull) {
+            this.inventoryFull = inventoryFull;
+            link.update(addressFilter, shouldAcceptPackage());
         }
     }
 

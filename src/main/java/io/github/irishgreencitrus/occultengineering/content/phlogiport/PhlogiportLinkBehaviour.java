@@ -23,6 +23,8 @@ public class PhlogiportLinkBehaviour extends BlockEntityBehaviour implements IPh
         if (address == null || address.isBlank()) return;
         if (Objects.equals(this.address, address) && this.acceptsPackages == acceptsPackages) return;
 
+        // Remove from network and then add it again, because
+        // we need the address HashMap to update.
         getHandler().removeFromNetwork(getWorld(), this);
         this.acceptsPackages = acceptsPackages;
         this.address = address;

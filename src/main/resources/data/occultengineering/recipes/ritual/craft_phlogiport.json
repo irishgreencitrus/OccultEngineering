@@ -1,0 +1,29 @@
+{
+  "type": "occultism:ritual",
+  "ritual_type": "occultism:craft",
+  "activation_item": {
+    "item": "occultengineering:book_of_binding_bound_puca"
+  },
+  "pentacle_id": "occultengineering:craft_puca",
+  "duration": 300,
+  "ritual_dummy": {
+    "item": "occultengineering:ritual_dummy_craft_phlogiport"
+  },
+  "ingredients": [
+    {
+      "item": "occultengineering:sterling_silver_block"
+    },
+    {
+      "item": "create:transmitter"
+    },
+    {
+      "item": "minecraft:gold_block"
+    },
+    {
+      "item": "occultengineering:silver_phlogistate"
+    }
+  ],
+  "result": {
+    "item": "occultengineering:phlogiport"
+  }
+}

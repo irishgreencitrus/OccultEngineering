@@ -125,6 +125,11 @@ public class OccultEngineeringItems {
                 .model(OccultEngineeringItems::ritualDummyModel)
                 .lang("Ritual: Craft Mechanical Chamber")
                 .register();
+
+        REGISTRATE.item("ritual_dummy_craft_phlogiport", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Phlogiport")
+                .register();
     }
 
     public static void register() {
