@@ -13,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -112,6 +113,8 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
 
                     inventoryFull = false;
 
+                    var distance = worldPosition.distManhattan(pbe.worldPosition);
+                    serverLevel.sendParticles(new PhlogiportSignalParticleData(new BlockPositionSource(pbe.worldPosition), distance / 2), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 1, 0, 0, 0, 1);
                     OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, 64, new PhlogiportSendEffectPacket(worldPosition, false, true));
                     OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, 64, new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
 

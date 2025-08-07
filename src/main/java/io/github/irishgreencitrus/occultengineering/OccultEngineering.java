@@ -53,6 +53,7 @@ public class OccultEngineering {
 
         REGISTRATE.registerEventListeners(modEventBus);
 
+
         OccultEngineeringCreativeModeTab.register(modEventBus);
 
         OccultEngineeringItems.register();
@@ -62,6 +63,7 @@ public class OccultEngineering {
         OccultEngineeringMenuTypes.register();
         OccultEngineeringEntities.register(modEventBus);
         OccultEngineeringBrains.register(modEventBus);
+        OccultEngineeringParticleTypes.register(modEventBus);
         OccultEngineeringPackets.registerPackets();
 
         OccultEngineeringConfig.register(modLoadingContext);
