@@ -23,26 +23,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class PhlogiportBlockEntity extends PackagePortBlockEntity {
+    private PhlogiportLinkBehaviour link;
+    private boolean inventoryFull = false;
+
     public PhlogiportBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         target = null; // We don't use the target, but we use everything else.
     }
-
-    private PhlogiportLinkBehaviour link;
-    private boolean inventoryFull = false;
-
-    /*
-        When I recieve a package, notify the PhlogiportNetworkHandler.
-        If it can forward to the next Phlogiport it will.
-        Phlogiports always forward to a more specific address.
-        i.e. If we have a package named "ABCD",
-        we can start at a phlogiport named "*"
-        which will then forward (->) to the phlogiport named "A*"
-        -> AB* -> ABC* -> ABCD (final destination)
-
-        This could be used to make a crude addressing and sorting system, but is in general much more useful
-        than having greedy addresses (which would work the opposite way)
-     */
 
     private boolean shouldAcceptPackage() {
         return !inventoryFull;
@@ -114,7 +101,18 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                     inventoryFull = false;
 
                     var distance = worldPosition.distManhattan(pbe.worldPosition);
-                    serverLevel.sendParticles(new PhlogiportSignalParticleData(new BlockPositionSource(pbe.worldPosition), distance / 2), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 1, 0, 0, 0, 1);
+
+                    var signalCenter = worldPosition.getCenter().add(0, 13f / 16f, 0);
+
+                    var receivePackageTimer = distance * 5;
+
+                    serverLevel.sendParticles(
+                            new PhlogiportSignalParticleData(new BlockPositionSource(pbe.getBlockPos()), receivePackageTimer),
+                            signalCenter.x(),
+                            signalCenter.y(),
+                            signalCenter.z(),
+                            1, 0, 0, 0, 1);
+
                     OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, 64, new PhlogiportSendEffectPacket(worldPosition, false, true));
                     OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, 64, new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
 
