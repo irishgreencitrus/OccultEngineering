@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.function.Consumer;
-
 public class PhlogiportSignalParticle extends TextureSheetParticle {
     private final PositionSource target;
     private final Vec3 startingPosition;
@@ -58,36 +56,42 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
-        var targetPos = target.getPosition(level);
-        float yaw;
-        if (targetPos.isPresent()) {
-            var currentPos = new Vec3(
-                    Mth.lerp(partialTicks, this.xo, this.x),
-                    Mth.lerp(partialTicks, this.yo, this.y),
-                    Mth.lerp(partialTicks, this.zo, this.z)
-            );
-            var dir = targetPos.get().subtract(currentPos).normalize();
-
-            yaw = (float) Mth.atan2(dir.z, dir.x) + Mth.PI;
-        } else {
-            yaw = 0.0F;
-        }
-
-        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateY(yaw));
-
-        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateY(-Mth.PI).rotateY(yaw));
+        renderSignal(vertexConsumer, camera, partialTicks);
     }
 
-    private void renderSignal(VertexConsumer buffer, Camera camera, float partialTicks, Consumer<Quaternionf> quatConsumer) {
+    private void renderSignal(VertexConsumer buffer, Camera camera, float partialTicks) {
+        Vec3 currentPos = new Vec3(
+                Mth.lerp(partialTicks, this.xo, this.x),
+                Mth.lerp(partialTicks, this.yo, this.y),
+                Mth.lerp(partialTicks, this.zo, this.z)
+        );
+
+        Quaternionf finalRotation = new Quaternionf();
+
+        var targetPosOpt = target.getPosition(level);
+        if (targetPosOpt.isPresent()) {
+            Vector3f travelAxis = targetPosOpt.get().subtract(currentPos).normalize().toVector3f();
+
+            var travelAxis2d = new Vector3f(travelAxis.x, 0F, travelAxis.z);
+
+            // The angle between -Z and the travel axis forms the yaw.
+            var yaw = travelAxis2d.angle(new Vector3f(0F, 0F, -1F)) - Mth.HALF_PI;
+
+            var cameraUp = camera.getUpVector();
+
+            var axisRotation = cameraUp.angle(new Vector3f(0F, 1F, 0F));
+
+            finalRotation.rotateY(yaw);
+
+            finalRotation.rotateAxis(axisRotation, travelAxis2d);
+        } else {
+            finalRotation.set(camera.rotation());
+        }
+
         var cameraPos = camera.getPosition();
-
-        var particleX = Mth.lerp(partialTicks, this.xo, this.x) - cameraPos.x;
-        var particleY = Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y;
-        var particleZ = Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z;
-
-        Quaternionf rotation = new Quaternionf();
-
-        quatConsumer.accept(rotation);
+        var particleX = currentPos.x - cameraPos.x;
+        var particleY = currentPos.y - cameraPos.y;
+        var particleZ = currentPos.z - cameraPos.z;
 
         Vector3f[] quad = new Vector3f[]{
                 new Vector3f(-1F, -1F, 0F),
@@ -98,7 +102,7 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
         var quadSize = this.getQuadSize(partialTicks);
         for (var corner : quad) {
-            corner.rotate(rotation);
+            corner.rotate(finalRotation);
             corner.mul(quadSize);
             corner.add((float) particleX, (float) particleY, (float) particleZ);
         }
