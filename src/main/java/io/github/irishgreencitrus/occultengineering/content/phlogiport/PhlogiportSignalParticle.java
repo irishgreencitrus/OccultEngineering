@@ -47,8 +47,6 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
         float percentage = (float) this.age / this.lifetime;
 
-        //float progress = Mth.sin(percentage * Mth.HALF_PI);
-
         var newPos = this.startingPosition.lerp(targetPos.get(), percentage);
 
         this.x = newPos.x();
@@ -61,6 +59,7 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
         var targetPos = target.getPosition(level);
+        float yaw;
         if (targetPos.isPresent()) {
             var currentPos = new Vec3(
                     Mth.lerp(partialTicks, this.xo, this.x),
@@ -69,35 +68,24 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
             );
             var dir = targetPos.get().subtract(currentPos).normalize();
 
-            /*
-            var cameraForward = new Vec3(camera.getLookVector());
-            var cameraUp = new Vec3(camera.getUpVector());
-            var cameraRight = cameraForward.cross(cameraUp);
-             */
-
-            //var right = dir.dot(cameraRight);
-            //var up = dir.dot(cameraUp);
-
-            float rot = (float) Mth.atan2(dir.z, dir.x) + Mth.PI;
-            rot = Math.round(rot / Mth.HALF_PI) * Mth.HALF_PI;
-            this.oRoll = this.roll;
-            this.roll = rot;
+            yaw = (float) Mth.atan2(dir.z, dir.x) + Mth.PI;
+        } else {
+            yaw = 0.0F;
         }
-        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateZ(this.roll));
-        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateY(-Mth.PI).rotateZ(Mth.PI + this.roll));
+
+        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateY(yaw));
+
+        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateY(-Mth.PI).rotateY(yaw));
     }
 
     private void renderSignal(VertexConsumer buffer, Camera camera, float partialTicks, Consumer<Quaternionf> quatConsumer) {
         var cameraPos = camera.getPosition();
-        cameraPos = startingPosition;
 
         var particleX = Mth.lerp(partialTicks, this.xo, this.x) - cameraPos.x;
         var particleY = Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y;
         var particleZ = Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z;
 
-        var rotAxis = new Vector3f(0.5F, 0.5F, 0.5F).normalize();
-
-        Quaternionf rotation = new Quaternionf().setAngleAxis(0F, rotAxis.x, rotAxis.y, rotAxis.z);
+        Quaternionf rotation = new Quaternionf();
 
         quatConsumer.accept(rotation);
 
@@ -134,7 +122,6 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
                     .endVertex();
         }
     }
-
 
     @Override
     protected int getLightColor(float partialTick) {
