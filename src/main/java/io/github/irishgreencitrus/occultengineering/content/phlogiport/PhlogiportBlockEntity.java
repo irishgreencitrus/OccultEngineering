@@ -9,7 +9,6 @@ import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.Ph
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -102,9 +101,10 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
 
                     var distance = worldPosition.distManhattan(pbe.worldPosition);
 
-                    var signalCenter = worldPosition.getCenter().add(0, 13f / 16f, 0);
+                    // Offset it slightly so it looks like the signal is coming from the antenna
+                    var signalCenter = worldPosition.getCenter().add(PhlogiportSignalParticle.offset);
 
-                    var receivePackageTimer = distance * 5;
+                    var receivePackageTimer = distance / 3;
 
                     serverLevel.sendParticles(
                             new PhlogiportSignalParticleData(new BlockPositionSource(pbe.getBlockPos()), receivePackageTimer),
@@ -143,8 +143,8 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         var pos = Vec3.atCenterOf(worldPosition);
 
         if (isReceiver) {
-            AllSoundEvents.FROGPORT_DEPOSIT.playAt(level, pos, 0.5F, 1.0F, false);
-            clientLevel.addParticle(ParticleTypes.END_ROD, pos.x, pos.y, pos.z, 1, 1, 1);
+            AllSoundEvents.STOCK_LINK.playAt(level, pos, 0.5F, 2.0F, false);
+            clientLevel.addParticle(new WiFiParticle.Data(), pos.x, pos.y, pos.z, 1, 1, 1);
         } else {
             AllSoundEvents.STOCK_LINK.playAt(clientLevel, pos, 0.5f, 2.0f, false);
             clientLevel.addParticle(new WiFiParticle.Data(), pos.x, pos.y, pos.z, 1, 1, 1);

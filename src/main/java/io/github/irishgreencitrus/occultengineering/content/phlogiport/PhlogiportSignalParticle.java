@@ -10,12 +10,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import java.util.function.Consumer;
 
 public class PhlogiportSignalParticle extends TextureSheetParticle {
     private final PositionSource target;
     private final Vec3 startingPosition;
+    public static final Vec3 offset = new Vec3(0f, 13f / 32f, 0f);
 
     protected PhlogiportSignalParticle(ClientLevel level, double x, double y, double z, PositionSource target, int lifetime) {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
@@ -45,7 +49,7 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
         float percentage = (float) this.age / this.lifetime;
 
-        var newPos = this.startingPosition.lerp(targetPos.get(), percentage);
+        var newPos = this.startingPosition.lerp(targetPos.get().add(offset), percentage);
 
         this.x = newPos.x();
         this.y = newPos.y();
@@ -56,36 +60,42 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
     @Override
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
-        renderSignal(vertexConsumer, camera, partialTicks);
+        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateZ(roll + Mth.PI));
+        renderSignal(vertexConsumer, camera, partialTicks, (q) -> q.rotateY(-Mth.PI).rotateZ(roll));
     }
 
-    private void renderSignal(VertexConsumer buffer, Camera camera, float partialTicks) {
+    private void renderSignal(VertexConsumer buffer, Camera camera, float partialTicks, Consumer<Quaternionf> quatConsumer) {
         Vec3 currentPos = new Vec3(
                 Mth.lerp(partialTicks, this.xo, this.x),
                 Mth.lerp(partialTicks, this.yo, this.y),
                 Mth.lerp(partialTicks, this.zo, this.z)
         );
 
-        Quaternionf finalRotation = new Quaternionf();
+        Quaternionf rotation = new Quaternionf();
 
         var targetPosOpt = target.getPosition(level);
         if (targetPosOpt.isPresent()) {
-            Vector3f travelAxis = targetPosOpt.get().subtract(currentPos).normalize().toVector3f();
+            Vector3f travelAxis = targetPosOpt.get().add(offset).subtract(currentPos).normalize().toVector3f();
 
-            var travelAxis2d = new Vector3f(travelAxis.x, 0F, travelAxis.z);
+            var localX = travelAxis.normalize();
+            localX.normalize();
 
-            // The angle between -Z and the travel axis forms the yaw.
-            var yaw = travelAxis2d.angle(new Vector3f(0F, 0F, -1F)) - Mth.HALF_PI;
+            var localY = new Vector3f(0F, 1F, 0F);
+            localY = camera.getUpVector();
+            localY.normalize();
 
-            var cameraUp = camera.getUpVector();
+            var localZ = new Vector3f();
+            localX.cross(localY, localZ);
+            localZ.normalize();
 
-            var axisRotation = cameraUp.angle(new Vector3f(0F, 1F, 0F));
+            localZ.cross(localX, localY);
+            localY.normalize();
 
-            finalRotation.rotateY(yaw);
+            Matrix3f rotMatrix = new Matrix3f(localX, localY, localZ);
 
-            finalRotation.rotateAxis(axisRotation, travelAxis2d);
+            rotation.setFromNormalized(rotMatrix);
         } else {
-            finalRotation.set(camera.rotation());
+            rotation.set(camera.rotation());
         }
 
         var cameraPos = camera.getPosition();
@@ -100,9 +110,11 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
                 new Vector3f(1F, -1F, 0F),
         };
 
+        quatConsumer.accept(rotation);
+
         var quadSize = this.getQuadSize(partialTicks);
         for (var corner : quad) {
-            corner.rotate(finalRotation);
+            corner.rotate(rotation);
             corner.mul(quadSize);
             corner.add((float) particleX, (float) particleY, (float) particleZ);
         }
