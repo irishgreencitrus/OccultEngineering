@@ -19,6 +19,11 @@ import java.util.function.Consumer;
 public class PhlogiportSignalParticle extends TextureSheetParticle {
     private final PositionSource target;
     private final Vec3 startingPosition;
+
+    /*
+        Adding 13/32f makes the particle appear at
+        approximately the height of the antenna.
+     */
     public static final Vec3 offset = new Vec3(0f, 13f / 32f, 0f);
 
     protected PhlogiportSignalParticle(ClientLevel level, double x, double y, double z, PositionSource target, int lifetime) {

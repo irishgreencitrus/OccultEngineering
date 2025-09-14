@@ -5,6 +5,7 @@ import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.packagePort.PackagePortBlockEntity;
 import com.simibubi.create.content.logistics.packagerLink.WiFiParticle;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -104,6 +105,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                     // Offset it slightly so it looks like the signal is coming from the antenna
                     var signalCenter = worldPosition.getCenter().add(PhlogiportSignalParticle.offset);
 
+                    // 3 blocks per tick
                     var receivePackageTimer = distance / 3;
 
                     serverLevel.sendParticles(
@@ -113,8 +115,8 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                             signalCenter.z(),
                             1, 0, 0, 0, 1);
 
-                    OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, 64, new PhlogiportSendEffectPacket(worldPosition, false, true));
-                    OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, 64, new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
+                    OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, OccultEngineeringConfig.server().phlogiportRangeBlocks.get(), new PhlogiportSendEffectPacket(worldPosition, false, true));
+                    OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, OccultEngineeringConfig.server().phlogiportRangeBlocks.get(), new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
 
                     level.blockEntityChanged(worldPosition);
                     level.blockEntityChanged(pbe.worldPosition);
