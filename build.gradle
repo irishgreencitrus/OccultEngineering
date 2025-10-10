@@ -1,18 +1,6 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'idea'
-    id "net.neoforged.moddev.legacyforge" version "2.0.78"
+    id('idea')
+    id("net.neoforged.moddev") version "2.0.107"
 }
 
 if (System.getenv('MOD_VERSION') != null) {
@@ -26,7 +14,7 @@ base {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
     withSourcesJar()
     withJavadocJar()
 }
@@ -38,8 +26,9 @@ idea {
     }
 }
 
-legacyForge {
-    version = "$minecraft_version-$forge_version"
+neoForge {
+    version = neo_version
+
     validateAccessTransformers = false
     parchment {
         minecraftVersion = minecraft_version
@@ -94,12 +83,6 @@ legacyForge {
     }
 }
 
-def refmap
-mixin {
-    refmap = add sourceSets.main, "${mod_id}.refmap.json"
-    config "${mod_id}.mixins.json"
-}
-
 repositories {
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
@@ -110,7 +93,7 @@ repositories {
     //     dir 'libs'
     // }
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
-    maven { url = "https://maven.ithundxr.dev/mirror" } // Registrate
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
 
     maven {
@@ -143,7 +126,7 @@ repositories {
     }
     maven {
         name = "Curios Maven"
-        url = "https://maven.theillusivec4.top/"
+        url = "https://maven.octo-studios.com/releases"
         content {
             includeGroup "top.theillusivec4.curios"
         }
@@ -172,35 +155,29 @@ repositories {
 
 dependencies {
     // CREATE MOD
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
-    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
-    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    modImplementation("com.klikli_dev:occultism-${occultism_minecraft_version}:${occultism_version}") { transitive = false }
+    implementation("com.klikli_dev:occultism-${minecraft_version}-neoforge:${occultism_version}") { transitive = false }
     // compile against the JEI API but do not include it at runtime
-    modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-common-api:${jei_version}")
-    modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-forge-api:${jei_version}")
-    // at runtime, use the full JEI jar for Forge
-    modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-forge:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version_major}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version_major}-neoforge-api:${jei_version}")
 
     //curios
-    modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}:api")
-    modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_version}+${minecraft_version}")
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version_major}:api") { transitive = false }
+    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version_major}") { transitive = false }
 
     //geckolib
-    modImplementation("software.bernie.geckolib:geckolib-forge-${geckolib_minecraft_version}:${geckolib_version}")
+    implementation("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}") { transitive = false }
 
     //smartbrainlib
-    modImplementation("net.tslat.smartbrainlib:SmartBrainLib-forge-${smartbrainlib_minecraft_version}:${smartbrainlib_version}")
+    implementation("net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${smartbrainlib_version}") { transitive = false }
 
     //modonomicon
-    modImplementation("com.klikli_dev:modonomicon-${minecraft_version}-forge:${modonomicon_version}")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    implementation("com.klikli_dev:modonomicon-${minecraft_version}-neoforge:${modonomicon_version}") { transitive = false }
 
     implementation("org.jetbrains:annotations:26.0.2")
 }
@@ -217,15 +194,15 @@ sourceSets.main.resources {
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
             minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
+            forge_version: neo_version, forge_version_range: neo_version_range,
+            loader_version_range: neo_loader_version_range,
             mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
             mod_authors: mod_authors, mod_description: mod_description,
     ]
 
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }}
 
