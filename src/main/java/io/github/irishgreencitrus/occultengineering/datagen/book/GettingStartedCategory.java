@@ -45,9 +45,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 "_____i__b_________________________",
                 "__________________________________",
                 "_____S_ć_____e____________________",
-                "________M____ú____________________",
+                "________M____ú___H________________",
                 "_____g__P_________________________",
-                "________D_________________________",
+                "________D____&___?________________",
                 "__________________________________",
 
         };
@@ -76,6 +76,15 @@ public class GettingStartedCategory extends CategoryProvider {
 
         var detector = add(makeDetectorEntry(entryMap, 'D'));
         detector.withParent(BookEntryParentModel.create(sterlingSilver.getId()));
+
+        var phlogiston = add(makePhlogistonEntry(entryMap, '&'));
+        phlogiston.withParent(BookEntryParentModel.create(sterlingSilver.getId()));
+
+        var silverPhlogistate = add(makeSilverPhlogistateEntry(entryMap, '?'));
+        silverPhlogistate.withParent(BookEntryParentModel.create(phlogiston.getId()));
+
+        var phlogiport = add(makePhlogiportEntry(entryMap, 'H'));
+        phlogiport.withParent(BookEntryParentModel.create(silverPhlogistate.getId()));
 
         var pucaBook = add(makePucaBookEntry(entryMap, 'ú'));
         pucaBook.withParent(BookEntryParentModel.create(chamber.getId()));
@@ -351,6 +360,85 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withPages(sterlingSilver, uses);
     }
 
+    private BookEntryModel makePhlogistonEntry(CategoryEntryMap entryMap, char icon) {
+        var entryId = "phlogiston";
+        context().entry(entryId);
+
+        lang().add(context().entryName(), "Phlogiston");
+        lang().add(context().entryDescription(), "The raw essence of fire");
+
+        context().page("phlogiston");
+        var phlogiston = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.PHLOGISTON))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageTitle(), "Sterling Silver");
+        lang().add(context().pageText(), """
+                Phlogiston is the element of fire which is a component of everything that burns.
+                It also interacts with Sterling Silver, weirdly.
+                \\
+                \\
+                Craft it by compacting Afrit Essence with Lava
+                """);
+
+        context().page("uses");
+        var uses = BookTextPageModel.builder()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Usage");
+        lang().add(context().pageText(), """
+                - [*Silver Phlogistate*](entry://occultengineering:encyclopedia_of_souls/getting_started/silver_phlogistate)
+                """);
+
+        return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
+                .withIcon(OccultEngineeringItems.PHLOGISTON)
+                .withLocation(entryMap.get(icon))
+                .withPages(phlogiston, uses);
+    }
+
+    private BookEntryModel makeSilverPhlogistateEntry(CategoryEntryMap entryMap, char icon) {
+        var entryId = "silver_phlogistate";
+        context().entry(entryId);
+
+        lang().add(context().entryName(), "Silver Phlogistate");
+        lang().add(context().entryDescription(), "New & Improved");
+
+        context().page("silver_phlogistate");
+        var silverPhlogistate = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.SILVER_PHLOGISTATE))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+
+        lang().add(context().pageTitle(), "Silver Phlogistate");
+        lang().add(context().pageText(), """
+                Silver Phlogistate is used to craft Occult Technologies that don't require rotational power.
+                \\
+                \\
+                Craft it by mixing Phlogiston and Sterling Silver
+                """);
+
+        context().page("uses");
+        var uses = BookTextPageModel.builder()
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Usage");
+        lang().add(context().pageText(), """
+                - [*Phlogiport*](entry://occultengineering:encyclopedia_of_souls/getting_started/phlogiport)
+                """);
+
+        return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
+                .withIcon(OccultEngineeringItems.SILVER_PHLOGISTATE)
+                .withLocation(entryMap.get(icon))
+                .withPages(silverPhlogistate, uses);
+    }
+
     private BookEntryModel makeChamberEntry(CategoryEntryMap entryMap, char icon) {
         var entryId = "mechanical_chamber";
         context().entry(entryId);
@@ -402,6 +490,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withTitle(context().pageTitle())
                 .withText(context().pageText())
                 .build();
+
         lang().add(context().pageTitle(), "Mechanical Pulverizer");
         lang().add(context().pageText(), """
                 The Mechanical Chamber can be used instead of Occultism's crushing for any item a spirit can crush.
@@ -440,6 +529,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 For more info ponder the block.
                 """);
 
+        // TODO: implement rituals for the mechanical stuff.
         /*
         context().page("ritual");
 
@@ -451,6 +541,37 @@ public class GettingStartedCategory extends CategoryProvider {
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringBlocks.OTHERWORLD_DETECTOR)
+                .withLocation(entryMap.get(icon))
+                .withPages(otherworldDetector);
+    }
+
+    private BookEntryModel makePhlogiportEntry(CategoryEntryMap entryMap, char icon) {
+        var entryId = "phlogiport";
+        context().entry(entryId);
+
+        lang().add(context().entryName(), "Phlogiport");
+        lang().add(context().entryDescription(), "Move over, delivery drones!");
+
+        context().page("phlogiport");
+        var otherworldDetector = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringBlocks.PHLOGIPORT))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Phlogiport");
+        lang().add(context().pageText(), """
+                Phlogiports can be use to wirelessly transmit packages based on their address.
+                \\
+                \\
+                Click it to open the inventory.
+                \\
+                \\
+                For more info ponder the block.
+                """);
+
+        return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
+                .withIcon(OccultEngineeringBlocks.PHLOGIPORT)
                 .withLocation(entryMap.get(icon))
                 .withPages(otherworldDetector);
     }

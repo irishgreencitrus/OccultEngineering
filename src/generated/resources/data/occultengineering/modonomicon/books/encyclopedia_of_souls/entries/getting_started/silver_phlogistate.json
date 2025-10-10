@@ -1,0 +1,47 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "occultengineering:getting_started",
+  "description": "book.occultengineering.encyclopedia_of_souls.getting_started.silver_phlogistate.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "occultengineering:silver_phlogistate"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.silver_phlogistate.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:silver_phlogistate"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.silver_phlogistate.silver_phlogistate.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.silver_phlogistate.silver_phlogistate.title"
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.silver_phlogistate.uses.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.silver_phlogistate.uses.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "occultengineering:getting_started/phlogiston",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": 0,
+  "y": 3
+}

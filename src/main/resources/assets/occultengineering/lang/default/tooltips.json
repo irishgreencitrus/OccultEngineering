@@ -7,5 +7,6 @@
   "item.occultengineering.book_of_binding_bound_puca.tooltip": "Can be used to summon the púca %s",
   "item.occultengineering.ritual_dummy_craft_otherworld_detector.tooltip": "A redstone block which allows you to detect whether a player can see into the Otherworld.",
   "item.occultengineering.ritual_dummy_craft_mechanical_chamber.tooltip": "A kinetic block which allows you to automate any crafting ritual.",
+  "item.occultengineering.ritual_dummy_craft_phlogiport.tooltip": "A logistics block that allows short range wireless transmission of items.",
   "item.occultengineering.pentacle_schematic.tooltip_prefix": "Pentacle: "
 }
