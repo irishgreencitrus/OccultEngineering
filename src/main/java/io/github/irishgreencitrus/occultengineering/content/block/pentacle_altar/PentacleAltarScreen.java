@@ -34,7 +34,6 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
     protected OccultEngineeringGuiTextures background;
 
     private final ItemStack renderedItem = OccultEngineeringBlocks.PENTACLE_ALTAR.asStack();
-    private IconButton confirmButton;
     private List<Rect2i> extraAreas = Collections.emptyList();
 
     public PentacleAltarScreen(PentacleAltarMenu container, Inventory inv, Component title) {
@@ -71,12 +70,12 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
                 .stream()
                 .map(it -> Component.translatable("multiblock." + it.getNamespace() + "." + it.getPath()))
                 .toList();
+
         // Form translation keys like "multiblock.occultengineering.craft_puca"
 
         var pentaclesLabel = new Label(x + 51, y + 26, Component.empty()).withShadow();
         pentaclesLabel.text = Component.empty();
 
-        // TODO: this might have a problem if we can't find any pentacles.
         pentaclesArea = new SelectionScrollInput(x + 45, y + 21, 139, 18)
                 .forOptions(visibleOptions)
                 .titled(Component.literal("Select Pentacle"))
@@ -84,7 +83,7 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
 
         addRenderableWidgets(pentaclesArea, pentaclesLabel);
 
-        confirmButton = new IconButton(x + 44, y + 56, AllIcons.I_CONFIRM);
+        IconButton confirmButton = new IconButton(x + 44, y + 56, AllIcons.I_CONFIRM);
         confirmButton.withCallback(() -> {
             if (menu.canWrite() && pentaclesArea != null) {
                 // send packet to give player a pentacle schematic

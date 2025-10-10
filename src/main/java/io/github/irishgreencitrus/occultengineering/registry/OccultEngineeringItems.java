@@ -19,6 +19,10 @@ import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REG
 
 @SuppressWarnings("unused")
 public class OccultEngineeringItems {
+    static {
+        REGISTRATE.setCreativeTab(OccultEngineeringCreativeModeTab.CREATIVE_TAB);
+    }
+
     public static final ItemEntry<MechanicalGuideItem> ENCYCLOPEDIA_OF_SOULS = REGISTRATE.item("encyclopedia_of_souls", MechanicalGuideItem::new)
             .lang("Encyclopedia of Souls")
             .register();
@@ -103,6 +107,16 @@ public class OccultEngineeringItems {
             .lang("Púca Spawn Egg")
             .register();
 
+    public static final ItemEntry<Item> PHLOGISTON = REGISTRATE
+            .item("phlogiston", Item::new)
+            .lang("Phlogiston")
+            .register();
+
+    public static final ItemEntry<Item> SILVER_PHLOGISTATE = REGISTRATE
+            .item("silver_phlogistate", Item::new)
+            .lang("Silver Phlogistate")
+            .register();
+
     // TODO: change texture of impure chalks
 
     static {
@@ -114,6 +128,11 @@ public class OccultEngineeringItems {
         REGISTRATE.item("ritual_dummy_craft_mechanical_chamber", DummyTooltipItem::new)
                 .model(OccultEngineeringItems::ritualDummyModel)
                 .lang("Ritual: Craft Mechanical Chamber")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_phlogiport", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Phlogiport")
                 .register();
     }
 

@@ -43,7 +43,8 @@ public class OccultEngineeringPonderTags {
         HELPER.addToTag(OCCULT_APPLIANCES)
                 .add(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
                 .add(OccultEngineeringBlocks.MECHANICAL_PULVERIZER)
-                .add(OccultEngineeringBlocks.OTHERWORLD_DETECTOR);
+                .add(OccultEngineeringBlocks.OTHERWORLD_DETECTOR)
+                .add(OccultEngineeringBlocks.PHLOGIPORT);
 
     }
 }

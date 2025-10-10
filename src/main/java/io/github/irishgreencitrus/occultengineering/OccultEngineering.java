@@ -7,10 +7,13 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import io.github.irishgreencitrus.occultengineering.compat.curios.OcEngCurios;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportNetworkHandler;
 import io.github.irishgreencitrus.occultengineering.registry.*;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.LangBuilder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -28,10 +31,12 @@ public class OccultEngineering {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE;
 
+    public static final PhlogiportNetworkHandler PHLOGIPORT_NETWORK = new PhlogiportNetworkHandler();
+
     static {
         assert OccultEngineeringCreativeModeTab.CREATIVE_TAB.getKey() != null;
         REGISTRATE = CreateRegistrate.create(MODID)
-                .defaultCreativeTab(OccultEngineeringCreativeModeTab.CREATIVE_TAB.getKey())
+                .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
                 .setTooltipModifierFactory(item ->
                         new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
                                 .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
@@ -48,6 +53,7 @@ public class OccultEngineering {
 
         REGISTRATE.registerEventListeners(modEventBus);
 
+
         OccultEngineeringCreativeModeTab.register(modEventBus);
 
         OccultEngineeringItems.register();
@@ -57,6 +63,7 @@ public class OccultEngineering {
         OccultEngineeringMenuTypes.register();
         OccultEngineeringEntities.register(modEventBus);
         OccultEngineeringBrains.register(modEventBus);
+        OccultEngineeringParticleTypes.register(modEventBus);
         OccultEngineeringPackets.registerPackets();
 
         OccultEngineeringConfig.register(modLoadingContext);

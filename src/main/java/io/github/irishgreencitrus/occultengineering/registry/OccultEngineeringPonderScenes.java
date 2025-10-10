@@ -13,5 +13,6 @@ public class OccultEngineeringPonderScenes {
         HELPER.addStoryBoard(OccultEngineeringBlocks.MECHANICAL_PULVERIZER, "mechanical_pulverizer", OcEngPonders::pulverizer, AllCreatePonderTags.KINETIC_APPLIANCES);
         HELPER.addStoryBoard(OccultEngineeringBlocks.MECHANICAL_CHAMBER, "mechanical_chamber", OcEngPonders::chamber, AllCreatePonderTags.KINETIC_APPLIANCES);
         HELPER.addStoryBoard(OccultEngineeringBlocks.OTHERWORLD_DETECTOR, "otherworld_detector", OcEngPonders::detector);
+        HELPER.addStoryBoard(OccultEngineeringBlocks.PHLOGIPORT, "phlogiport", OcEngPonders::phlogiport);
     }
 }
