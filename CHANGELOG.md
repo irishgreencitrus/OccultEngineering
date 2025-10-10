@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.20.1-0.9.0] - 2025-10-10
+### :sparkles: New Features
+- [`2e7f1da`](https://github.com/irishgreencitrus/OccultEngineering/commit/2e7f1daae675fdba9e74f30a5c235a14a868e574) - Making the Schematicannon work with chalks. Also moved a bunch of stuff around in prep for adding Pentacle Schematics. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`5b3fd52`](https://github.com/irishgreencitrus/OccultEngineering/commit/5b3fd52ded941a94b51f403c7e11e28ad5377fbe) - Start working on the Pentacle Altar. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`5685c09`](https://github.com/irishgreencitrus/OccultEngineering/commit/5685c097d9ac2ea18bec1d465a7b13efa2d427e3) - Continue the work on the Pentacle printing system. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`100c395`](https://github.com/irishgreencitrus/OccultEngineering/commit/100c3952410235608accd81e9e0b6c9e8e406f14) - Start work on the Púcalith. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`73199de`](https://github.com/irishgreencitrus/OccultEngineering/commit/73199de9c80e784a968e2b519357d0e98edbef52) - Make the Pentacle Altar only display valid pentacles, rather than every multiblock. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`e8d2d9f`](https://github.com/irishgreencitrus/OccultEngineering/commit/e8d2d9f00f3934e182b9ed6cfd9cda77ddccdb1d) - Complete the Pentacle Material Checklist. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`84036e5`](https://github.com/irishgreencitrus/OccultEngineering/commit/84036e538ccd10da431111d713135e2a5c93f670) - Add the Púca mob *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`67fd83b`](https://github.com/irishgreencitrus/OccultEngineering/commit/67fd83bd58a98ebf704f4664d61925851bc5f2f5) - Give the Púca a brain *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`5d5dac1`](https://github.com/irishgreencitrus/OccultEngineering/commit/5d5dac1c78567447bcb2c5107c1aad850c386287) - Make the Púca hop around and give it a spawn egg *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`28730c2`](https://github.com/irishgreencitrus/OccultEngineering/commit/28730c2378a07e9c51dcf6d1e34c6a9784964fb4) - Rework a few bits around the Pentacle printing system. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`a9ed468`](https://github.com/irishgreencitrus/OccultEngineering/commit/a9ed4680545375c9279886697bb2396def98f786) - Pentacle Printing work & Dynamic Brains *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`a79f617`](https://github.com/irishgreencitrus/OccultEngineering/commit/a79f61746cd0ec4328bd41960a0e1eb173f57a7a) - Start work on the Púca being able to place blocks. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`72c5c2b`](https://github.com/irishgreencitrus/OccultEngineering/commit/72c5c2b67c4a6ec1e094157672c14c5ec1c38c0a) - Add insta-place to the PentaclePrinter *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`5048cc6`](https://github.com/irishgreencitrus/OccultEngineering/commit/5048cc61978e854dc02329e1585ff6ea96714692) - Update Registrate url *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`1167ff8`](https://github.com/irishgreencitrus/OccultEngineering/commit/1167ff8fad3144cafe2fdd28fd8163bd1dddc7f8) - Remove stuff related to the Pucalith actually using a Puca entity. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`4c6a7bb`](https://github.com/irishgreencitrus/OccultEngineering/commit/4c6a7bbedff8d8d5a4ab34d4a3e6e986222b517e) - Implement the Phlogiport *(PR [#22](https://github.com/irishgreencitrus/OccultEngineering/pull/22) by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :bug: Bug Fixes
+- [`edfafb1`](https://github.com/irishgreencitrus/OccultEngineering/commit/edfafb1d486417c81328b9336f0b927f8d5dd7ec) - Make the PentacleAltar save its inventory to NBT. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`41cd6da`](https://github.com/irishgreencitrus/OccultEngineering/commit/41cd6da71775de0de0395d5c7640cea1c867482e) - Fix bugs in PentacleMaterialChecklist and remove a rogue logging statement *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`7f00880`](https://github.com/irishgreencitrus/OccultEngineering/commit/7f0088076814a8e70d92b406b872ff2e6a97e0e0) - Fix runData by scrapping Registrate for entities *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :wrench: Chores
+- [`c593cf6`](https://github.com/irishgreencitrus/OccultEngineering/commit/c593cf68a06456976991b5d2e0c2d78252c4b568) - Don't forget about mixins.json *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`0d06087`](https://github.com/irishgreencitrus/OccultEngineering/commit/0d0608782dd675b89aef80dfd40dae6f0bdb25ae) - Cleanup the material checklist code. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.8.1] - 2025-05-24
 ### :bug: Bug Fixes
 - [`d56c63b`](https://github.com/irishgreencitrus/OccultEngineering/commit/d56c63b8171d0c04b3ae619b2be4697b34748991) - Fix Javadoc from failing my build (thanks Gradle) *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -55,3 +84,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [beta/v1.20.1-0.6.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.5.0...beta/v1.20.1-0.6.0
 [beta/v1.20.1-0.7.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.6.0...beta/v1.20.1-0.7.0
 [beta/v1.20.1-0.8.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.0...beta/v1.20.1-0.8.1
+[beta/v1.20.1-0.9.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.1...beta/v1.20.1-0.9.0
