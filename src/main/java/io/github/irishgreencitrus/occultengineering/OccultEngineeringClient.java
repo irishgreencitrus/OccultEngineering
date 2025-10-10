@@ -7,8 +7,8 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPa
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringParticleTypes;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class OccultEngineeringClient {
 

@@ -14,14 +14,12 @@ import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 
 @Mod(OccultEngineering.MODID)
@@ -29,30 +27,22 @@ public class OccultEngineering {
     public static final String NAME = "Create: Occult Engineering";
     public static final String MODID = "occultengineering";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final CreateRegistrate REGISTRATE;
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MODID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
+            .setTooltipModifierFactory(item ->
+                    new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                            .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+            );
 
     public static final PhlogiportNetworkHandler PHLOGIPORT_NETWORK = new PhlogiportNetworkHandler();
 
-    static {
-        assert OccultEngineeringCreativeModeTab.CREATIVE_TAB.getKey() != null;
-        REGISTRATE = CreateRegistrate.create(MODID)
-                .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
-                .setTooltipModifierFactory(item ->
-                        new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
-                                .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
-                );
-    }
-
-    public OccultEngineering() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get()
-                .getModEventBus();
+    public OccultEngineering(IEventBus modEventBus, ModContainer modContainer) {
         var modLoadingContext = ModLoadingContext.get();
+
         modEventBus.addListener(OccultEngineering::init);
         modEventBus.addListener(OccultEngineering::onRegister);
 
-
         REGISTRATE.registerEventListeners(modEventBus);
-
 
         OccultEngineeringCreativeModeTab.register(modEventBus);
 
@@ -69,7 +59,6 @@ public class OccultEngineering {
         OccultEngineeringConfig.register(modLoadingContext);
 
         modEventBus.addListener(OccultEngineeringEntities::registerEntityAttributes);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> OccultEngineeringClient.onCtorClient(modEventBus));
         OcEngCurios.init(modEventBus);
         LOGGER.info("Setup is complete.");
     }
@@ -85,7 +74,7 @@ public class OccultEngineering {
     }
 
     public static ResourceLocation asResource(String path) {
-        return new ResourceLocation(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     public static LangBuilder lang() {

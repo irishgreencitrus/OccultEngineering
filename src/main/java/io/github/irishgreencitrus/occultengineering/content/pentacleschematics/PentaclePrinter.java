@@ -12,6 +12,7 @@ import io.github.irishgreencitrus.occultengineering.mixin.accessor.TagMatcherAcc
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,13 +20,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.commons.lang3.NotImplementedException;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PentaclePrinter {
 
@@ -109,7 +107,9 @@ public class PentaclePrinter {
             setBlock(pos, nextToPlace.left().get());
         } else {
             var tag = nextToPlace.right().get();
-            ImmutableList<Block> all = ImmutableList.copyOf(ForgeRegistries.BLOCKS.tags().getTag(tag));
+            // TODO: filter blocks by their tag / 1.21.1's equivilent
+            // ImmutableList<Block> all = ImmutableList.copyOf(Registries.BLOCK);
+            ImmutableList<Block> all = ImmutableList.copyOf(new ArrayList<>());
 
             if (all.isEmpty()) {
                 return false;

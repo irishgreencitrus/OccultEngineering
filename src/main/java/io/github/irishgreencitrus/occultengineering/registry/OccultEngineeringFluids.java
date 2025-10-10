@@ -11,10 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.fluids.FluidInteractionRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Vector3f;
 
 import java.util.function.Supplier;
@@ -22,14 +22,14 @@ import java.util.function.Supplier;
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;
 
 public class OccultEngineeringFluids {
-    public static final FluidEntry<ForgeFlowingFluid.Flowing> SPIRIT_SOLUTION =
+    public static final FluidEntry<BaseFlowingFluid.Flowing> SPIRIT_SOLUTION =
             REGISTRATE
                     .standardFluid("spirit_solution", SolidRenderedPlaceableFluidType.create(0xc61dff, () -> 1f / 8f * OccultEngineeringConfig.client().spiritSolutionTransparencyMultiplier.getF()))
                     .lang("Spirit Solution")
                     .properties(b -> b.viscosity(500).density(500))
                     .tag(OccultEngineeringTags.SPIRIT_SOLUTION_FLUID)
                     .tag(OccultEngineeringTags.PUCALITH_FUEL)
-                    .source(ForgeFlowingFluid.Source::new)
+                    .source(BaseFlowingFluid.Source::new)
                     .bucket()
                     .build()
                     .register();
@@ -38,7 +38,7 @@ public class OccultEngineeringFluids {
     }
 
     public static void registerFluidInteractions() {
-        FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+        FluidInteractionRegistry.addInteraction(NeoForgeMod.LAVA_TYPE.value(), new FluidInteractionRegistry.InteractionInformation(
                 SPIRIT_SOLUTION.getType(),
                 fluidState -> {
                     if (fluidState.isSource()) {

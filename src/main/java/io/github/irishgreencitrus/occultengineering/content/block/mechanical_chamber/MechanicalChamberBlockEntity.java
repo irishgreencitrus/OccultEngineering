@@ -25,14 +25,12 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -44,8 +42,7 @@ import java.util.Optional;
 
 
 public class MechanicalChamberBlockEntity extends KineticBlockEntity {
-
-    public @Nullable RitualRecipe currentRitualRecipe;
+    public RecipeHolder<RitualRecipe> currentRitualRecipe;
     public ResourceLocation currentRitualRecipeId;
     public List<Ingredient> remainingIngredients = new ArrayList<>();
     public List<ItemStack> consumedIngredients = new ArrayList<>();
@@ -54,7 +51,6 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     public int currentTime;
 
     public ItemStackHandler itemStackHandler;
-    public LazyOptional<ItemStackHandler> lazyItemStackHandler = LazyOptional.of(() -> this.itemStackHandler);
 
     public long lastChangeTime;
 
@@ -108,6 +104,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         };
     }
 
+    // TODO: move to RegisterCapabilitiesEvent
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction direction) {

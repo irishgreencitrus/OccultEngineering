@@ -18,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -39,12 +38,8 @@ public class MechanicalGuideItem extends ModonomiconItem {
         var itemInHand = pPlayer.getItemInHand(pUsedHand);
 
         if (pLevel.isClientSide) {
-            if (itemInHand.hasTag()) {
-                var book = BookDataManager.get().getBook(ENCYCLOPEDIA_OF_SOULS);
-                BookGuiManager.get().openBook(book.getId());
-            } else {
-                OccultEngineering.LOGGER.error("Encyclopedia of Souls: ItemStack has no tag!");
-            }
+            var book = BookDataManager.get().getBook(ENCYCLOPEDIA_OF_SOULS);
+            BookGuiManager.get().openBook(book.getLeafletAddress());
         }
 
         return InteractionResultHolder.sidedSuccess(itemInHand, pLevel.isClientSide);
@@ -61,10 +56,10 @@ public class MechanicalGuideItem extends ModonomiconItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         Book book = BookDataManager.get().getBook(ENCYCLOPEDIA_OF_SOULS);
         if (book != null) {
-            if (flagIn.isAdvanced()) {
+            if (tooltipFlag.isAdvanced()) {
                 tooltip.add(Component.literal("Book ID: ").withStyle(ChatFormatting.DARK_GRAY)
                         .append(Component.literal(ENCYCLOPEDIA_OF_SOULS.toString()).withStyle(ChatFormatting.RED)));
             }

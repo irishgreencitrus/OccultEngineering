@@ -32,12 +32,12 @@ import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -212,11 +212,13 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     }
 
 
+    /*
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DYNAMIC_BRAIN_ID, "");
     }
+     */
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -228,8 +230,9 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        /*
         if (compound.contains("DynamicBrainID")) {
-            var brainFactory = OccultEngineeringBrains.REGISTRY.get().getValue(ResourceLocation.tryParse(compound.getString("DynamicBrainID")));
+            var brainFactory = OccultEngineeringBrains.REGISTRY.get(); // (ResourceLocation.tryParse(compound.getString("DynamicBrainID")));
             if (brainFactory != null) {
                 var brain = brainFactory.create(this);
                 if (brain != null) {
@@ -237,5 +240,6 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
                 }
             }
         }
+         */
     }
 }

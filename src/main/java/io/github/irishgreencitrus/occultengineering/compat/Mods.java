@@ -3,7 +3,7 @@ package io.github.irishgreencitrus.occultengineering.compat;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -29,7 +29,7 @@ public enum Mods {
     }
 
     public ResourceLocation rl(String path) {
-        return new ResourceLocation(id, path);
+        return ResourceLocation.fromNamespaceAndPath(id, path);
     }
 
     public Item getItem(String id) {

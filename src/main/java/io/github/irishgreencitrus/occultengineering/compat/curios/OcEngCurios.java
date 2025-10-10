@@ -2,10 +2,9 @@ package io.github.irishgreencitrus.occultengineering.compat.curios;
 
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
+import net.neoforged.bus.api.IEventBus;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 public class OcEngCurios {
     private static Optional<Map<String, ICurioStacksHandler>> resolveCuriosMap(LivingEntity entity) {
-        return entity.getCapability(CuriosCapability.INVENTORY).map(ICuriosItemHandler::getCurios);
+        return Optional.ofNullable(entity.getCapability(CuriosCapability.INVENTORY)).map(ICuriosItemHandler::getCurios);
     }
 
     public static void init(IEventBus modEventBus) {
@@ -34,7 +33,7 @@ public class OcEngCurios {
                 })
                 .orElse(false));
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+        CatnipServices.PLATFORM.executeOnClientOnly(
                 () -> () -> modEventBus.addListener(OcEngCuriosRenderers::onLayerRegister));
     }
 }
