@@ -5,6 +5,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [beta/v1.20.1-0.9.0] - 2025-10-10
+Hello everyone, I'm sorry it's taken such a long time to make a new release of Create: Occult Engineering (like 4 months), but I've finally done one!
+
+I spent about a month trying to come up with features that were over complex and not feasable for me to do at this time. The plan was to reinvent how Create's schematics work, but use them only for Pentacles, so you could place down any pentacle without needing to draw everything individually. I got 90% of the way there, but that meant I only completed 10% of the work as these things go.
+
+Anyway, I took a break from the project for a few months and came up with a new idea that I actually managed to finish (although this still took me a while.
+
+### Phlogiports!
+Phlogiports are a new way to route Create's packages a short to medium amount of distance. When a named package enters a Phlogiport which has a different name, the Phlogiport checks within 128 blocks of it to find another with that name. If one is found, the package is forwarded wirelessly! If multiple are found, a random one is picked and the package is sent to that one.
+
+These work on a separate network to Frogports and Trains, and only forward between each other.
+
+For a (hopefully) better explanation, check its Ponder menu.
+#### Crafting
+Phlogiports can be crafted using a ritual from a Sterling Silver Block, a Gold Block, a bar of Silver Phlogistate and a transmitter!
+
+For info about crafting the intermediate materials, refer to the Encyclopedia of Souls, JEI or the Ponder menu.
+
+### Other Changes
+#### Phlogiston
+An intermediate material for crafting Phlogiports (and other things in the future!)
+
+#### Silver Phlogistate
+Another intermediate material for crafting Phlogiports (and other things in the future!)
+
+#### Creative Menu
+The Creative Menu has been re-ordered slightly, just thought I'd mention it.
+
+#### Schematics Features
+All of Occultism's and Occult Engineering's chalk can be used in schematics and get consumed properly.
+
+#### Unfinished Features
+As mentioned above, some features have been left in but are unfinished, these include Pentacle Schematics, the Púca mob (which is mostly functional, but has no purpose) and the workstations for using Pentacle Schematics.
+I'm going to leave these in for now since they're not harming anyone.
+
+### Final notes from me
+I'm going to start porting Occult Engineering to 1.21.1 soon, and will release that first.
+After that, I need feature requests!
+Join me on the Discord, or make a GitHub feature request and if it's good and fits the mod's theme, I'll include it!
+
 ### :sparkles: New Features
 - [`2e7f1da`](https://github.com/irishgreencitrus/OccultEngineering/commit/2e7f1daae675fdba9e74f30a5c235a14a868e574) - Making the Schematicannon work with chalks. Also moved a bunch of stuff around in prep for adding Pentacle Schematics. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
 - [`5b3fd52`](https://github.com/irishgreencitrus/OccultEngineering/commit/5b3fd52ded941a94b51f403c7e11e28ad5377fbe) - Start working on the Pentacle Altar. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -33,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [`0d06087`](https://github.com/irishgreencitrus/OccultEngineering/commit/0d0608782dd675b89aef80dfd40dae6f0bdb25ae) - Cleanup the material checklist code. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
 
 
+# OCCULT ENGINEERING v0.9.0
 ## [beta/v1.20.1-0.8.1] - 2025-05-24
 ### :bug: Bug Fixes
 - [`d56c63b`](https://github.com/irishgreencitrus/OccultEngineering/commit/d56c63b8171d0c04b3ae619b2be4697b34748991) - Fix Javadoc from failing my build (thanks Gradle) *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
