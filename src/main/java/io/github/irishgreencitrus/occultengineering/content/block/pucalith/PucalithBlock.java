@@ -1,5 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.block.pucalith;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.item.ItemHelper;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class PucalithBlock extends HorizontalDirectionalBlock implements IBE<PucalithBlockEntity> {
@@ -22,17 +22,22 @@ public class PucalithBlock extends HorizontalDirectionalBlock implements IBE<Puc
         super(properties);
     }
 
+    public static final MapCodec<PucalithBlock> CODEC = simpleCodec(PucalithBlock::new);
+
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
         withBlockEntityDo(level, pos, be ->
-                NetworkHooks.openScreen((ServerPlayer) player, be, be::sendToMenu));
+                player.openMenu(be, be::sendToMenu));
         return InteractionResult.SUCCESS;
     }
-
 
     @Override
     @SuppressWarnings("deprecation")

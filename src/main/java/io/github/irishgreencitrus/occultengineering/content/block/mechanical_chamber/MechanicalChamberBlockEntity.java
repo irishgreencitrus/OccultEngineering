@@ -13,7 +13,7 @@ import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,30 +21,33 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 
+// TODO: rewrite to match how the Golden Sacrifical Bowl works in 1.21.1
 public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     public RecipeHolder<RitualRecipe> currentRitualRecipe;
     public ResourceLocation currentRitualRecipeId;
-    public List<Ingredient> remainingIngredients = new ArrayList<>();
+    public List<Ingredient> remainingAdditionalIngredients = new ArrayList<>();
     public List<ItemStack> consumedIngredients = new ArrayList<>();
     public boolean sacrificeProvided;
     public boolean itemUseProvided;
@@ -54,8 +57,14 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
 
     public long lastChangeTime;
 
+    public Consumer<PlayerInteractEvent.RightClickItem> rightClickItemListener;
+    public Consumer<LivingDeathEvent> livingDeathEventListener;
+
     public MechanicalChamberBlockEntity(BlockEntityType<?> entityType, BlockPos worldPos, BlockState state) {
         super(entityType, worldPos, state);
+
+        this.rightClickItemListener = this::onPlayerRightClickItem;
+        this.livingDeathEventListener = this::onLivingDeath;
 
         this.itemStackHandler = new ItemStackHandler(1) {
             @Override
@@ -105,47 +114,37 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     }
 
     // TODO: move to RegisterCapabilitiesEvent
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction direction) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return this.lazyItemStackHandler.cast();
-        }
-        return super.getCapability(cap, direction);
-    }
 
-    public @Nullable RitualRecipe getCurrentRitualRecipe() {
+    public @Nullable RecipeHolder<RitualRecipe> getCurrentRitualRecipe() {
         // If we don't have a ritual recipe, refresh it from the server.
-        if (currentRitualRecipeId != null && level != null) {
-            Optional<? extends Recipe<?>> recipe = level.getRecipeManager().byKey(currentRitualRecipeId);
-
-            if (recipe.isPresent() && recipe.get() instanceof RitualRecipe ritualRecipe) {
-                if (!ritualRecipe.requiresItemUse() && !ritualRecipe.requiresSacrifice()) {
-                    currentRitualRecipe = ritualRecipe;
-                }
+        if (currentRitualRecipeId != null) {
+            if (this.level != null) {
+                var recipe = level.getRecipeManager().byKey(currentRitualRecipeId);
+                recipe.map(r -> (RecipeHolder<RitualRecipe>) r).ifPresent(r -> this.currentRitualRecipe = r);
+                this.currentRitualRecipeId = null;
             }
-
-            currentRitualRecipeId = null;
         }
         return currentRitualRecipe;
     }
 
-    public void startRitual(@NotNull RitualRecipe recipe) {
+    public void startRitual(@Nullable ServerPlayer player, ItemStack activationItem, RecipeHolder<RitualRecipe> ritualRecipe) {
         if (this.level != null && this.level.isClientSide) return;
 
         // We don't support summoning entities in an automated system!
-        assert recipe.getEntityToSummon() == null;
+        // TODO: let's make this not crash the game
+        assert ritualRecipe.value().getEntityToSummon() == null;
 
         // We don't support item use or sacrifices in an automated system!
-        assert !recipe.requiresItemUse() && !recipe.requiresSacrifice();
+        assert !ritualRecipe.value().requiresItemUse() && !ritualRecipe.value().requiresSacrifice();
 
-        currentRitualRecipe = recipe;
+        currentRitualRecipe = ritualRecipe;
         currentTime = 0;
         sacrificeProvided = false;
         itemUseProvided = false;
         consumedIngredients.clear();
-        remainingIngredients = new ArrayList<>(currentRitualRecipe.getIngredients());
+        remainingAdditionalIngredients = new ArrayList<>(currentRitualRecipe.value().getIngredients());
 
+        // TODO: reevaluate the below comment, this might have changed.
         // We don't call Ritual.start(), as it only plays a sound for our purposes!
 
         updateBlock();
@@ -228,12 +227,12 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         RitualRecipe recipe = getCurrentRitualRecipe();
         if (recipe == null) return;
 
-        if (remainingIngredients == null) {
+        if (remainingAdditionalIngredients == null) {
             restoreRemainingIngredients();
-            if (remainingIngredients == null) return;
+            if (remainingAdditionalIngredients == null) return;
         }
 
-        if (!isRitualValid(recipe, level, getBlockPos(), itemStackHandler.getStackInSlot(0), remainingIngredients)) {
+        if (!isRitualValid(recipe, level, getBlockPos(), itemStackHandler.getStackInSlot(0), remainingAdditionalIngredients)) {
             stopRitual(false);
             return;
         }
@@ -252,7 +251,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         }
 
         // We don't call Ritual.update, it doesn't seem to do anything?
-        if (!recipe.getRitual().consumeAdditionalIngredients(level, getBlockPos(), remainingIngredients, currentTime, consumedIngredients)) {
+        if (!recipe.getRitual().consumeAdditionalIngredients(level, getBlockPos(), remainingAdditionalIngredients, currentTime, consumedIngredients)) {
             this.stopRitual(false);
             return;
         }
@@ -290,31 +289,31 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
             if (ritualCompleted) {
                 ItemStack activationItem = itemStackHandler.getStackInSlot(0);
                 // OVERRIDE: Instead of dropping the item on the floor, we leave it in the chamber.
-                if (recipe.getRitual() instanceof CraftRitual) {
+                if (recipe.value().getRitual() instanceof CraftRitual) {
                     activationItem.shrink(1); // remove activation item.
                     ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getBlockPos().getX() + 0.5,
                             getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
 
-                    ItemStack result = recipe.getResultItem(level.registryAccess()).copy();
+                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
                     itemStackHandler.insertItem(0, result, false);
-                } else if (recipe.getRitual() instanceof CraftWithSpiritNameRitual) {
+                } else if (recipe.value().getRitual() instanceof CraftWithSpiritNameRitual) {
                     ItemStack copy = activationItem.copy();
                     activationItem.shrink(1); //remove activation item.
 
                     ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getBlockPos().getX() + 0.5,
                             getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
 
-                    ItemStack result = recipe.getResultItem(level.registryAccess()).copy();
+                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
                     ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
                     itemStackHandler.insertItem(0, result, false);
-                } else if (recipe.getRitual() instanceof CraftMinerSpiritRitual) {
+                } else if (recipe.value().getRitual() instanceof CraftMinerSpiritRitual) {
                     ItemStack copy = activationItem.copy();
                     activationItem.shrink(1); //remove activation item.
 
                     ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getBlockPos().getX() + 0.5,
                             getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
 
-                    ItemStack result = recipe.getResultItem(level.registryAccess()).copy();
+                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
 
                     //sets up nbt configuration for miner
                     result.getItem().onCraftedBy(result, level, null);
@@ -323,7 +322,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
                     ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
                     itemStackHandler.insertItem(0, result, false);
                 } else {
-                    recipe.getRitual().finish(this.level, this.getBlockPos(), null, null, activationItem);
+                    recipe.value().getRitual().finish(this.level, this.getBlockPos(), null, null, activationItem);
                 }
             } else {
                 //recipe.getRitual().interrupt(this.level, this.getBlockPos(), null, null, itemStackHandler.getStackInSlot(0));
@@ -335,7 +334,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         currentRitualRecipe = null;
         currentRitualRecipeId = null;
         currentTime = 0;
-        if (remainingIngredients != null) remainingIngredients.clear();
+        if (remainingAdditionalIngredients != null) remainingAdditionalIngredients.clear();
         consumedIngredients.clear();
 
         updateBlock();
@@ -344,24 +343,27 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     }
 
     private void restoreRemainingIngredients() {
-        assert level != null;
-        RitualRecipe currentRecipe = getCurrentRitualRecipe();
+        if (level == null) {
+            this.remainingAdditionalIngredients = null;
+            return;
+        }
+        RecipeHolder<RitualRecipe> currentRecipe = getCurrentRitualRecipe();
         if (currentRecipe == null) return;
 
         if (!this.consumedIngredients.isEmpty()) {
-            remainingIngredients = Ritual.getRemainingAdditionalIngredients(currentRecipe.getIngredients(), consumedIngredients);
+            remainingAdditionalIngredients = Ritual.getRemainingAdditionalIngredients(currentRecipe.value().getIngredients(), consumedIngredients);
         } else {
-            remainingIngredients = new ArrayList<>(currentRecipe.getIngredients());
+            remainingAdditionalIngredients = new ArrayList<>(currentRecipe.value().getIngredients());
         }
     }
 
 
     @Override
-    public void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
+    public void read(CompoundTag compound, HolderLookup.Provider provider, boolean clientPacket) {
+        super.read(compound, provider, clientPacket);
 
         if (compound.contains("currentRitual")) {
-            this.currentRitualRecipeId = new ResourceLocation(compound.getString("currentRitual"));
+            this.currentRitualRecipeId = ResourceLocation.parse(compound.getString("currentRitual"));
         }
 
         this.consumedIngredients.clear();
@@ -369,7 +371,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
             if (compound.contains("consumedIngredients")) {
                 ListTag list = compound.getList("consumedIngredients", Tag.TAG_COMPOUND);
                 for (int i = 0; i < list.size(); i++) {
-                    ItemStack stack = ItemStack.of(list.getCompound(i));
+                    ItemStack stack = new ItemStack(list.getCompound(i));
                     this.consumedIngredients.add(stack);
                 }
             }
@@ -383,23 +385,14 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
-        RitualRecipe recipe = this.getCurrentRitualRecipe();
+    public void write(CompoundTag compound, HolderLookup.Provider provider, boolean clientPacket) {
+        var recipe = this.getCurrentRitualRecipe();
         if (recipe != null) {
-            compound.putString("currentRitual", recipe.getId().toString());
-            if (!this.consumedIngredients.isEmpty()) {
-                ListTag list = new ListTag();
-                for (ItemStack stack : this.consumedIngredients) {
-                    list.add(stack.serializeNBT());
-                }
-                compound.put("consumedIngredients", list);
-            }
+            compound.putString("currentRitual", recipe.id().toString());
         }
-        compound.putLong("lastChangeTime", this.lastChangeTime);
-        this.lazyItemStackHandler.ifPresent(handler -> compound.put("inventory", handler.serializeNBT()));
         compound.putInt("currentTime", this.currentTime);
-
-        super.write(compound, clientPacket);
+        compound.putBoolean("ritualActive", this.ritualActive);
+        super.write(compound, provider, clientPacket);
     }
 
     private void updateBlock() {

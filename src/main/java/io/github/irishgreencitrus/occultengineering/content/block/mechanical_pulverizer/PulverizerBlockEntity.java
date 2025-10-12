@@ -1,7 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer;
 
 import com.klikli_dev.occultism.crafting.recipe.CrushingRecipe;
-import com.klikli_dev.occultism.crafting.recipe.ItemStackFakeInventory;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
@@ -17,13 +16,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +28,8 @@ import java.util.Optional;
 public class PulverizerBlockEntity extends KineticBlockEntity {
     public ItemStackHandler inputInv;
     public ItemStackHandler outputInv;
+
+    // TODO: Move capabilities
     public LazyOptional<IItemHandler> capability;
     public int timer;
     // This is Occultism's CrushingRecipe, not Create's

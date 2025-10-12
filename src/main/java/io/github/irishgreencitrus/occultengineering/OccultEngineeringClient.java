@@ -7,10 +7,16 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPa
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringParticleTypes;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.ponder.foundation.PonderIndex;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
+@Mod(value = OccultEngineering.MODID, dist = Dist.CLIENT)
 public class OccultEngineeringClient {
+    public OccultEngineeringClient(IEventBus modEventBus) {
+        onCtorClient(modEventBus);
+    }
 
     public static void onCtorClient(IEventBus modEventBus) {
         OccultEngineeringPartialModels.register();

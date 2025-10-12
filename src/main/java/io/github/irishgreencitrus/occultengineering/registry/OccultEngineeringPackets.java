@@ -1,99 +1,46 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PentacleAltarConfirmPacket;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PucalithSendOptionPacket;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.createmod.catnip.net.base.BasePacketPayload;
+import net.createmod.catnip.net.base.CatnipPacketRegistry;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.Locale;
 
-import static net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT;
-import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
-
-public enum OccultEngineeringPackets {
+public enum OccultEngineeringPackets implements BasePacketPayload.PacketTypeProvider {
     // CLIENT TO SERVER
-    PENTACLE_ALTAR_CONFIRM(PentacleAltarConfirmPacket.class, PentacleAltarConfirmPacket::new, PLAY_TO_SERVER),
-    PUCALITH_SEND_OPTION(PucalithSendOptionPacket.class, PucalithSendOptionPacket::new, PLAY_TO_SERVER),
+    PENTACLE_ALTAR_CONFIRM(PentacleAltarConfirmPacket.class, PentacleAltarConfirmPacket.STREAM_CODEC),
+    PUCALITH_SEND_OPTION(PucalithSendOptionPacket.class, PucalithSendOptionPacket.STREAM_CODEC),
 
     // SERVER TO CLIENT
-    PHLOGIPORT_SEND_EFFECT(PhlogiportSendEffectPacket.class, PhlogiportSendEffectPacket::new, PLAY_TO_CLIENT);
+    PHLOGIPORT_SEND_EFFECT(PhlogiportSendEffectPacket.class, PhlogiportSendEffectPacket.STREAM_CODEC);
 
-    public static final ResourceLocation CHANNEL_NAME = OccultEngineering.asResource("main");
-    public static final int NETWORK_VERSION = 1;
-    public static final String NETWORK_VERSION_STR = String.valueOf(NETWORK_VERSION);
-    private final PacketType<?> packetType;
+    private final CatnipPacketRegistry.PacketType<?> type;
 
-    <T extends SimplePacketBase> OccultEngineeringPackets(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection networkDirection) {
-        packetType = new PacketType<>(type, factory, networkDirection);
+    <T extends BasePacketPayload> OccultEngineeringPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
+        var name = this.name().toLowerCase(Locale.ROOT);
+        this.type = new CatnipPacketRegistry.PacketType<>(
+                new CustomPacketPayload.Type<>(OccultEngineering.asResource(name)),
+                clazz, codec
+        );
     }
 
 
-    private static SimpleChannel channel;
-
-    public static void registerPackets() {
-        channel = NetworkRegistry.ChannelBuilder
-                .named(CHANNEL_NAME)
-                .serverAcceptedVersions(NETWORK_VERSION_STR::equals)
-                .clientAcceptedVersions(NETWORK_VERSION_STR::equals)
-                .networkProtocolVersion(() -> NETWORK_VERSION_STR)
-                .simpleChannel();
-
-        for (var packet : values())
-            packet.packetType.register();
-
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends CustomPacketPayload> CustomPacketPayload.Type<T> getType() {
+        return (CustomPacketPayload.Type<T>) this.type.type();
     }
 
-    public static void sendToNear(Level world, BlockPos pos, int range, Object message) {
-        getChannel().send(
-                PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), range, world.dimension())),
-                message);
-    }
-
-    public static SimpleChannel getChannel() {
-        return channel;
-    }
-
-
-    private static class PacketType<T extends SimplePacketBase> {
-        private static int index = 0;
-
-        private final BiConsumer<T, FriendlyByteBuf> encoder;
-        private final Function<FriendlyByteBuf, T> decoder;
-        private final BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
-        private final Class<T> type;
-        private final NetworkDirection direction;
-
-        private PacketType(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
-            encoder = T::write;
-            decoder = factory;
-            handler = (packet, contextSupplier) -> {
-                NetworkEvent.Context context = contextSupplier.get();
-                if (packet.handle(context)) {
-                    context.setPacketHandled(true);
-                }
-            };
-            this.type = type;
-            this.direction = direction;
-        }
-
-        private void register() {
-            getChannel().messageBuilder(type, index++, direction)
-                    .encoder(encoder)
-                    .decoder(decoder)
-                    .consumerNetworkThread(handler)
-                    .add();
-        }
+    public static void register() {
+        var packetRegistry = new CatnipPacketRegistry(OccultEngineering.MODID, "1");
+        for (OccultEngineeringPackets packet: OccultEngineeringPackets.values())
+            packetRegistry.registerPacket(packet.type);
+        packetRegistry.registerAllPackets();
     }
 }

@@ -8,15 +8,15 @@ import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.ponder.OccultEngineeringPonderPlugin;
 import io.github.irishgreencitrus.occultengineering.datagen.recipe.*;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class DataProviders {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

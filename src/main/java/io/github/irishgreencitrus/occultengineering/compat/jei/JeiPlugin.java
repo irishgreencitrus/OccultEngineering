@@ -1,6 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.compat.jei;
 
 import com.klikli_dev.occultism.crafting.recipe.SpiritFireRecipe;
+import com.klikli_dev.occultism.integration.jei.impl.JeiRecipeTypes;
 import com.klikli_dev.occultism.registry.OccultismBlocks;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.AllBlocks;
@@ -12,11 +13,13 @@ import io.github.irishgreencitrus.occultengineering.compat.jei.category.RecipeCa
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -26,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @mezz.jei.api.JeiPlugin
 public class JeiPlugin implements IModPlugin {
@@ -41,18 +45,17 @@ public class JeiPlugin implements IModPlugin {
         allCategories.add(
                 builder(SpiritFireRecipe.class)
                         .addTypedRecipes(OccultismRecipes.SPIRIT_FIRE_TYPE::get)
-                        .catalystStack(
-                                () -> AllBlocks.ENCASED_FAN.asStack()
-                                        .setHoverName(
-                                                OccultEngineering.lang()
-                                                        .translate("fan_enspirit.fan")
-                                                        .component()
-                                                        .withStyle(
-                                                                (style) -> style.withItalic(false))))
+                        .catalystStack(getOcEngFan("fan_enspirit"))
                         .doubleItemIcon(AllItems.PROPELLER.get(), OccultismBlocks.SPIRIT_CAMPFIRE.get())
                         .emptyBackground(178, 72)
                         .build("fan_enspirit", FanEnspiritCategory::new)
         );
+    }
+
+    private static Supplier<ItemStack> getOcEngFan(String name) {
+        var stack = AllBlocks.ENCASED_FAN.asStack();
+        stack.set(DataComponents.CUSTOM_NAME, OccultEngineering.lang().translate(name+".fan").component().withStyle((s) -> s.withItalic(false)));
+        return () -> stack;
     }
 
     @Override
@@ -71,7 +74,7 @@ public class JeiPlugin implements IModPlugin {
         List<FluidStack> fluidIngredients = new ArrayList<>();
         fluidIngredients.add(new FluidStack(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), FluidType.BUCKET_VOLUME));
 
-        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(ForgeTypes.FLUID_STACK, fluidIngredients);
+        jeiRuntime.getIngredientManager().addIngredientsAtRuntime(NeoForgeTypes.FLUID_STACK, fluidIngredients);
     }
 
     @Override

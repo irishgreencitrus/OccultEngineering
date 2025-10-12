@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,18 +45,6 @@ public class PentacleAltarBlockEntity extends SmartBlockEntity implements MenuPr
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> list) {
 
-    }
-
-    @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        inventory.deserializeNBT(tag.getCompound("Inventory"));
-        super.read(tag, clientPacket);
-    }
-
-    @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        tag.put("Inventory", inventory.serializeNBT());
-        super.write(tag, clientPacket);
     }
 
     @Override

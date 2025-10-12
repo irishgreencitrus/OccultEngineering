@@ -48,19 +48,16 @@ public class OtherworldDetectorBlock extends Block implements IBE<OtherworldDete
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         IBE.onRemove(state, level, pos, newState);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isSignalSource(BlockState state) {
         return state.getValue(POWERED);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         BlockState toState = level.getBlockState(pos.relative(direction.getOpposite()));
         if (toState.is(this))

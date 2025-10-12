@@ -48,6 +48,8 @@ public abstract class DynamicBrain<T extends LivingEntity & SmartBrainOwner<T>> 
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        // TODO: fix whatever we were doing here
+        return null;
         /*
         var tag = new CompoundTag();
         tag.putString("DynamicBrainID", brainID.toString());

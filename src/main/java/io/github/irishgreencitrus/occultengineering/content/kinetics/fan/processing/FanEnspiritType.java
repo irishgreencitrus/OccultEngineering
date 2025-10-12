@@ -1,6 +1,5 @@
 package io.github.irishgreencitrus.occultengineering.content.kinetics.fan.processing;
 
-import com.klikli_dev.occultism.crafting.recipe.SpiritFireRecipe;
 import com.klikli_dev.occultism.registry.OccultismEffects;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.fan.processing.FanProcessingType;
@@ -21,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public class FanEnspiritType implements FanProcessingType {
     @Override

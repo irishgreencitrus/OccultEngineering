@@ -20,7 +20,7 @@ public class DynamicBrainFactory<T extends LivingEntity & SmartBrainOwner<T>> {
 
     public DynamicBrain<T> create(T entity) {
         var brain = this.constructor.apply(entity);
-        brain.brainID = OccultEngineeringBrains.REGISTRY.get().getKey(this);
+        brain.brainID = OccultEngineeringBrains.REGISTRY.getKey(this);
         return brain;
     }
 
@@ -35,7 +35,7 @@ public class DynamicBrainFactory<T extends LivingEntity & SmartBrainOwner<T>> {
         @SuppressWarnings("unchecked")
         var brain = this.constructor.apply((T) entity);
 
-        brain.brainID = OccultEngineeringBrains.REGISTRY.get().getKey(this);
+        brain.brainID = OccultEngineeringBrains.REGISTRY.getKey(this);
         return brain;
     }
 }

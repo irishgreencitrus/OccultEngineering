@@ -56,7 +56,7 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
                 .getRecipeManager()
                 .getAllRecipesFor(OccultismRecipes.RITUAL_TYPE.get())
                 .stream()
-                .map(i -> new Pair<>(i.getPentacleId(), i.getPentacle()))
+                .map(i -> new Pair<>(i.value().getPentacleId(), i.value().getPentacle()))
                 .distinct()
                 .collect(Pair.toMap());
 
@@ -88,9 +88,10 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
             if (menu.canWrite() && pentaclesArea != null) {
                 // send packet to give player a pentacle schematic
                 var pentacleLocation = optionList.get(pentaclesArea.getState());
-                OccultEngineeringPackets.getChannel().sendToServer(new PentacleAltarConfirmPacket(pentacleLocation));
+                // TODO: work out how the networking function works now...
+                //OccultEngineeringPackets.PENTACLE_ALTAR_CONFIRM
+                //OccultEngineeringPackets.getChannel().sendToServer(new PentacleAltarConfirmPacket(pentacleLocation));
             }
-
         });
         addRenderableWidget(confirmButton);
 

@@ -2,50 +2,63 @@ package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.klikli_dev.occultism.registry.OccultismItems;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
+import com.simibubi.create.foundation.mixin.accessor.MappedRegistryAccessor;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.compat.Mods;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
-import net.createmod.catnip.platform.CatnipServices;
+import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
-import net.minecraftforge.common.crafting.conditions.NotCondition;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
+import net.neoforged.neoforge.common.conditions.NotCondition;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-@SuppressWarnings("unused")
-public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
-    //Marker items = enterFolder("items");
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I;
 
-    String currentFolder = "";
+@SuppressWarnings("unused")
+public class OcEngStandardRecipeGen extends BaseRecipeProvider {
+    //Marker items = enterFolder("items");
 
     GeneratedRecipe
             ENCYCLOPEDIA_OF_SOULS = create(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS)
@@ -69,9 +82,16 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
             .viaShapeless(b -> b.requires(OccultismItems.OTHERWORLD_GOGGLES::get)
                     .requires(AllItems.GOGGLES));
 
-    public OcEngStandardRecipeGen(PackOutput output) {
-        super(output);
+    /*
+     * End of recipe list
+     */
+
+    // BEHOLD: COPY AND PASTE!
+
+    static class Marker {
     }
+
+    String currentFolder = "";
 
     Marker enterFolder(String folder) {
         currentFolder = folder;
@@ -86,20 +106,15 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         return new GeneratedRecipeBuilder(currentFolder, result);
     }
 
-    GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike> result) {
+    GeneratedRecipeBuilder create(ItemProviderEntry<? extends ItemLike, ? extends ItemLike> result) {
         return create(result::get);
     }
 
-    GeneratedRecipe createSpecial(Supplier<? extends SimpleCraftingRecipeSerializer<?>> serializer, String recipeType,
+    GeneratedRecipe createSpecial(Function<CraftingBookCategory, Recipe<?>> builder, String recipeType,
                                   String path) {
-        ResourceLocation location;
-        if (currentFolder == null || currentFolder.isEmpty()) {
-            location = OccultEngineering.asResource(recipeType + "/" + path);
-        } else {
-            location = OccultEngineering.asResource(recipeType + "/" + currentFolder + "/" + path);
-        }
+        ResourceLocation location = OccultEngineering.asResource(recipeType + "/" + currentFolder + "/" + path);
         return register(consumer -> {
-            SpecialRecipeBuilder b = SpecialRecipeBuilder.special(serializer.get());
+            SpecialRecipeBuilder b = SpecialRecipeBuilder.special(builder);
             b.save(consumer, location.toString());
         });
     }
@@ -127,16 +142,16 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
                 .inFurnace();
     }
 
-    GeneratedRecipe metalCompacting(List<ItemProviderEntry<? extends ItemLike>> variants,
+    GeneratedRecipe metalCompacting(List<ItemProviderEntry<? extends ItemLike, ? extends ItemLike>> variants,
                                     List<Supplier<TagKey<Item>>> ingredients) {
         GeneratedRecipe result = null;
         for (int i = 0; i + 1 < variants.size(); i++) {
-            ItemProviderEntry<? extends ItemLike> currentEntry = variants.get(i);
-            ItemProviderEntry<? extends ItemLike> nextEntry = variants.get(i + 1);
+            ItemProviderEntry<? extends ItemLike, ? extends ItemLike> currentEntry = variants.get(i);
+            ItemProviderEntry<? extends ItemLike, ? extends ItemLike> nextEntry = variants.get(i + 1);
             Supplier<TagKey<Item>> currentIngredient = ingredients.get(i);
             Supplier<TagKey<Item>> nextIngredient = ingredients.get(i + 1);
 
-            create(nextEntry).withSuffix("_from_compacting")
+            result = create(nextEntry).withSuffix("_from_compacting")
                     .unlockedBy(currentEntry::get)
                     .viaShaped(b -> b.pattern("###")
                             .pattern("###")
@@ -151,11 +166,11 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         return result;
     }
 
-    GeneratedRecipe conversionCycle(List<ItemProviderEntry<? extends ItemLike>> cycle) {
+    GeneratedRecipe conversionCycle(List<ItemProviderEntry<? extends ItemLike, ? extends ItemLike>> cycle) {
         GeneratedRecipe result = null;
         for (int i = 0; i < cycle.size(); i++) {
-            ItemProviderEntry<? extends ItemLike> currentEntry = cycle.get(i);
-            ItemProviderEntry<? extends ItemLike> nextEntry = cycle.get((i + 1) % cycle.size());
+            ItemProviderEntry<? extends ItemLike, ? extends ItemLike> currentEntry = cycle.get(i);
+            ItemProviderEntry<? extends ItemLike, ? extends ItemLike> nextEntry = cycle.get((i + 1) % cycle.size());
             result = create(nextEntry).withSuffix("_from_conversion")
                     .unlockedBy(currentEntry::get)
                     .viaShapeless(b -> b.requires(currentEntry.get()));
@@ -163,92 +178,31 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         return result;
     }
 
-    GeneratedRecipe clearData(ItemProviderEntry<? extends ItemLike> item) {
+    GeneratedRecipe clearData(ItemProviderEntry<? extends ItemLike, ? extends ItemLike> item) {
         return create(item).withSuffix("_clear")
                 .unlockedBy(item::get)
                 .viaShapeless(b -> b.requires(item.get()));
     }
 
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    private record ModdedCookingRecipeResult(FinishedRecipe wrapped, ResourceLocation outputOverride,
-                                             List<ICondition> conditions) implements FinishedRecipe {
-        @Override
-        public ResourceLocation getId() {
-            return wrapped.getId();
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return wrapped.getType();
-        }
-
-        @Override
-        @Nullable
-        public JsonObject serializeAdvancement() {
-            return wrapped.serializeAdvancement();
-        }
-
-        @Override
-        @Nullable
-        public ResourceLocation getAdvancementId() {
-            return wrapped.getAdvancementId();
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject object) {
-            wrapped.serializeRecipeData(object);
-            object.addProperty("result", outputOverride.toString());
-
-            JsonArray conds = new JsonArray();
-            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
-            object.add("conditions", conds);
-        }
+    @Override
+    public void buildRecipes(RecipeOutput output) {
+        all.forEach(c -> c.register(output));
+        OccultEngineering.LOGGER.info("{} registered {} recipe{}", getName(), all.size(), all.size() == 1 ? "" : "s");
     }
 
-    @MethodsReturnNonnullByDefault
-    @ParametersAreNonnullByDefault
-    private record ConditionSupportingShapelessRecipeResult(FinishedRecipe wrapped, List<ICondition> conditions)
-            implements FinishedRecipe {
-        @Override
-        public ResourceLocation getId() {
-            return wrapped.getId();
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return wrapped.getType();
-        }
-
-        @Override
-        @Nullable
-        public JsonObject serializeAdvancement() {
-            return wrapped.serializeAdvancement();
-        }
-
-        @Override
-        @Nullable
-        public ResourceLocation getAdvancementId() {
-            return wrapped.getAdvancementId();
-        }
-
-        @Override
-        public void serializeRecipeData(@NotNull JsonObject pJson) {
-            wrapped.serializeRecipeData(pJson);
-
-            JsonArray conds = new JsonArray();
-            conditions.forEach(c -> conds.add(CraftingHelper.serialize(c)));
-            pJson.add("conditions", conds);
-        }
+    protected GeneratedRecipe register(GeneratedRecipe recipe) {
+        all.add(recipe);
+        return recipe;
     }
 
     class GeneratedRecipeBuilder {
 
-        List<ICondition> recipeConditions;
-        private final String path;
+        private String path;
         private String suffix;
         private Supplier<? extends ItemLike> result;
         private ResourceLocation compatDatagenOutput;
+        List<ICondition> recipeConditions;
+
         private Supplier<ItemPredicate> unlockedBy;
         private int amount;
 
@@ -318,15 +272,15 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         }
 
         GeneratedRecipe viaShapeless(UnaryOperator<ShapelessRecipeBuilder> builder) {
-            return register(consumer -> {
+            return register(recipeOutput -> {
                 ShapelessRecipeBuilder b =
                         builder.apply(ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, result.get(), amount));
                 if (unlockedBy != null)
                     b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
 
-                b.save(result -> consumer.accept(!recipeConditions.isEmpty()
-                        ? new ConditionSupportingShapelessRecipeResult(result, recipeConditions)
-                        : result), createLocation("crafting"));
+                RecipeOutput conditionalOutput = recipeOutput.withConditions(recipeConditions.toArray(new ICondition[0]));
+
+                b.save(recipeOutput, createLocation("crafting"));
             });
         }
 
@@ -348,15 +302,11 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         }
 
         private ResourceLocation createLocation(String recipeType) {
-            if (StringUtils.isBlank(path)) {
-                return OccultEngineering.asResource(recipeType + "/" + getRegistryName().getPath() + suffix);
-            } else {
-                return OccultEngineering.asResource(recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix);
-            }
+            return OccultEngineering.asResource(recipeType + "/" + path + "/" + getRegistryName().getPath() + suffix);
         }
 
         private ResourceLocation getRegistryName() {
-            return compatDatagenOutput == null ? CatnipServices.REGISTRIES.getKeyOrThrow(result.get()
+            return compatDatagenOutput == null ? RegisteredObjectsHelper.getKeyOrThrow(result.get()
                     .asItem()) : compatDatagenOutput;
         }
 
@@ -373,11 +323,7 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
         }
 
         class GeneratedCookingRecipeBuilder {
-
-            private final Supplier<Ingredient> ingredient;
-            private final RecipeSerializer<? extends AbstractCookingRecipe> FURNACE = RecipeSerializer.SMELTING_RECIPE,
-                    SMOKER = RecipeSerializer.SMOKING_RECIPE, BLAST = RecipeSerializer.BLASTING_RECIPE,
-                    CAMPFIRE = RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
+            private Supplier<Ingredient> ingredient;
             private float exp;
             private int cookingTime;
 
@@ -402,7 +348,7 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
             }
 
             GeneratedRecipe inFurnace(UnaryOperator<SimpleCookingRecipeBuilder> builder) {
-                return create(FURNACE, builder, 1);
+                return create(RecipeSerializer.SMELTING_RECIPE, builder, SmeltingRecipe::new, 1);
             }
 
             GeneratedRecipe inSmoker() {
@@ -410,9 +356,9 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
             }
 
             GeneratedRecipe inSmoker(UnaryOperator<SimpleCookingRecipeBuilder> builder) {
-                create(FURNACE, builder, 1);
-                create(CAMPFIRE, builder, 3);
-                return create(SMOKER, builder, .5f);
+                create(RecipeSerializer.SMELTING_RECIPE, builder, SmeltingRecipe::new, 1);
+                create(RecipeSerializer.CAMPFIRE_COOKING_RECIPE, builder, CampfireCookingRecipe::new, 3);
+                return create(RecipeSerializer.SMOKING_RECIPE, builder, SmokingRecipe::new, .5f);
             }
 
             GeneratedRecipe inBlastFurnace() {
@@ -420,29 +366,147 @@ public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
             }
 
             GeneratedRecipe inBlastFurnace(UnaryOperator<SimpleCookingRecipeBuilder> builder) {
-                create(FURNACE, builder, 1);
-                return create(BLAST, builder, .5f);
+                create(RecipeSerializer.SMELTING_RECIPE, builder, SmeltingRecipe::new, 1);
+                return create(RecipeSerializer.BLASTING_RECIPE, builder, BlastingRecipe::new, .5f);
             }
 
-            private GeneratedRecipe create(RecipeSerializer<? extends AbstractCookingRecipe> serializer,
-                                           UnaryOperator<SimpleCookingRecipeBuilder> builder, float cookingTimeModifier) {
-                return register(consumer -> {
+            private <T extends AbstractCookingRecipe> GeneratedRecipe create(RecipeSerializer<T> serializer,
+                                                                             UnaryOperator<SimpleCookingRecipeBuilder> builder, AbstractCookingRecipe.Factory<T> factory, float cookingTimeModifier) {
+                return register(recipeOutput -> {
                     boolean isOtherMod = compatDatagenOutput != null;
 
                     SimpleCookingRecipeBuilder b = builder.apply(SimpleCookingRecipeBuilder.generic(ingredient.get(),
                             RecipeCategory.MISC, isOtherMod ? Items.DIRT : result.get(), exp,
-                            (int) (cookingTime * cookingTimeModifier), serializer));
-
+                            (int) (cookingTime * cookingTimeModifier), serializer, factory));
                     if (unlockedBy != null)
                         b.unlockedBy("has_item", inventoryTrigger(unlockedBy.get()));
 
-                    b.save(result -> consumer.accept(
-                            isOtherMod ? new ModdedCookingRecipeResult(result, compatDatagenOutput, recipeConditions)
-                                    : result), createSimpleLocation(CatnipServices.REGISTRIES.getKeyOrThrow(serializer)
-                            .getPath()));
+                    RecipeOutput conditionalOutput = recipeOutput.withConditions(recipeConditions.toArray(new ICondition[0]));
+
+                    b.save(
+                            isOtherMod ? new ModdedCookingRecipeOutput(conditionalOutput, compatDatagenOutput) : conditionalOutput,
+                            createSimpleLocation(RegisteredObjectsHelper.getKeyOrThrow(serializer).getPath())
+                    );
                 });
             }
         }
     }
 
+    public OcEngStandardRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, OccultEngineering.MODID);
+    }
+
+    @ParametersAreNonnullByDefault
+    @MethodsReturnNonnullByDefault
+    private static class ModdedCookingRecipeOutputShim implements Recipe<RecipeInput> {
+
+        private static final Map<RecipeType<?>, Serializer> serializers = new ConcurrentHashMap<>();
+
+        private final Recipe<?> wrapped;
+        private final ResourceLocation overrideID;
+
+        private ModdedCookingRecipeOutputShim(Recipe<?> wrapped, ResourceLocation overrideID) {
+            this.wrapped = wrapped;
+            this.overrideID = overrideID;
+        }
+
+        @Override
+        public boolean matches(RecipeInput recipeInput, Level level) {
+            throw new AssertionError("Only for datagen output");
+        }
+
+        @Override
+        public ItemStack assemble(RecipeInput input, HolderLookup.Provider registries) {
+            throw new AssertionError("Only for datagen output");
+        }
+
+        @Override
+        public boolean canCraftInDimensions(int pWidth, int pHeight) {
+            throw new AssertionError("Only for datagen output");
+        }
+
+        @Override
+        public ItemStack getResultItem(HolderLookup.Provider registries) {
+            throw new AssertionError("Only for datagen output");
+        }
+
+        @Override
+        public RecipeSerializer<?> getSerializer() {
+            return serializers.computeIfAbsent(
+                    getType(),
+                    t -> Serializer.create(wrapped)
+            );
+        }
+
+        @Override
+        public RecipeType<?> getType() {
+            return wrapped.getType();
+        }
+
+        private record Serializer(MapCodec<Recipe<?>> wrappedCodec) implements RecipeSerializer<ModdedCookingRecipeOutputShim> {
+            private static Serializer create(Recipe<?> wrapped) {
+                RecipeSerializer<?> wrappedSerializer = wrapped.getSerializer();
+                @SuppressWarnings("unchecked")
+                Serializer serializer = new Serializer((MapCodec<Recipe<?>>) wrappedSerializer.codec());
+
+                // Need to do some registry injection to get the Recipe/Registry#byNameCodec to encode the right type for this
+                // getResourceKey and getId
+                // byValue and toId
+                // Holder.Reference: key
+                if (BuiltInRegistries.RECIPE_SERIALIZER instanceof MappedRegistryAccessor<?> mra) {
+                    @SuppressWarnings("unchecked")
+                    MappedRegistryAccessor<RecipeSerializer<?>> mra$ = (MappedRegistryAccessor<RecipeSerializer<?>>) mra;
+
+                    int wrappedId = mra$.getToId().getOrDefault(wrappedSerializer, -1);
+                    ResourceKey<RecipeSerializer<?>> wrappedKey = mra$.getByValue().get(wrappedSerializer).key();
+
+                    mra$.getToId().put(serializer, wrappedId);
+                    //noinspection DataFlowIssue - it is ok to pass null as the owner, because this is only being used for serialization
+                    mra$.getByValue().put(serializer, Holder.Reference.createStandAlone(null, wrappedKey));
+                } else {
+                    throw new AssertionError("ModdedCookingRecipeOutputShim will not be able to" +
+                            " serialize without injecting into a registry. Expected" +
+                            " BuiltInRegistries.RECIPE_SERIALIZER to be of class MappedRegistry, is of class " +
+                            BuiltInRegistries.RECIPE_SERIALIZER.getClass()
+                    );
+                }
+                return serializer;
+            }
+
+            @Override
+            public MapCodec<ModdedCookingRecipeOutputShim> codec() {
+                return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                        wrappedCodec.forGetter(i -> i.wrapped),
+                        FakeItemStack.CODEC.fieldOf("result").forGetter(i -> new FakeItemStack(i.overrideID))
+                ).apply(instance, (wrappedRecipe, fakeItemStack) -> {
+                    throw new AssertionError("Only for datagen output");
+                }));
+            }
+
+            @Override
+            public StreamCodec<RegistryFriendlyByteBuf, ModdedCookingRecipeOutputShim> streamCodec() {
+                throw new AssertionError("Only for datagen output");
+            }
+        }
+
+        private record FakeItemStack(ResourceLocation id) {
+            public static Codec<FakeItemStack> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                    ResourceLocation.CODEC.fieldOf("id").forGetter(FakeItemStack::id)
+            ).apply(instance, FakeItemStack::new));
+        }
+    }
+
+    @ParametersAreNonnullByDefault
+    @MethodsReturnNonnullByDefault
+    private record ModdedCookingRecipeOutput(RecipeOutput wrapped, ResourceLocation outputOverride) implements RecipeOutput {
+        @Override
+        public Advancement.Builder advancement() {
+            return wrapped.advancement();
+        }
+
+        @Override
+        public void accept(ResourceLocation id, Recipe<?> recipe, @Nullable AdvancementHolder advancement, ICondition... conditions) {
+            wrapped.accept(id, new ModdedCookingRecipeOutputShim(recipe, outputOverride), advancement, conditions);
+        }
+    }
 }

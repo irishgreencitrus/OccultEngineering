@@ -8,6 +8,7 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringMe
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -15,7 +16,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
@@ -30,7 +30,7 @@ public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
         super(type, id, inv, contentHolder);
     }
 
-    public PucalithMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
+    public PucalithMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 

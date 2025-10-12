@@ -8,7 +8,9 @@ import com.klikli_dev.modonomicon.item.ModonomiconItem;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -61,7 +63,7 @@ public class MechanicalGuideItem extends ModonomiconItem {
         if (book != null) {
             if (tooltipFlag.isAdvanced()) {
                 tooltip.add(Component.literal("Book ID: ").withStyle(ChatFormatting.DARK_GRAY)
-                        .append(Component.literal(ENCYCLOPEDIA_OF_SOULS.toString()).withStyle(ChatFormatting.RED)));
+                        .append(Component.literal(book.getId().toString()).withStyle(ChatFormatting.RED)));
             }
 
             if (!book.getTooltip().isBlank()) {
@@ -69,15 +71,16 @@ public class MechanicalGuideItem extends ModonomiconItem {
             }
 
         } else {
-            tooltip.add(Component.translatable(ModonomiconConstants.I18n.Tooltips.ITEM_NO_BOOK_FOUND_FOR_STACK,
-                            stack.hasTag() ? NbtUtils.toPrettyComponent(Objects.requireNonNull(stack.getTag())) : Component.literal("{}"))
-                    .withStyle(ChatFormatting.DARK_GRAY));
+            var compoundTag = new CompoundTag();
+            for (var entry : itemStack.getComponents()) {
+                var tag = entry.encodeValue(Objects.requireNonNull(tooltipContext.registries()).createSerializationContext(NbtOps.INSTANCE)).getOrThrow();
+                var key = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(entry.type());
+                assert key != null;
+                compoundTag.put(key.toString(), tag);
+            }
+            tooltip.add(Component.translatable(ModonomiconConstants.I18n.Tooltips.ITEM_NO_BOOK_FOUND_FOR_STACK, NbtUtils.toPrettyComponent(compoundTag)).withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 
-    @Override
-    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        stack.getOrCreateTag().putString(ModonomiconConstants.Nbt.ITEM_BOOK_ID_TAG, ENCYCLOPEDIA_OF_SOULS.toString());
-        return super.initCapabilities(stack, nbt);
-    }
+
 }

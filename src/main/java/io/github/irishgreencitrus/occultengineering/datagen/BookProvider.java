@@ -3,12 +3,12 @@ package io.github.irishgreencitrus.occultengineering.datagen;
 import io.github.irishgreencitrus.occultengineering.datagen.book.EnUsProvider;
 import io.github.irishgreencitrus.occultengineering.datagen.book.OcEngBookProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber
 public class BookProvider {
 
     @SubscribeEvent(priority = EventPriority.HIGH)

@@ -2,6 +2,7 @@ package io.github.irishgreencitrus.occultengineering.content.fluid;
 
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import io.github.irishgreencitrus.occultengineering.mixin.accessor.TankSegmentAccessor;
 import net.neoforged.neoforge.fluids.FluidStack;

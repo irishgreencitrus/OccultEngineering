@@ -25,8 +25,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
@@ -38,6 +37,8 @@ public class OccultEngineeringBlocks {
     static {
         REGISTRATE.setCreativeTab(OccultEngineeringCreativeModeTab.CREATIVE_TAB);
     }
+
+    // TODO: use Occultism's tag.
     // FUTURE: When Create gets updated to 1.21, use Occultism's tag, to prevent the pentacle jank.
 
     public static final BlockEntry<MechanicalChamberBlock> MECHANICAL_CHAMBER = REGISTRATE
@@ -59,7 +60,7 @@ public class OccultEngineeringBlocks {
 
 
     public static void genChalkGlyph(DataGenContext<Block, ChalkGlyphBlock> context, RegistrateBlockstateProvider blockstateProvider) {
-        ModelFile.ExistingModelFile parentModel = blockstateProvider.models().getExistingFile(OccultEngineering.asResource("block/chalk_glyph"));
+        var parentModel = blockstateProvider.models().getExistingFile(OccultEngineering.asResource("block/chalk_glyph"));
         blockstateProvider.getVariantBuilder(context.get())
                 .forAllStates(state -> {
                     int sign = state.getValue(ChalkGlyphBlock.SIGN);

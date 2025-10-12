@@ -48,7 +48,7 @@ public class SummonWithBrainCommand {
             source.sendSuccess(() -> Component.literal("Created entity, but it does not have a dynamic brain"), true);
             return Command.SINGLE_SUCCESS;
         }
-        DynamicBrainFactory<?> dynamicBrainFactory = OccultEngineeringBrains.REGISTRY.get().getValue(brainLocation);
+        DynamicBrainFactory<?> dynamicBrainFactory = OccultEngineeringBrains.REGISTRY.get(brainLocation);
         if (dynamicBrainFactory == null) {
             source.sendSuccess(() -> Component.literal("Created entity, but could not find brain " + brainLocation.toString()), true);
             return Command.SINGLE_SUCCESS;

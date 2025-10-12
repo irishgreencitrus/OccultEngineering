@@ -53,7 +53,6 @@ public class MechanicalChamberBlock extends HorizontalKineticBlock implements IB
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
@@ -77,8 +76,7 @@ public class MechanicalChamberBlock extends HorizontalKineticBlock implements IB
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType computationType) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 

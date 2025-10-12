@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -40,7 +41,6 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(HORIZONTAL_FACING));
     }
@@ -55,15 +55,15 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
+    // TODO: double check this works
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (level.isClientSide) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         var be = getBlockEntity(level, pos);
-        if (be == null) return InteractionResult.PASS;
+        if (be == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         var hasHandInteraction = player.getItemInHand(hand).isEmpty() || be.canProcess(player.getItemInHand(hand));
-        if (!hasHandInteraction) return InteractionResult.PASS;
+        if (!hasHandInteraction) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         withBlockEntityDo(level, pos, pulverizer -> {
             var mainHandItem = player.getItemInHand(hand);
@@ -95,7 +95,7 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
             pulverizer.sendData();
         });
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
@@ -109,8 +109,7 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 

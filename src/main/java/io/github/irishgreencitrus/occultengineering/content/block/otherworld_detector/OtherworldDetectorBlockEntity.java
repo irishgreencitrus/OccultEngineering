@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
+    // TODO: provide a codec for this block entity so it can be properly networked.
     public OtherworldDetectorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
         setLazyTickRate(20);
@@ -38,7 +39,7 @@ public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
         if (Occultism.THIRD_EYE_EFFECT_RENDERER.gogglesActiveLastTick || Occultism.THIRD_EYE_EFFECT_RENDERER.thirdEyeActiveLastTick) {
             var distanceSqr = nearestPlayer.distanceToSqr(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
             var distance = Math.sqrt(distanceSqr);
-            // Stronger the close you are
+            // Stronger the closer you are
             comparatorSignalStrength = 15 - (int) distance;
 
             activate(4);
@@ -59,15 +60,4 @@ public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
     public void addBehaviours(List<BlockEntityBehaviour> list) {
     }
 
-    @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        tag.putInt("turn_off_in", turnOffInTicks);
-        super.write(tag, clientPacket);
-    }
-
-    @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        super.read(tag, clientPacket);
-        turnOffInTicks = tag.getInt("turn_off_in");
-    }
 }

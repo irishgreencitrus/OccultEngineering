@@ -7,8 +7,8 @@ import net.minecraft.client.particle.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.gameevent.PositionSource;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
@@ -136,11 +136,10 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
         for (int i = 0; i < 4; i++) {
             var corner = quad[i];
-            buffer.vertex(corner.x, corner.y, corner.z)
-                    .uv(ucoords[i], vcoords[i])
-                    .color(this.rCol, this.gCol, this.bCol, this.alpha)
-                    .uv2(lightLevel)
-                    .endVertex();
+            buffer.addVertex(corner.x, corner.y, corner.z)
+                    .setUv(ucoords[i], vcoords[i])
+                    .setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+                    .setUv2(lightLevel, lightLevel);
         }
     }
 
@@ -163,7 +162,7 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
         }
 
         public Particle createParticle(PhlogiportSignalParticleData type, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            PhlogiportSignalParticle particle = new PhlogiportSignalParticle(level, x, y, z, type.getDestination(), type.getLifetime());
+            PhlogiportSignalParticle particle = new PhlogiportSignalParticle(level, x, y, z, type.destination(), type.arrivalInTicks());
             particle.pickSprite(this.sprite);
             particle.setAlpha(1.0F);
             return particle;

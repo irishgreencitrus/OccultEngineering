@@ -3,17 +3,17 @@ package io.github.irishgreencitrus.occultengineering.content.pentacleschematics;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 import java.util.Optional;
 
-public class PentacleSchematicHandler implements IGuiOverlay {
+/*
+public class PentacleSchematicHandler implements IGuiOver {
     private boolean active = false;
     private ItemStack activeSchematicItem;
     private int activeHotbarSlot;
@@ -69,3 +69,4 @@ public class PentacleSchematicHandler implements IGuiOverlay {
 
     }
 }
+ */

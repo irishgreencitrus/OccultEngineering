@@ -1,14 +1,13 @@
 package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
-import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.api.data.recipe.MixingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -16,13 +15,15 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.copperDust;
 import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.silverDust;
 
 @SuppressWarnings("unused")
-public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
-    public OcEngMixingRecipeGen(PackOutput output) {
-        super(output);
+public class OcEngMixingRecipeGen extends MixingRecipeGen {
+    public OcEngMixingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, OccultEngineering.MODID);
     }
 
     GeneratedRecipe
@@ -73,13 +74,13 @@ public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
 
     private GeneratedRecipe bookOfBindingStandard(ResourceLocation loc, ItemLike outputBook, ItemLike... dyes) {
         bookOfBindingFromRaw(loc, outputBook, null, dyes);
-        return bookOfBindingFromEmptyBook(new ResourceLocation(loc.getNamespace(), loc.getPath() + "_from_empty"), outputBook, null, dyes);
+        return bookOfBindingFromEmptyBook(ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), loc.getPath() + "_from_empty"), outputBook, null, dyes);
     }
 
     private GeneratedRecipe bookOfBindingSpirit(ResourceLocation loc, ItemLike outputBook, int spiritSolutionMb, ItemLike... dyes) {
         var fluidIngredient = FluidIngredient.fromFluid(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), spiritSolutionMb);
         bookOfBindingFromRaw(loc, outputBook, fluidIngredient, dyes);
-        return bookOfBindingFromEmptyBook(new ResourceLocation(loc.getNamespace(), loc.getPath() + "_from_empty"), outputBook, fluidIngredient, dyes);
+        return bookOfBindingFromEmptyBook(ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), loc.getPath() + "_from_empty"), outputBook, fluidIngredient, dyes);
     }
 
     private GeneratedRecipe bookOfBindingFromRaw(ResourceLocation loc, ItemLike outputBook, @Nullable FluidIngredient fluidIngredient, ItemLike... dyes) {
@@ -110,10 +111,5 @@ public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
             }
             return recipe;
         });
-    }
-
-    @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.MIXING;
     }
 }

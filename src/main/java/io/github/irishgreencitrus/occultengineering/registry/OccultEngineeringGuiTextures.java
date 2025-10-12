@@ -5,8 +5,8 @@ import net.createmod.catnip.gui.TextureSheetSegment;
 import net.createmod.catnip.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 public enum OccultEngineeringGuiTextures implements ScreenElement, TextureSheetSegment {
@@ -32,7 +32,7 @@ public enum OccultEngineeringGuiTextures implements ScreenElement, TextureSheetS
     }
 
     OccultEngineeringGuiTextures(String namespace, String location, int startX, int startY, int width, int height) {
-        this.location = new ResourceLocation(namespace, "textures/gui/" + location + ".png");
+        this.location = ResourceLocation.fromNamespaceAndPath(namespace, "textures/gui/" + location + ".png");
         this.width = width;
         this.height = height;
         this.startX = startX;

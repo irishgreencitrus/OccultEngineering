@@ -1,84 +1,52 @@
 package io.github.irishgreencitrus.occultengineering.content.phlogiport;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringParticleTypes;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.BlockPositionSource;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.level.gameevent.EntityPositionSource;
 import net.minecraft.world.level.gameevent.PositionSource;
-import net.minecraft.world.level.gameevent.PositionSourceType;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Locale;
+public record PhlogiportSignalParticleData(PositionSource destination, int arrivalInTicks) implements ParticleOptions {
+    private static final Codec<PositionSource> SAFE_POSITION_SOURCE_CODEC =
+            PositionSource.CODEC.validate((p) -> p instanceof EntityPositionSource ? DataResult.error(() -> "Entity position sources are not allowed.") : DataResult.success(p));
 
-public class PhlogiportSignalParticleData implements ParticleOptions {
-    public static final Codec<PhlogiportSignalParticleData> CODEC = RecordCodecBuilder.create(i ->
-            i.group(
-                    PositionSource.CODEC.fieldOf("destination").forGetter(p -> p.destination),
-                    Codec.INT.fieldOf("lifetime").forGetter(p -> p.lifetime)
-            ).apply(i, PhlogiportSignalParticleData::new)
-    );
+    public static final MapCodec<PhlogiportSignalParticleData> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    (i) -> i.group(
+                                    SAFE_POSITION_SOURCE_CODEC.fieldOf("destination").forGetter(PhlogiportSignalParticleData::destination),
+                                    Codec.INT.fieldOf("arrival_in_ticks").forGetter(PhlogiportSignalParticleData::arrivalInTicks))
+                            .apply(i, PhlogiportSignalParticleData::new));
 
-    public static final ParticleOptions.Deserializer<PhlogiportSignalParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public PhlogiportSignalParticleData fromCommand(ParticleType<PhlogiportSignalParticleData> particleType, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-            var x = reader.readDouble();
-            reader.expect(' ');
-            var y = reader.readDouble();
-            reader.expect(' ');
-            var z = reader.readDouble();
-            reader.expect(' ');
-            int l = reader.readInt();
-            return new PhlogiportSignalParticleData(new BlockPositionSource(BlockPos.containing(x, y, z)), l);
-        }
-
-        @Override
-        public PhlogiportSignalParticleData fromNetwork(ParticleType<PhlogiportSignalParticleData> particleType, FriendlyByteBuf b) {
-            return new PhlogiportSignalParticleData(PositionSourceType.fromNetwork(b), b.readVarInt());
-        }
-    };
-
-    private final PositionSource destination;
-    private final int lifetime;
-
-    public PhlogiportSignalParticleData(PositionSource destination, int lifetime) {
-        this.destination = destination;
-        this.lifetime = lifetime;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, PhlogiportSignalParticleData> STREAM_CODEC =
+            StreamCodec.composite(PositionSource.STREAM_CODEC,
+                    PhlogiportSignalParticleData::destination,
+                    ByteBufCodecs.VAR_INT,
+                    PhlogiportSignalParticleData::arrivalInTicks,
+                    PhlogiportSignalParticleData::new);
 
     @Override
-    public ParticleType<?> getType() {
+    public ParticleType<PhlogiportSignalParticleData> getType() {
         return OccultEngineeringParticleTypes.PHLOGIPORT_SIGNAL.get();
     }
 
-    @Override
-    public void writeToNetwork(FriendlyByteBuf buffer) {
-        PositionSourceType.toNetwork(this.destination, buffer);
-        buffer.writeVarInt(this.lifetime);
-    }
+    public static ParticleType<PhlogiportSignalParticleData> createType() {
+        return new ParticleType<>(false) {
+            @Override
+            public MapCodec<PhlogiportSignalParticleData> codec() {
+                return CODEC;
+            }
 
-    @Override
-    public String writeToString() {
-        Vec3 vec3 = this.destination.getPosition((Level) null).get();
-        double d0 = vec3.x();
-        double d1 = vec3.y();
-        double d2 = vec3.z();
-        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %d", ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()), d0, d1, d2, this.lifetime);
-    }
-
-    public int getLifetime() {
-        return lifetime;
-    }
-
-    public PositionSource getDestination() {
-        return destination;
+            @Override
+            public StreamCodec<RegistryFriendlyByteBuf, PhlogiportSignalParticleData> streamCodec() {
+                return STREAM_CODEC;
+            }
+        };
     }
 }

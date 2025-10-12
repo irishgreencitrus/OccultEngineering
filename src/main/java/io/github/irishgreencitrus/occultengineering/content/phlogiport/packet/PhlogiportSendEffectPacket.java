@@ -1,49 +1,38 @@
 package io.github.irishgreencitrus.occultengineering.content.phlogiport.packet;
 
-import com.simibubi.create.foundation.networking.SimplePacketBase;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlockEntity;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
+import io.netty.buffer.ByteBuf;
+import net.createmod.catnip.net.base.ClientboundPacketPayload;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
-public class PhlogiportSendEffectPacket extends SimplePacketBase {
-    private final BlockPos position;
-    private final boolean isReceiver;
-    private final boolean success;
-
-    public PhlogiportSendEffectPacket(BlockPos position, boolean isReceiver, boolean success) {
-        this.position = position;
-        this.isReceiver = isReceiver;
-        this.success = success;
-    }
-
-    public PhlogiportSendEffectPacket(FriendlyByteBuf buf) {
-        position = buf.readBlockPos();
-        isReceiver = buf.readBoolean();
-        success = buf.readBoolean();
-    }
-
-    @Override
-    public void write(FriendlyByteBuf buf) {
-        buf.writeBlockPos(position);
-        buf.writeBoolean(isReceiver);
-        buf.writeBoolean(success);
-    }
+public record PhlogiportSendEffectPacket(BlockPos position, boolean isReceiver, boolean success) implements ClientboundPacketPayload {
+    public static final StreamCodec<ByteBuf, PhlogiportSendEffectPacket> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC, PhlogiportSendEffectPacket::position,
+            ByteBufCodecs.BOOL, PhlogiportSendEffectPacket::isReceiver,
+            ByteBufCodecs.BOOL, PhlogiportSendEffectPacket::success,
+            PhlogiportSendEffectPacket::new
+    );
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public boolean handle(NetworkEvent.Context context) {
-        context.enqueueWork(() -> {
-            var level = Minecraft.getInstance().level;
-            if (level == null) return;
-            if (level.getBlockEntity(position) instanceof PhlogiportBlockEntity pbe) {
-                pbe.playEffect(isReceiver, success);
+    public void handle(LocalPlayer player) {
+        var level = Minecraft.getInstance().level;
+        if (level == null) return;
+        if (level.getBlockEntity(position) instanceof PhlogiportBlockEntity pbe) {
+            pbe.playEffect(isReceiver, success);
 
-            }
-        });
-        return true;
+        }
     }
+
+    @Override
+    public PacketTypeProvider getTypeProvider() {
+        return OccultEngineeringPackets.PHLOGIPORT_SEND_EFFECT;
+    };
 }
