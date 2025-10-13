@@ -2,8 +2,13 @@ package io.github.irishgreencitrus.occultengineering.event;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.command.OcEngCommands;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportNetworkHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 
@@ -24,5 +29,12 @@ public class OcEngEvents {
     public static void onUnloadWorld(LevelEvent.Unload event) {
         var world = event.getLevel();
         OccultEngineering.PHLOGIPORT_NETWORK.onUnloadWorld(world);
+    }
+
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        // TODO: do the rest of these
+        // TODO: also fix crafting recipes
+        PulverizerBlockEntity.registerCapabilities(event);
     }
 }

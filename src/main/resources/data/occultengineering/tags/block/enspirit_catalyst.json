@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values" : [
+    "occultism:spirit_fire",
+    "occultism:spirit_campfire",
+    "occultengineering:fan_enspirit_catalyst"
+  ]
+}
