@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create_connected"
+    }
+  ],
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "type": "neoforge:compound",
+      "ingredients": [
+        {
+          "item": "create_connected:empty_fan_catalyst"
+        }
+      ]
+    },
+    {
+      "item": "occultism:datura"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultengineering:fan_enspirit_catalyst"
+    }
+  ]
+}

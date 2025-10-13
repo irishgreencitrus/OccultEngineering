@@ -1,0 +1,24 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "tag": "c:dusts/brass"
+    },
+    {
+      "tag": "c:dusts/brass"
+    },
+    {
+      "item": "occultism:chalk_white_impure"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 500,
+      "fluid": "occultengineering:spirit_solution"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultengineering:chalk_brass_impure"
+    }
+  ]
+}

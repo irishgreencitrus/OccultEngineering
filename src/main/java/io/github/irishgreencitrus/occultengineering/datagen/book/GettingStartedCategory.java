@@ -102,7 +102,7 @@ public class GettingStartedCategory extends CategoryProvider {
 
     @Override
     protected BookIconModel categoryIcon() {
-        return null;
+        return BookIconModel.create(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class GettingStartedCategory extends CategoryProvider {
     @Override
     public BookCategoryModel generate() {
         add(context().categoryName(), "Getting Started");
-        return BookCategoryModel.create(modLoc(context().categoryId()), context().categoryName())
+        return BookCategoryModel.create(modLoc(categoryId()), context().categoryName())
                 .withIcon(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS)
                 .withShowCategoryButton(true);
     }
@@ -624,6 +624,6 @@ public class GettingStartedCategory extends CategoryProvider {
 
 
     private ResourceLocation fullyQualifiedEntryId() {
-        return modLoc(context().categoryId() + "/" + context().entryId());
+        return modLoc(categoryId() + "/" + context().entryId());
     }
 }

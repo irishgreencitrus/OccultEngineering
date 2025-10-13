@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "occultism:book_of_binding_foliot"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 25,
+      "fluid": "occultengineering:spirit_solution"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultism:book_of_binding_bound_foliot"
+    }
+  ]
+}

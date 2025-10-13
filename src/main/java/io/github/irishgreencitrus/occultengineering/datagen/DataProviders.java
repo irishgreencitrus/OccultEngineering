@@ -24,19 +24,9 @@ public class DataProviders {
         var output = generator.getPackOutput();
         var registries = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new OcEngCompactingRecipeGen(output, registries));
-        generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output, registries));
-        generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output, registries));
-        generator.addProvider(event.includeServer(), new OcEngItemApplicationRecipeGen(output, registries));
-        generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output, registries));
-
-        OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
-            BiConsumer<String, String> langConsumer = provider::add;
-
-            provideDefaultLang("interface", langConsumer);
-            provideDefaultLang("tooltips", langConsumer);
-            providerPonderLang(langConsumer);
-        });
+        if (event.includeServer()) {
+            OcEngRecipeProvider.registerAllProcessing(generator, output, registries);
+        }
     }
 
     private static void provideDefaultLang(String fileName, BiConsumer<String, String> consumer) {
@@ -56,5 +46,15 @@ public class DataProviders {
     private static void providerPonderLang(BiConsumer<String, String> consumer) {
         PonderIndex.addPlugin(new OccultEngineeringPonderPlugin());
         PonderIndex.getLangAccess().provideLang(OccultEngineering.MODID, consumer);
+    }
+
+    public static void registerAdditionalLangProviders() {
+        OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
+            BiConsumer<String, String> langConsumer = provider::add;
+
+            provideDefaultLang("interface", langConsumer);
+            provideDefaultLang("tooltips", langConsumer);
+            providerPonderLang(langConsumer);
+        });
     }
 }

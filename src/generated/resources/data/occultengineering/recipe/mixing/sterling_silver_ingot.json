@@ -1,0 +1,17 @@
+{
+  "type": "create:mixing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "tag": "c:dusts/copper"
+    },
+    {
+      "tag": "c:dusts/silver"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultengineering:sterling_silver_ingot"
+    }
+  ]
+}

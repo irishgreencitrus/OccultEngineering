@@ -11,9 +11,8 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Collections;
 
-@EventBusSubscriber
+// TODO: fix the book provider to use the new modonomicon API
 public class BookProvider {
-
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();

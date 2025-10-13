@@ -1,0 +1,24 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "tag": "c:dusts/copper"
+    },
+    {
+      "tag": "c:dusts/copper"
+    },
+    {
+      "item": "occultism:chalk_white_impure"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 100,
+      "fluid": "occultengineering:spirit_solution"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultengineering:chalk_copper_impure"
+    }
+  ]
+}

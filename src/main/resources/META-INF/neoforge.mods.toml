@@ -46,10 +46,18 @@ side = "BOTH"
 modId = "occultism"
 type = "required"
 versionRange = "[1.101.0,2.0.0)"
+ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.${ mod_id }]]
 modId = "create"
 type = "required"
 versionRange = "[6.0.0,7.0.0)"
+ordering = "BEFORE"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "createconnected"
+type = "optional"
+ordering = "BEFORE"
 side = "BOTH"

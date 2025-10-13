@@ -43,7 +43,7 @@ public class OccultEngineeringBlocks {
 
     public static final BlockEntry<MechanicalChamberBlock> MECHANICAL_CHAMBER = REGISTRATE
             .block("mechanical_chamber", MechanicalChamberBlock::new)
-            .initialProperties(OccultismBlocks.IESNIUM_BLOCK::get)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
             .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE))
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
             .blockstate(BlockStateGen.horizontalBlockProvider(false))

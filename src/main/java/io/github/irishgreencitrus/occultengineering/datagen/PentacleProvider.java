@@ -83,7 +83,6 @@ public class PentacleProvider implements DataProvider {
         this.toSerialize.put(rl.getPath(), json);
     }
 
-    @NotNull
     private static JsonArray createOuterPattern(List<String> pattern) {
         JsonArray outerPattern = new JsonArray();
         JsonArray innerPattern = new JsonArray();

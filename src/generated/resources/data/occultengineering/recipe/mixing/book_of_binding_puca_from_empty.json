@@ -1,0 +1,21 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "occultism:book_of_binding_empty"
+    },
+    {
+      "item": "minecraft:red_dye"
+    },
+    {
+      "type": "fluid_stack",
+      "amount": 50,
+      "fluid": "occultengineering:spirit_solution"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultengineering:book_of_binding_puca"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ import com.klikli_dev.occultism.registry.OccultismItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
+// TODO: fix Book generation
 public class PentaclesCategory extends CategoryProvider {
     public static final String CATEGORY_ID = "pentacles";
 
@@ -55,7 +56,7 @@ public class PentaclesCategory extends CategoryProvider {
     @Override
     public BookCategoryModel generate() {
         add(context().categoryName(), "Pentacles");
-        return BookCategoryModel.create(modLoc(context().categoryId()), context().categoryName())
+        return BookCategoryModel.create(modLoc(categoryId()), context().categoryName())
                 .withIcon(OccultismItems.PENTACLE_CRAFT.get())
                 .withShowCategoryButton(true);
     }
@@ -118,6 +119,6 @@ public class PentaclesCategory extends CategoryProvider {
     }
 
     private ResourceLocation fullyQualifiedEntryId() {
-        return modLoc(context().categoryId() + "/" + context().entryId());
+        return modLoc(categoryId() + "/" + context().entryId());
     }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "occultengineering:sterling_silver_ingot"
+    },
+    {
+      "item": "occultengineering:phlogiston"
+    }
+  ],
+  "results": [
+    {
+      "id": "occultengineering:silver_phlogistate"
+    }
+  ]
+}
