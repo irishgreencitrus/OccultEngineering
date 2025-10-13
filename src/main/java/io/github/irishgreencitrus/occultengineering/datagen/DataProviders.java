@@ -22,12 +22,13 @@ public class DataProviders {
     public static void gatherData(GatherDataEvent event) {
         var generator = event.getGenerator();
         var output = generator.getPackOutput();
+        var registries = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new OcEngCompactingRecipeGen(output));
-        generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output));
-        generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output));
-        generator.addProvider(event.includeServer(), new OcEngItemApplicationRecipeGen(output));
-        generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output));
+        generator.addProvider(event.includeServer(), new OcEngCompactingRecipeGen(output, registries));
+        generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output, registries));
+        generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output, registries));
+        generator.addProvider(event.includeServer(), new OcEngItemApplicationRecipeGen(output, registries));
+        generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output, registries));
 
         OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {
             BiConsumer<String, String> langConsumer = provider::add;

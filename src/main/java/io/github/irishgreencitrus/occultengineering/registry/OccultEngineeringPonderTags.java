@@ -5,6 +5,7 @@ import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.createmod.catnip.platform.CatnipServices;
+import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
@@ -18,10 +19,10 @@ public class OccultEngineeringPonderTags {
     }
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
 
-        PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderTagRegistrationHelper<RegistryEntry<?,?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         PonderTagRegistrationHelper<ItemLike> itemHelper = helper.withKeyFunction(
-                CatnipServices.REGISTRIES::getKeyOrThrow);
+                RegisteredObjectsHelper::getKeyOrThrow);
 
         helper.registerTag(OCCULT_APPLIANCES)
                 .addToIndex()

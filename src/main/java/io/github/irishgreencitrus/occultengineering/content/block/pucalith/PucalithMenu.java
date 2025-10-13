@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
@@ -39,11 +40,11 @@ public class PucalithMenu extends MenuBase<PucalithBlockEntity> {
     }
 
     @Override
-    protected PucalithBlockEntity createOnClient(FriendlyByteBuf extraData) {
+    protected PucalithBlockEntity createOnClient(RegistryFriendlyByteBuf extraData) {
         ClientLevel world = Minecraft.getInstance().level;
         BlockEntity blockEntity = world.getBlockEntity(extraData.readBlockPos());
         if (blockEntity instanceof PucalithBlockEntity be) {
-            be.readClient(extraData.readNbt());
+            be.readClient(extraData.readNbt(), extraData.registryAccess());
             return be;
         }
         return null;

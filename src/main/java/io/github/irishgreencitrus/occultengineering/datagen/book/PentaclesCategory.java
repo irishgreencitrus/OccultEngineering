@@ -3,9 +3,11 @@ package io.github.irishgreencitrus.occultengineering.datagen.book;
 import com.klikli_dev.modonomicon.api.datagen.BookProvider;
 import com.klikli_dev.modonomicon.api.datagen.CategoryEntryMap;
 import com.klikli_dev.modonomicon.api.datagen.CategoryProvider;
+import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryParentModel;
+import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.condition.BookTrueConditionModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookMultiblockPageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
@@ -16,8 +18,8 @@ import net.minecraft.world.item.Items;
 public class PentaclesCategory extends CategoryProvider {
     public static final String CATEGORY_ID = "pentacles";
 
-    public PentaclesCategory(BookProvider parent) {
-        super(parent, CATEGORY_ID);
+    public PentaclesCategory(ModonomiconProviderBase parent) {
+        super(parent);
     }
 
     @Override
@@ -32,15 +34,29 @@ public class PentaclesCategory extends CategoryProvider {
         var overview = add(makeOverviewEntry(entryMap, 'O'));
         var craftPuca = add(makeCraftPucaEntry(entryMap, 'p'));
         craftPuca.withParent(BookEntryParentModel.create(overview.getId()));
-        craftPuca.withCondition(BookTrueConditionModel.builder().build());
-
+        craftPuca.withCondition(BookTrueConditionModel.create());
     }
 
     @Override
-    protected BookCategoryModel generateCategory() {
+    protected String categoryName() {
+        return "Pentacles";
+    }
+
+    @Override
+    protected BookIconModel categoryIcon() {
+        return BookIconModel.create(OccultismItems.PENTACLE_CRAFT.get());
+    }
+
+    @Override
+    public String categoryId() {
+        return CATEGORY_ID;
+    }
+
+    @Override
+    public BookCategoryModel generate() {
         add(context().categoryName(), "Pentacles");
         return BookCategoryModel.create(modLoc(context().categoryId()), context().categoryName())
-                .withIcon(OccultismItems.PENTACLE.get())
+                .withIcon(OccultismItems.PENTACLE_CRAFT.get())
                 .withShowCategoryButton(true);
     }
 
@@ -50,7 +66,7 @@ public class PentaclesCategory extends CategoryProvider {
         lang().add(context().entryName(), "Overview");
 
         context().page("intro");
-        var intro = BookTextPageModel.builder()
+        var intro = BookTextPageModel.create()
                 .withTitle("Pentacles")
                 .withText("""
                         This section contains the list of Pentacles added by Occult Engineering.
@@ -59,8 +75,7 @@ public class PentaclesCategory extends CategoryProvider {
                         with the Golden Sacrificial Bowl.
                         \\
                         Other than that, the Pentacles work the same way as in Occultism.
-                        """)
-                .build();
+                        """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withIcon(Items.BOOK)
@@ -75,23 +90,20 @@ public class PentaclesCategory extends CategoryProvider {
         context().page("intro");
         lang().add(context().entryName(), "Fionntán's Uncompromising Captivation");
         lang().add(context().entryDescription(), "The first of the mechanical rituals.");
-        var intro = BookTextPageModel.builder()
+        var intro = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Fionntán's Uncompromising Captivation");
         lang().add(context().pageText(), "**Purpose:** Bind Púca\n\\\n\\\nFionntán's Uncompromising Captivation is a pentacle for binding Púca into blocks and items which can be used for simple automation. It is suitable to permanently infuse machinery.");
 
         context().page("multiblock");
-        var multiblock = BookMultiblockPageModel.builder()
-                .withMultiblockId(modLoc(entryId))
-                .build();
+        var multiblock = BookMultiblockPageModel.create()
+                .withMultiblockId(modLoc(entryId));
 
         context().page("uses");
-        var uses = BookTextPageModel.builder()
+        var uses = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Uses");
         lang().add(context().pageText(), "Craft Otherworld Detector");
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())

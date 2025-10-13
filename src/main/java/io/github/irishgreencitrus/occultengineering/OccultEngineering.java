@@ -54,9 +54,9 @@ public class OccultEngineering {
         OccultEngineeringEntities.register(modEventBus);
         OccultEngineeringBrains.register(modEventBus);
         OccultEngineeringParticleTypes.register(modEventBus);
-        OccultEngineeringPackets.registerPackets();
+        OccultEngineeringPackets.register();
 
-        OccultEngineeringConfig.register(modLoadingContext);
+        OccultEngineeringConfig.register(modLoadingContext, modContainer);
 
         modEventBus.addListener(OccultEngineeringEntities::registerEntityAttributes);
         OcEngCurios.init(modEventBus);

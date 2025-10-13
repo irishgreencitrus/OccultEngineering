@@ -3,9 +3,11 @@ package io.github.irishgreencitrus.occultengineering.datagen.book;
 import com.klikli_dev.modonomicon.api.datagen.BookProvider;
 import com.klikli_dev.modonomicon.api.datagen.CategoryEntryMap;
 import com.klikli_dev.modonomicon.api.datagen.CategoryProvider;
+import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
 import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryParentModel;
+import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookSpotlightPageModel;
 import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import com.klikli_dev.occultism.integration.modonomicon.pages.BookRitualRecipePageModel;
@@ -21,8 +23,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 public class GettingStartedCategory extends CategoryProvider {
     public static final String CATEGORY_ID = "getting_started";
 
-    public GettingStartedCategory(BookProvider parent) {
-        super(parent, CATEGORY_ID);
+    public GettingStartedCategory(ModonomiconProviderBase parent) {
+        super(parent);
     }
 
     @Override
@@ -94,13 +96,27 @@ public class GettingStartedCategory extends CategoryProvider {
     }
 
     @Override
-    protected BookCategoryModel generateCategory() {
+    protected String categoryName() {
+        return "Getting Started";
+    }
+
+    @Override
+    protected BookIconModel categoryIcon() {
+        return null;
+    }
+
+    @Override
+    public String categoryId() {
+        return CATEGORY_ID;
+    }
+
+    @Override
+    public BookCategoryModel generate() {
         add(context().categoryName(), "Getting Started");
         return BookCategoryModel.create(modLoc(context().categoryId()), context().categoryName())
                 .withIcon(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS)
                 .withShowCategoryButton(true);
     }
-
 
     private BookEntryModel makeIntroEntry(CategoryEntryMap entryMap, char icon) {
         var entryId = "intro";
@@ -109,10 +125,9 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "About using the Encyclopedia");
 
         context().page("intro");
-        var intro = BookTextPageModel.builder()
+        var intro = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "About");
         lang().add(context().pageText(), """
@@ -121,10 +136,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("help");
-        var help = BookTextPageModel.builder()
+        var help = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Getting Help");
         lang().add(context().pageText(), """
@@ -150,10 +164,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "Simple interactions between Create & Occultism");
 
         context().page("new_recipes");
-        var newRecipes = BookTextPageModel.builder()
+        var newRecipes = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
+
         lang().add(context().pageTitle(), "New Recipes");
         lang().add(context().pageText(), """
                 Occult Engineering contains a bunch of new recipes to assist the creation of occult items.
@@ -163,9 +177,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("new_recipes2");
-        var newRecipes2 = BookTextPageModel.builder()
-                .withText(context().pageText())
-                .build();
+        var newRecipes2 = BookTextPageModel.create()
+                .withText(context().pageText());
+
         lang().add(context().pageText(), """
                 Don't have enough silver? Raw Gold can be haunted into Raw Silver.
                 \\
@@ -174,11 +188,10 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("new_fan_catalyst");
-        var newFanCatalyst = BookSpotlightPageModel.builder()
+        var newFanCatalyst = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(AllBlocks.ENCASED_FAN))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Encased Fan & Spiritfire");
         lang().add(context().pageText(), """
@@ -187,11 +200,10 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("new_arm_interaction");
-        var newArmInteraction = BookSpotlightPageModel.builder()
+        var newArmInteraction = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(AllBlocks.MECHANICAL_ARM))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "The Mechanical Arm");
         lang().add(context().pageText(), """
@@ -223,11 +235,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "The essential elixir");
 
         context().page("intro");
-        var intro = BookSpotlightPageModel.builder()
+        var intro = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringFluids.SPIRIT_SOLUTION.getBucket().get()))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Spirit Solution");
         lang().add(context().pageText(), """
@@ -238,9 +249,8 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("intro2");
-        var intro2 = BookTextPageModel.builder()
-                .withText(context().pageText())
-                .build();
+        var intro2 = BookTextPageModel.create()
+                .withText(context().pageText());
 
         lang().add(context().pageText(), """
                 To get started with a small bit of Spirit Solution, crush some Demon's Dream Seeds.
@@ -266,10 +276,9 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "Fancier symbols to decorate the ground");
 
         context().page("chalks");
-        var chalks = BookTextPageModel.builder()
+        var chalks = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "More Chalks");
         lang().add(context().pageText(), """
@@ -281,9 +290,8 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("chalks2");
-        var chalks2 = BookTextPageModel.builder()
-                .withText(context().pageText())
-                .build();
+        var chalks2 = BookTextPageModel.create()
+                .withText(context().pageText());
 
         lang().add(context().pageText(), """
                 The new chalks can only be crafted by pressing them with [Spirit Solution](entry://occultengineering:encyclopedia_of_souls/getting_started/spirit_solution).
@@ -293,24 +301,21 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("purify_copper");
-        var purify_copper = BookSpiritFireRecipePageModel.builder()
+        var purify_copper = BookSpiritFireRecipePageModel.create()
                 .withRecipeId1(modLoc("spirit_fire/chalk_copper"))
-                .withTitle1(context().pageTitle())
-                .build();
+                .withTitle1(context().pageTitle());
         lang().add(context().pageTitle(), "Copper Chalk");
 
         context().page("purify_zinc");
-        var purify_zinc = BookSpiritFireRecipePageModel.builder()
+        var purify_zinc = BookSpiritFireRecipePageModel.create()
                 .withRecipeId1(modLoc("spirit_fire/chalk_zinc"))
-                .withTitle1(context().pageTitle())
-                .build();
+                .withTitle1(context().pageTitle());
         lang().add(context().pageTitle(), "Zinc Chalk");
 
         context().page("purify_brass");
-        var purify_brass = BookSpiritFireRecipePageModel.builder()
+        var purify_brass = BookSpiritFireRecipePageModel.create()
                 .withRecipeId1(modLoc("spirit_fire/chalk_brass"))
-                .withTitle1(context().pageTitle())
-                .build();
+                .withTitle1(context().pageTitle());
         lang().add(context().pageTitle(), "Brass Chalk");
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
@@ -328,11 +333,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "A new versatile material");
 
         context().page("sterling_silver");
-        var sterlingSilver = BookSpotlightPageModel.builder()
+        var sterlingSilver = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringItems.STERLING_SILVER_INGOT))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Sterling Silver");
         lang().add(context().pageText(), """
@@ -343,10 +347,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("uses");
-        var uses = BookTextPageModel.builder()
+        var uses = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Usage");
         lang().add(context().pageText(), """
                 - [*Mechanical Chamber*](entry://occultengineering:encyclopedia_of_souls/getting_started/mechanical_chamber)
@@ -368,11 +371,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "The raw essence of fire");
 
         context().page("phlogiston");
-        var phlogiston = BookSpotlightPageModel.builder()
+        var phlogiston = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringItems.PHLOGISTON))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Sterling Silver");
         lang().add(context().pageText(), """
@@ -384,10 +386,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("uses");
-        var uses = BookTextPageModel.builder()
+        var uses = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Usage");
         lang().add(context().pageText(), """
                 - [*Silver Phlogistate*](entry://occultengineering:encyclopedia_of_souls/getting_started/silver_phlogistate)
@@ -408,11 +409,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "New & Improved");
 
         context().page("silver_phlogistate");
-        var silverPhlogistate = BookSpotlightPageModel.builder()
+        var silverPhlogistate = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringItems.SILVER_PHLOGISTATE))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Silver Phlogistate");
         lang().add(context().pageText(), """
@@ -423,10 +423,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("uses");
-        var uses = BookTextPageModel.builder()
+        var uses = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Usage");
         lang().add(context().pageText(), """
                 - [*Phlogiport*](entry://occultengineering:encyclopedia_of_souls/getting_started/phlogiport)
@@ -447,11 +446,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "The height of ritual automation");
 
         context().page("mechanical_chamber");
-        var mechanicalChamber = BookSpotlightPageModel.builder()
+        var mechanicalChamber = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringBlocks.MECHANICAL_CHAMBER))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Mechanical Chamber");
         lang().add(context().pageText(), """
                 The Mechanical Chamber can be used in place of the Golden Sacrificial Bowl for any ritual that does not require item use
@@ -466,9 +464,8 @@ public class GettingStartedCategory extends CategoryProvider {
 
         context().page("ritual");
 
-        var ritual = BookRitualRecipePageModel.builder()
-                .withRecipeId1(modLoc("ritual/craft_mechanical_chamber"))
-                .build();
+        var ritual = BookRitualRecipePageModel.create()
+                .withRecipeId1(modLoc("ritual/craft_mechanical_chamber"));
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withDescription(context().entryDescription())
@@ -485,11 +482,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "Dust galore!");
 
         context().page("mechanical_pulverizer");
-        var mechanicalPulverizer = BookSpotlightPageModel.builder()
+        var mechanicalPulverizer = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringBlocks.MECHANICAL_PULVERIZER))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Mechanical Pulverizer");
         lang().add(context().pageText(), """
@@ -513,11 +509,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "It knows when you're awake");
 
         context().page("otherworld_detector");
-        var otherworldDetector = BookSpotlightPageModel.builder()
+        var otherworldDetector = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringBlocks.OTHERWORLD_DETECTOR))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Otherworld Detector");
         lang().add(context().pageText(), """
                 An Otherworld Detector can be used to detect whether the nearest player can see into the otherworld.
@@ -553,11 +548,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "Move over, delivery drones!");
 
         context().page("phlogiport");
-        var otherworldDetector = BookSpotlightPageModel.builder()
+        var otherworldDetector = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringBlocks.PHLOGIPORT))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Phlogiport");
         lang().add(context().pageText(), """
                 Phlogiports can be use to wirelessly transmit packages based on their address.
@@ -584,11 +578,10 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryDescription(), "A new spirit fascinated with machinery");
 
         context().page("puca");
-        var puca = BookSpotlightPageModel.builder()
+        var puca = BookSpotlightPageModel.create()
                 .withItem(Ingredient.of(OccultEngineeringItems.BOOK_OF_BINDING_PUCA))
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
 
         lang().add(context().pageTitle(), "The Púca");
         lang().add(context().pageText(), """
@@ -602,10 +595,9 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         context().page("uses");
-        var uses = BookTextPageModel.builder()
+        var uses = BookTextPageModel.create()
                 .withTitle(context().pageTitle())
-                .withText(context().pageText())
-                .build();
+                .withText(context().pageText());
         lang().add(context().pageTitle(), "Used to Craft");
         lang().add(context().pageText(), """
                 - [*Otherworld Detector*](entry://occultengineering:encyclopedia_of_souls/getting_started/otherworld_detector)
@@ -624,7 +616,7 @@ public class GettingStartedCategory extends CategoryProvider {
         lang().add(context().entryName(), "Go to Pentacles");
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
-                .withIcon(OccultismItems.PENTACLE.get())
+                .withIcon(OccultismItems.PENTACLE_CRAFT.get())
                 .withCategoryToOpen(modLoc("pentacles"))
                 .withLocation(entryMap.get(icon))
                 .withEntryBackground(1, 2);
