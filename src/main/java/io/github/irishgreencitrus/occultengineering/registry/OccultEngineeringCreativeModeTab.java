@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-@EventBusSubscriber
 public class OccultEngineeringCreativeModeTab {
     private static final DeferredRegister<CreativeModeTab>
             REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, OccultEngineering.MODID);
