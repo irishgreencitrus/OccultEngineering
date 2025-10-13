@@ -32,8 +32,8 @@ public class PhlogiportBlock extends Block implements IBE<PhlogiportBlockEntity>
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        return onBlockEntityUse(level, pos, be -> be.use(player));
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        return onBlockEntityUse(level, pos, be -> be.use(player).result());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PhlogiportBlock extends Block implements IBE<PhlogiportBlockEntity>
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 

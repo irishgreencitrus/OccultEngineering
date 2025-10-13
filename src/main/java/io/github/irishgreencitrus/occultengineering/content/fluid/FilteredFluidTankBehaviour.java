@@ -30,7 +30,7 @@ public class FilteredFluidTankBehaviour extends SmartFluidTankBehaviour {
             this.tanks[i] = tankSegment;
             handlers[i] = ((TankSegmentAccessor) tankSegment).getTank();
         }
-        this.capability = LazyOptional.of(() -> new InternalFluidHandler(handlers, enforceVariety));
+        this.capability = new InternalFluidHandler(handlers, enforceVariety);
     }
 
     public static FilteredFluidTankBehaviour single(Predicate<FluidStack> fluidFilter, SmartBlockEntity be, int capacity) {

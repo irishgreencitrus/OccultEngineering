@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.content.pentacleschematics;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
 import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides;
 import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides.ClipboardType;
@@ -14,6 +15,8 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -22,11 +25,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.server.network.Filterable;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
@@ -158,15 +164,14 @@ public class PentacleMaterialChecklist {
     public ItemStack createWrittenBook() {
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 
-        CompoundTag tag = book.getOrCreateTag();
-        ListTag pages = new ListTag();
+        List<Filterable<Component>> pages = new ArrayList<>();
 
         MutableComponent textComponent = Component.empty();
 
         if (blocksNotLoaded) {
             textComponent = Component.literal("\n" + ChatFormatting.RED);
             textComponent = textComponent.append(CreateLang.translateDirect("materialChecklist.blocksNotLoaded"));
-            pages.add(StringTag.valueOf(Component.Serializer.toJson(textComponent)));
+            pages.add(Filterable.passThrough(textComponent));
         }
 
         var checklistEntries = getChecklistEntries();
@@ -178,7 +183,7 @@ public class PentacleMaterialChecklist {
                 itemsWritten = 0;
                 textComponent.append(Component.literal("\n >>>")
                         .withStyle(entry.unfinished ? ChatFormatting.DARK_GRAY : ChatFormatting.DARK_GREEN));
-                pages.add(toBookPage(textComponent));
+                pages.add(Filterable.passThrough(textComponent));
                 textComponent = Component.empty();
             }
 
@@ -186,29 +191,28 @@ public class PentacleMaterialChecklist {
             textComponent.append(entry.format(true));
         }
 
-        pages.add(toBookPage(textComponent));
+        pages.add(Filterable.passThrough(textComponent));
 
-        tag.put("pages", pages);
-        tag.putBoolean("readonly", true);
-        tag.putString("author", "Púcalith");
-        tag.putString("title", ChatFormatting.BLUE + "Material Checklist");
+        WrittenBookContent contents = new WrittenBookContent(
+                Filterable.passThrough(ChatFormatting.BLUE + "Material Checklist"),
+                "Púcalith",
+                0,
+                pages,
+                true
+        );
+        book.set(DataComponents.WRITTEN_BOOK_CONTENT, contents);
+
         textComponent = CreateLang.translateDirect("materialChecklist")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)
                         .withItalic(Boolean.FALSE));
-        book.getOrCreateTagElement("display")
-                .putString("Name", Component.Serializer.toJson(textComponent));
-        book.setTag(tag);
+
+        book.set(DataComponents.CUSTOM_NAME, textComponent);
 
         return book;
     }
 
-    private StringTag toBookPage(Component component) {
-        return StringTag.valueOf(Component.Serializer.toJson(component));
-    }
-
     public ItemStack createWrittenClipboard() {
         ItemStack clipboard = AllBlocks.CLIPBOARD.asStack();
-        CompoundTag tag = clipboard.getOrCreateTag();
 
 
         List<List<ClipboardEntry>> pages = new ArrayList<>();
@@ -242,12 +246,9 @@ public class PentacleMaterialChecklist {
         ClipboardEntry.saveAll(pages, clipboard);
         ClipboardOverrides.switchTo(ClipboardType.WRITTEN, clipboard);
 
-        clipboard.getOrCreateTagElement("display")
-                .putString("Name", Component.Serializer.toJson(CreateLang.translateDirect("materialChecklist")
-                        .setStyle(Style.EMPTY.withItalic(Boolean.FALSE))));
-
-        tag.putBoolean("Readonly", true);
-        clipboard.setTag(tag);
+        clipboard.set(DataComponents.CUSTOM_NAME, CreateLang.translateDirect("materialChecklist")
+                        .setStyle(Style.EMPTY.withItalic(Boolean.FALSE)));
+        clipboard.set(AllDataComponents.CLIPBOARD_READ_ONLY, Unit.INSTANCE);
         return clipboard;
     }
 
@@ -323,17 +324,10 @@ public class PentacleMaterialChecklist {
     private ItemStack getRepresentativeItem(TagKey<Block> tag) {
         ImmutableList<Holder<Block>> all = ImmutableList.copyOf(BuiltInRegistries.BLOCK.getTagOrEmpty(tag));
         if (all.isEmpty()) return ItemStack.EMPTY;
-        return new ItemStack(all.get(0).get());
+        return new ItemStack(all.getFirst().value());
     }
 
-    public static class GatheredTagItem {
-        public final TagKey<Block> tag;
-        public final Item item;
-
-        public GatheredTagItem(TagKey<Block> tag, Item stack) {
-            this.tag = tag;
-            this.item = stack;
-        }
+    public record GatheredTagItem(TagKey<Block> tag, Item item) {
     }
 
     public abstract static class ChecklistEntry {

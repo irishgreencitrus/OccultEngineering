@@ -2,22 +2,16 @@ package io.github.irishgreencitrus.occultengineering.event;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.command.OcEngCommands;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 
-@Mod.EventBusSubscriber(modid = OccultEngineering.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber
 public class OcEngEvents {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         OcEngCommands.register(event.getDispatcher(), event.getBuildContext());
-    }
-
-    @SubscribeEvent
-    public static void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) return;
     }
 
     @SubscribeEvent

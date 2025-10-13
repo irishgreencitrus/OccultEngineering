@@ -5,9 +5,11 @@ import com.klikli_dev.modonomicon.data.MultiblockDataManager;
 import com.klikli_dev.modonomicon.multiblock.matcher.TagMatcher;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.mixin.accessor.TagMatcherAccessor;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringDataComponents;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.NbtUtils;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.Rotation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 
 public class PentacleSchematic {
     private final Multiblock pentacle;
@@ -39,29 +42,28 @@ public class PentacleSchematic {
     public static @NotNull Either<PentacleSchematic, ParseResult> fromStack(Level level, ItemStack stack) {
         if (!OccultEngineeringItems.PENTACLE_SCHEMATIC.isIn(stack))
             return Either.right(ParseResult.NOT_PENTACLE_SCHEMATIC);
-        if (!stack.hasTag()) return Either.right(ParseResult.NO_TAG);
-        assert stack.getTag() != null;
-        var t = stack.getTag();
 
-        if (!(t.contains("Deployed")
-                && t.contains("Pentacle")
-                && t.contains("Position")
-                && t.contains("Bounds")
-        )) {
-            return Either.right(ParseResult.INVALID_TAG);
+        var requiredDataComponents = List.of(
+                AllDataComponents.SCHEMATIC_DEPLOYED,
+                OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION,
+                AllDataComponents.SCHEMATIC_ANCHOR,
+                OccultEngineeringDataComponents.PENTSCHEM_BOUNDS
+        );
+
+        if (!requiredDataComponents.stream().allMatch(stack::has)) {
+            return Either.right(ParseResult.NO_TAG);
         }
 
-        var hasDeployed = t.getBoolean("Deployed");
-        if (!hasDeployed) return Either.right(ParseResult.NOT_DEPLOYED);
+        var hasDeployed = stack.get(AllDataComponents.SCHEMATIC_DEPLOYED);
+        if (!Boolean.TRUE.equals(hasDeployed)) return Either.right(ParseResult.NOT_DEPLOYED);
 
-        var pentacleName = stack.getTag().getString("Pentacle");
-        var pentacleResource = ResourceLocation.tryParse(pentacleName);
+        var pentacleResource = stack.get(OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION);
         if (pentacleResource == null) return Either.right(ParseResult.INVALID_PENTACLE_NAME);
 
         var multiblock = MultiblockDataManager.get().getMultiblock(pentacleResource);
         if (multiblock == null) return Either.right(ParseResult.INVALID_PENTACLE_MULTIBLOCK);
 
-        var pentaclePos = NbtUtils.readBlockPos(stack.getTag().getCompound("Position"));
+        var pentaclePos = stack.get(AllDataComponents.SCHEMATIC_ANCHOR);
 
         return Either.left(new PentacleSchematic(level, multiblock, pentaclePos));
     }

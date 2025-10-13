@@ -1,45 +1,61 @@
 package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer;
 
 import com.klikli_dev.occultism.crafting.recipe.CrushingRecipe;
+import com.klikli_dev.occultism.crafting.recipe.TieredSingleRecipeInput;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.sound.SoundScapes;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.function.Supplier;
 
 public class PulverizerBlockEntity extends KineticBlockEntity {
     public ItemStackHandler inputInv;
     public ItemStackHandler outputInv;
 
-    // TODO: Move capabilities
-    public LazyOptional<IItemHandler> capability;
+    public IItemHandler capability;
     public int timer;
+    public Supplier<Integer> tier;
+
     // This is Occultism's CrushingRecipe, not Create's
-    private CrushingRecipe lastRecipe;
+    private RecipeHolder<CrushingRecipe> lastRecipe;
 
     public PulverizerBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
         inputInv = new ItemStackHandler(1);
         outputInv = new ItemStackHandler(1);
-        capability = LazyOptional.of(PulverizerInventoryHandler::new);
+        capability = new PulverizerInventoryHandler();
+        tier = () -> 1;
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                OccultEngineeringBlockEntities.MECHANICAL_PULVERIZER.get(),
+                (be, context) -> be.capability
+        );
     }
 
     @Override
@@ -74,27 +90,26 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         }
 
         if (inputInv.getStackInSlot(0).isEmpty()) return;
-        var inputStack = inputInv.getStackInSlot(0);
-        var inventoryIn = new ItemStackFakeInventory(inputStack);
-        if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<CrushingRecipe> recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
+        var inventoryIn = new TieredSingleRecipeInput(inputInv.getStackInSlot(0), this.tier.get());
+        if (lastRecipe == null || !lastRecipe.value().matches(inventoryIn, level)) {
+            var recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
             if (recipe.isPresent()) {
                 lastRecipe = recipe.get();
-                timer = lastRecipe.getCrushingTime();
+                timer = lastRecipe.value().getCrushingTime();
             } else {
                 timer = 100;
             }
             sendData();
             return;
         }
-        timer = lastRecipe.getCrushingTime();
+        timer = lastRecipe.value().getCrushingTime();
         sendData();
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
-        capability.invalidate();
+        invalidateCapabilities();
     }
 
     @Override
@@ -104,45 +119,24 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         ItemHelper.dropContents(level, worldPosition, outputInv);
     }
 
-    @Override
-    protected void write(CompoundTag compound, boolean clientPacket) {
-        compound.putInt("timer", timer);
-        compound.put("input_inventory", inputInv.serializeNBT());
-        compound.put("output_inventory", outputInv.serializeNBT());
-        super.write(compound, clientPacket);
-    }
-
-    @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
-        timer = compound.getInt("timer");
-        inputInv.deserializeNBT(compound.getCompound("input_inventory"));
-        outputInv.deserializeNBT(compound.getCompound("output_inventory"));
-        super.read(compound, clientPacket);
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (isItemHandlerCap(cap)) return capability.cast();
-        return super.getCapability(cap, side);
-    }
-
     public int getProcessingSpeed() {
         return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
     }
 
     private void process() {
         if (level == null) return;
+        var inventoryIn = new TieredSingleRecipeInput(inputInv.getStackInSlot(0), this.tier.get());
         var inputStack = inputInv.getStackInSlot(0);
-        var inventoryIn = new ItemStackFakeInventory(inputStack);
-        if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<CrushingRecipe> recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
+
+        if (lastRecipe == null || !lastRecipe.value().matches(inventoryIn, level)) {
+            var recipe  = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
             if (recipe.isEmpty())
                 return;
             lastRecipe = recipe.get();
         }
         inputStack.shrink(1);
         inputInv.setStackInSlot(0, inputStack);
-        var result = lastRecipe.getResultItem(level.registryAccess());
+        var result = lastRecipe.value().getResultItem(level.registryAccess());
         outputInv.setStackInSlot(0, result);
 
         sendData();
@@ -169,12 +163,30 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
     public boolean canProcess(ItemStack stack) {
         if (level == null) return false;
-        ItemStackFakeInventory inventory = new ItemStackFakeInventory(stack);
+        var input = new TieredSingleRecipeInput(stack, 1);
 
-        if (lastRecipe != null && lastRecipe.matches(inventory, level)) {
+        if (lastRecipe != null && lastRecipe.value().matches(input, level)) {
             return true;
         }
-        return level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventory, level).isPresent();
+
+        var type = OccultismRecipes.CRUSHING_TYPE.get();
+        return level.getRecipeManager().getRecipeFor(type, input, level).isPresent();
+    }
+
+    @Override
+    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        compound.putInt("timer", timer);
+        compound.put("input_inventory", inputInv.serializeNBT(registries));
+        compound.put("output_inventory", inputInv.serializeNBT(registries));
+        super.write(compound, registries, clientPacket);
+    }
+
+    @Override
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+        timer = compound.getInt("timer");
+        inputInv.deserializeNBT(registries, compound.getCompound("input_inventory"));
+        outputInv.deserializeNBT(registries, compound.getCompound("output_inventory"));
+        super.read(compound, registries, clientPacket);
     }
 
     private class PulverizerInventoryHandler extends CombinedInvWrapper {

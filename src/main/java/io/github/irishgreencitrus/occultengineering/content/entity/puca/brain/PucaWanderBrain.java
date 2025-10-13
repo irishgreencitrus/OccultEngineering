@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.content.entity.puca.brain;
 import io.github.irishgreencitrus.occultengineering.content.entity.puca.HopToWalkTarget;
 import io.github.irishgreencitrus.occultengineering.content.entity.puca.PucaEntity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
@@ -39,8 +40,7 @@ public class PucaWanderBrain extends PucaBrain {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag compoundTag) {
-
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
     }
 
     @Override

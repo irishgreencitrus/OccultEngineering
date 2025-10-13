@@ -1,10 +1,11 @@
 package io.github.irishgreencitrus.occultengineering.content.item;
 
 import com.klikli_dev.modonomicon.data.MultiblockDataManager;
+import com.simibubi.create.AllDataComponents;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringDataComponents;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
-import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -35,29 +35,25 @@ public class PentacleSchematicItem extends Item {
         var blueprint = OccultEngineeringItems.PENTACLE_SCHEMATIC.asStack();
 
         CompoundTag tag = new CompoundTag();
-        tag.putBoolean("Deployed", false);
-        tag.putString("Pentacle", pentacleLocation.toString());
-        tag.put("Position", NbtUtils.writeBlockPos(BlockPos.ZERO));
-        tag.put("Bounds", NBTHelper.writeVec3i(MultiblockDataManager.get().getMultiblock(pentacleLocation).getSize()));
-
-        blueprint.setTag(tag);
+        // We're reusing some of Create's data components purely because it's easier
+        blueprint.set(AllDataComponents.SCHEMATIC_DEPLOYED, false);
+        blueprint.set(OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION, pentacleLocation);
+        blueprint.set(AllDataComponents.SCHEMATIC_ANCHOR, BlockPos.ZERO);
+        blueprint.set(OccultEngineeringDataComponents.PENTSCHEM_BOUNDS, MultiblockDataManager.get().getMultiblock(pentacleLocation).getSize());
         return blueprint;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-        if (stack.hasTag()) {
-            if (stack.getTag().contains("Pentacle")) {
-                var pentacleTag = stack.getTag().getString("Pentacle");
-                var pentacleResource = ResourceLocation.tryParse(pentacleTag);
-                if (pentacleResource != null)
-                    tooltipComponents.add(
-                            Component.translatable("item.occultengineering.pentacle_schematic.tooltip_prefix")
-                                    .append(Component.translatable("multiblock." + pentacleResource.getNamespace() + "." + pentacleResource.getPath())
-                                            .withStyle(ChatFormatting.RED)));
-            }
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        if (stack.has(OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION)) {
+            var pentacleResource = stack.get(OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION);
+            if (pentacleResource != null)
+                tooltipComponents.add(
+                        Component.translatable("item.occultengineering.pentacle_schematic.tooltip_prefix")
+                                .append(Component.translatable("multiblock." + pentacleResource.getNamespace() + "." + pentacleResource.getPath())
+                                        .withStyle(ChatFormatting.RED)));
         }
-        super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
     private static PentaclePrinter printer;
@@ -68,15 +64,15 @@ public class PentacleSchematicItem extends Item {
         if (usedHand != InteractionHand.MAIN_HAND)
             return InteractionResultHolder.fail(stack);
 
-        var tag = stack.getTag();
-        if (tag == null) return InteractionResultHolder.fail(stack);
-        if (!tag.contains("Pentacle")) return InteractionResultHolder.fail(stack);
+        if (!stack.has(OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION)) return InteractionResultHolder.fail(stack);
 
         if (player.isShiftKeyDown() && player.onGround()) {
             if (player.isCreative()) {
-                if (tag.contains("Deployed") && tag.contains("Position")) {
-                    var deployed = tag.getBoolean("Deployed");
-                    var tagPos = NbtUtils.readBlockPos(tag.getCompound("Position"));
+                if (stack.has(AllDataComponents.SCHEMATIC_DEPLOYED) && stack.has(AllDataComponents.SCHEMATIC_ANCHOR)) {
+                    var deployed = stack.get(AllDataComponents.SCHEMATIC_DEPLOYED);
+                    var tagPos = stack.get(AllDataComponents.SCHEMATIC_ANCHOR);
+                    if (deployed == null || tagPos == null) return InteractionResultHolder.fail(stack);
+
                     if (deployed && tagPos.equals(player.blockPosition())) {
                         var schem = PentacleSchematic.fromStack(level, stack);
                         if (schem.left().isEmpty()) {
@@ -96,9 +92,8 @@ public class PentacleSchematicItem extends Item {
                                 .withStyle(ChatFormatting.GREEN),
                         true);
             }
-            tag.put("Position", NbtUtils.writeBlockPos(player.blockPosition()));
-            tag.putBoolean("Deployed", true);
-            stack.setTag(tag);
+            stack.set(AllDataComponents.SCHEMATIC_ANCHOR, player.blockPosition());
+            stack.set(AllDataComponents.SCHEMATIC_DEPLOYED, true);
         }
 
         return InteractionResultHolder.success(stack);

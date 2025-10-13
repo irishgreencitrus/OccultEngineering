@@ -9,7 +9,6 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.compat.jei.category.FanEnspiritCategory;
-import io.github.irishgreencitrus.occultengineering.compat.jei.category.RecipeCategoryBuilder;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import mezz.jei.api.IModPlugin;
@@ -64,8 +63,21 @@ public class JeiPlugin implements IModPlugin {
         registration.addRecipeCategories(allCategories.toArray(IRecipeCategory[]::new));
     }
 
-    private static <T extends Recipe<?>> RecipeCategoryBuilder<T> builder(Class<T> cls) {
-        return new RecipeCategoryBuilder<>(OccultEngineering.MODID, cls);
+    private <T extends Recipe<?>> CategoryBuilder<T> builder(Class<T> cls) {
+        return new CategoryBuilder<>(cls);
+    }
+
+    private class CategoryBuilder<T extends Recipe<?>> extends CreateRecipeCategory.Builder<T> {
+        public CategoryBuilder(Class<? extends T> recipeClass) {
+            super(recipeClass);
+        }
+
+        @Override
+        public CreateRecipeCategory<T> build(ResourceLocation id, CreateRecipeCategory.Factory<T> factory) {
+            CreateRecipeCategory<T> category = super.build(id, factory);
+            allCategories.add(category);
+            return category;
+        }
     }
 
     @Override

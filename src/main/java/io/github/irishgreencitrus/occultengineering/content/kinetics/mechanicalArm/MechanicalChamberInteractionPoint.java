@@ -1,5 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.kinetics.mechanicalArm;
 
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlock;
@@ -31,7 +32,7 @@ public class MechanicalChamberInteractionPoint extends ArmInteractionPointType {
         }
 
         @Override
-        public ItemStack insert(ItemStack stack, boolean simulate) {
+        public ItemStack insert(ArmBlockEntity arm, ItemStack stack, boolean simulate) {
             if (stack.is(OccultEngineeringTags.MECHANICAL_CHAMBER_INSERTABLE)) {
                 var be = level.getBlockEntity(this.pos);
                 if (be == null) return stack;
@@ -39,7 +40,7 @@ public class MechanicalChamberInteractionPoint extends ArmInteractionPointType {
                     // You can only insert using a Mechanical Arm once the rest of the ritual is valid.
                     var ritual = mbe.getRitualFor(level, be.getBlockPos(), stack, null);
                     if (ritual.isPresent()) {
-                        return super.insert(stack, simulate);
+                        return super.insert(arm, stack, simulate);
                     }
                 }
             }
@@ -47,13 +48,14 @@ public class MechanicalChamberInteractionPoint extends ArmInteractionPointType {
         }
 
         @Override
-        public ItemStack extract(int slot, int amount, boolean simulate) {
-            if (getHandler() == null) return ItemStack.EMPTY;
-            if (getHandler().getStackInSlot(0).is(OccultEngineeringTags.MECHANICAL_CHAMBER_INSERTABLE)) {
+        public ItemStack extract(ArmBlockEntity arm, int slot, int amount, boolean simulate) {
+            if (getHandler(arm) == null) return ItemStack.EMPTY;
+            if (getHandler(arm).getStackInSlot(0).is(OccultEngineeringTags.MECHANICAL_CHAMBER_INSERTABLE)) {
                 return ItemStack.EMPTY;
             } else {
-                return super.extract(slot, amount, simulate);
+                return super.extract(arm, slot, amount, simulate);
             }
+
         }
     }
 }

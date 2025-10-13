@@ -10,6 +10,7 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBl
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringGuiTextures;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import net.createmod.catnip.gui.element.GuiGameElement;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -103,7 +104,7 @@ public class PucalithScreen extends AbstractSimiContainerScreen<PucalithMenu> {
     }
 
     protected void sendStateUpdate(PucalithSendOptionPacket.Option option) {
-        OccultEngineeringPackets.getChannel().sendToServer(new PucalithSendOptionPacket(option));
+        CatnipServices.NETWORK.sendToServer(new PucalithSendOptionPacket(option));
     }
 
     @Override

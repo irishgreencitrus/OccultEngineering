@@ -2,12 +2,16 @@ package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.api.data.recipe.ItemApplicationRecipeGen;
+import com.simibubi.create.foundation.data.SimpleDatagenIngredient;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.compat.Mods;
 import io.github.irishgreencitrus.occultengineering.datagen.JsonDatagenIngredient;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 
 import java.util.concurrent.CompletableFuture;

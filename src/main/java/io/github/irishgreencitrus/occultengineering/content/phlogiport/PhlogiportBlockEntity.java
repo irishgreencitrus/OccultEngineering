@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.List;
 import java.util.Objects;
@@ -114,8 +116,8 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                             signalCenter.z(),
                             1, 0, 0, 0, 1);
 
-                    OccultEngineeringPackets.sendToNear(serverLevel, worldPosition, OccultEngineeringConfig.server().phlogiportRangeBlocks.get(), new PhlogiportSendEffectPacket(worldPosition, false, true));
-                    OccultEngineeringPackets.sendToNear(serverLevel, pbe.worldPosition, OccultEngineeringConfig.server().phlogiportRangeBlocks.get(), new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
+                    CatnipServices.NETWORK.sendToClientsAround(serverLevel, worldPosition, OccultEngineeringConfig.server().phlogiportRangeBlocks.get(), new PhlogiportSendEffectPacket(worldPosition, false, true));
+                    CatnipServices.NETWORK.sendToClientsAround(serverLevel, pbe.worldPosition, OccultEngineeringConfig.server().phlogiportRangeBlocks.get(), new PhlogiportSendEffectPacket(pbe.worldPosition, true, true));
 
                     level.blockEntityChanged(worldPosition);
                     level.blockEntityChanged(pbe.worldPosition);

@@ -12,10 +12,12 @@ import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.P
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentaclePrinter;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.PentacleSchematic.ParseResult;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringTags;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -25,12 +27,17 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 
 public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvider, IInteractionChecker, IHaveGoggleInformation {
     public static final int NEIGHBOUR_CHECK_MAX = 100;
@@ -62,7 +69,7 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
 
     public BlockPos previousTarget;
     public boolean hasCreativeCrate = false;
-    public LinkedHashSet<LazyOptional<IItemHandler>> attachedInventories;
+    public LinkedHashSet<IItemHandler> attachedInventories;
 
     public final int MAX_TANK_CAPACITY_MB = 2000;
 
@@ -72,8 +79,20 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         printer = new PentaclePrinter();
         checklist = new PentacleMaterialChecklist();
         attachedInventories = new LinkedHashSet<>();
-        internalTank.getPrimaryTank().getTotalUnits(0);
         this.state = State.STOPPED;
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                OccultEngineeringBlockEntities.PUCALITH.get(),
+                (be, context) -> {
+                    if (context != null && context != Direction.UP) {
+                        return be.internalTank.getCapability();
+                    }
+                    return null;
+                }
+        );
     }
 
     public class PucalithInventory extends ItemStackHandler {
@@ -174,13 +193,9 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
         findInventories();
 
         for (var cap : attachedInventories) {
-            if (!cap.isPresent()) continue;
-
-            IItemHandler inventory = cap.orElse(EmptyHandler.INSTANCE);
-
-            for (int slot = 0; slot < inventory.getSlots(); slot++) {
-                ItemStack stack = inventory.getStackInSlot(slot);
-                if (inventory.extractItem(slot, 1, true).isEmpty()) continue;
+            for (int slot = 0; slot < cap.getSlots(); slot++) {
+                ItemStack stack = cap.getStackInSlot(slot);
+                if (cap.extractItem(slot, 1, true).isEmpty()) continue;
 
                 checklist.collect(stack);
             }
@@ -206,8 +221,8 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
             var be = level.getBlockEntity(rel);
             if (be == null) continue;
 
-            LazyOptional<IItemHandler> itemHandler = be.getCapability(ForgeCapabilities.ITEM_HANDLER, face.getOpposite());
-            if (itemHandler.isPresent()) {
+            IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, be.getBlockPos(), face.getOpposite());
+            if (itemHandler != null) {
                 attachedInventories.add(itemHandler);
             }
         }
@@ -326,20 +341,20 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
     private final String CURRENT_STATE_TAG = "CurrentState";
 
     @Override
-    protected void read(CompoundTag tag, boolean clientPacket) {
-        inventory.deserializeNBT(tag.getCompound(INVENTORY_TAG));
+    protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        inventory.deserializeNBT(registries,tag.getCompound(INVENTORY_TAG));
         if (tag.contains(CURRENT_STATE_TAG))
             state = State.valueOf(tag.getString(CURRENT_STATE_TAG));
 
-        super.read(tag, clientPacket);
+        super.read(tag, registries, clientPacket);
     }
 
     @Override
-    protected void write(CompoundTag tag, boolean clientPacket) {
-        tag.put(INVENTORY_TAG, inventory.serializeNBT());
+    protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+        tag.put(INVENTORY_TAG, inventory.serializeNBT(registries));
         tag.putString(CURRENT_STATE_TAG, state.toString());
 
-        super.write(tag, clientPacket);
+        super.write(tag, registries, clientPacket);
     }
 
     @Override
@@ -371,14 +386,9 @@ public class PucalithBlockEntity extends SmartBlockEntity implements MenuProvide
     }
 
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (side != Direction.UP && isFluidHandlerCap(cap))
-            return internalTank.getCapability().cast();
-        return super.getCapability(cap, side);
-    }
-
-    @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
+        if (level == null) return false;
+        return containedFluidTooltip(tooltip, isPlayerSneaking,
+                level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, Direction.UP));
     }
 }
