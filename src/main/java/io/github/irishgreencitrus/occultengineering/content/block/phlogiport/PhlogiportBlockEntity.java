@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.phlogiport;
+package io.github.irishgreencitrus.occultengineering.content.block.phlogiport;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.logistics.box.PackageItem;
@@ -6,8 +6,8 @@ import com.simibubi.create.content.logistics.packagePort.PackagePortBlockEntity;
 import com.simibubi.create.content.logistics.packagerLink.WiFiParticle;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
-import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.packet.PhlogiportSendEffectPacket;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -18,6 +18,8 @@ import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.List;
@@ -34,6 +36,14 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
 
     private boolean shouldAcceptPackage() {
         return !inventoryFull;
+    }
+
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                OccultEngineeringBlockEntities.PHLOGIPORT.get(),
+                (be, context) -> be.inventory
+        );
     }
 
     @Override
@@ -106,11 +116,8 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                     // Offset it slightly so it looks like the signal is coming from the antenna
                     var signalCenter = worldPosition.getCenter().add(PhlogiportSignalParticle.offset);
 
-                    // 3 blocks per tick
-                    var receivePackageTimer = distance / 3;
-
                     serverLevel.sendParticles(
-                            new PhlogiportSignalParticleData(new BlockPositionSource(pbe.getBlockPos()), receivePackageTimer),
+                            new PhlogiportSignalParticleData(new BlockPositionSource(pbe.getBlockPos()), distance),
                             signalCenter.x(),
                             signalCenter.y(),
                             signalCenter.z(),

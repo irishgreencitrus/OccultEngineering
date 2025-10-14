@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.phlogiport;
+package io.github.irishgreencitrus.occultengineering.content.block.phlogiport;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;

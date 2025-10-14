@@ -3,11 +3,9 @@ package io.github.irishgreencitrus.occultengineering.content.pentacleschematics.
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarMenu;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;

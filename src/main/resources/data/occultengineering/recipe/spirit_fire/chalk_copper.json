@@ -4,6 +4,7 @@
     "item": "occultengineering:chalk_copper_impure"
   },
   "result": {
-    "item": "occultengineering:chalk_copper"
+    "count": 1,
+    "id": "occultengineering:chalk_copper"
   }
 }

@@ -6,7 +6,6 @@ import io.github.irishgreencitrus.occultengineering.datagen.book.OcEngBookProvid
 import net.minecraft.data.DataGenerator;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.Collections;

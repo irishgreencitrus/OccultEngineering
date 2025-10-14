@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.phlogiport;
+package io.github.irishgreencitrus.occultengineering.content.block.phlogiport;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;

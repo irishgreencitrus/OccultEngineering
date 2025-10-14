@@ -1,8 +1,8 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportSignalParticle;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportSignalParticleData;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportSignalParticle;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportSignalParticleData;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.api.distmarker.Dist;

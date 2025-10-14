@@ -1,6 +1,6 @@
-package io.github.irishgreencitrus.occultengineering.content.phlogiport.packet;
+package io.github.irishgreencitrus.occultengineering.content.block.phlogiport.packet;
 
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlockEntity;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ClientboundPacketPayload;

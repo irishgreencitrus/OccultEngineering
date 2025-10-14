@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.phlogiport;
+package io.github.irishgreencitrus.occultengineering.content.block.phlogiport;
 
 import net.minecraft.core.BlockPos;
 

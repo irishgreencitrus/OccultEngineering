@@ -10,8 +10,8 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pul
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlockEntity;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlockEntity;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportRenderer;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlockEntity;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportRenderer;
 import net.minecraft.core.Direction;
 
 import static io.github.irishgreencitrus.occultengineering.OccultEngineering.REGISTRATE;

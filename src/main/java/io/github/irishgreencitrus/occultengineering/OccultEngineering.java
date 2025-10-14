@@ -7,7 +7,7 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import io.github.irishgreencitrus.occultengineering.compat.curios.OcEngCurios;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportNetworkHandler;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportNetworkHandler;
 import io.github.irishgreencitrus.occultengineering.datagen.DataProviders;
 import io.github.irishgreencitrus.occultengineering.registry.*;
 import net.createmod.catnip.lang.FontHelper;

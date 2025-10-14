@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     " I ",
     "SB ",
@@ -20,6 +21,7 @@
     }
   },
   "result": {
-    "item": "occultengineering:mechanical_pulverizer"
+    "count": 1,
+    "id": "occultengineering:mechanical_pulverizer"
   }
 }

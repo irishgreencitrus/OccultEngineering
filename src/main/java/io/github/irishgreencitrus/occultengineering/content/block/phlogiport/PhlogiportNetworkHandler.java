@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.phlogiport;
+package io.github.irishgreencitrus.occultengineering.content.block.phlogiport;
 
 import com.simibubi.create.content.logistics.box.PackageItem;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;

@@ -43,7 +43,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 
-// TODO: rewrite to match how the Golden Sacrifical Bowl works in 1.21.1
+// TODO: rewrite to match how the Golden Sacrificial Bowl works in 1.21.1
+// TODO: see if we can hijack the Golden Sacrificial Bowl rather than rewrite the whole class.
 public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     public RecipeHolder<RitualRecipe> currentRitualRecipe;
     public ResourceLocation currentRitualRecipeId;

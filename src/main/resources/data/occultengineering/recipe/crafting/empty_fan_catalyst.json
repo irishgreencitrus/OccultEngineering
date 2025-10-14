@@ -13,6 +13,7 @@
     }
   ],
   "result": {
-    "item": "create_connected:empty_fan_catalyst"
+    "count": 1,
+    "id": "create_connected:empty_fan_catalyst"
   }
 }

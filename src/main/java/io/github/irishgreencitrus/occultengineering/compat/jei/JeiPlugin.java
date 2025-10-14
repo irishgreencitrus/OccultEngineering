@@ -41,6 +41,7 @@ public class JeiPlugin implements IModPlugin {
 
     public void loadCategories() {
         allCategories.clear();
+        // FIXME: why doesn't this appear in JEI? Check Create's implementation first.
         allCategories.add(
                 builder(SpiritFireRecipe.class)
                         .addTypedRecipes(OccultismRecipes.SPIRIT_FIRE_TYPE::get)

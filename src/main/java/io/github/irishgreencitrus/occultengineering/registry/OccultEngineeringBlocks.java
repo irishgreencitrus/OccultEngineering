@@ -1,7 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
-import com.klikli_dev.occultism.registry.OccultismBlocks;
+import com.klikli_dev.occultism.registry.OccultismTags;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.BlockStateGen;
@@ -17,7 +17,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pul
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
-import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlock;
+import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,7 +44,7 @@ public class OccultEngineeringBlocks {
     public static final BlockEntry<MechanicalChamberBlock> MECHANICAL_CHAMBER = REGISTRATE
             .block("mechanical_chamber", MechanicalChamberBlock::new)
             .initialProperties(() -> Blocks.IRON_BLOCK)
-            .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE))
+            .transform(b -> b.tag(BlockTags.MINEABLE_WITH_PICKAXE).tag(OccultismTags.Blocks.CENTER_SACRIFICIAL_BOWL))
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
             .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
