@@ -5,13 +5,16 @@ import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.packagePort.PackagePortBlockEntity;
 import com.simibubi.create.content.logistics.packagerLink.WiFiParticle;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.item.ItemHelper;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.packet.PhlogiportSendEffectPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
@@ -20,10 +23,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class PhlogiportBlockEntity extends PackagePortBlockEntity {
     private PhlogiportLinkBehaviour link;
@@ -73,7 +78,9 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         if (level == null) return;
         if (level.isClientSide()) return;
 
+        tryPullingFromBelow();
         trySendingPackage();
+        tryPushingToBelow();
     }
 
     protected void trySendingPackage() {
@@ -139,6 +146,47 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
             this.inventoryFull = inventoryFull;
             link.update(addressFilter, shouldAcceptPackage());
         }
+    }
+
+    protected Optional<IItemHandler> getAdjacentInventory(Direction side) {
+        assert level != null;
+        BlockEntity blockEntity = level.getBlockEntity(worldPosition.relative(side));
+        if (blockEntity == null || blockEntity instanceof PhlogiportBlockEntity)
+            return Optional.empty();
+        return Optional.ofNullable(level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), side.getOpposite()));
+    }
+
+    protected void tryPullingFromBelow() {
+        if (inventoryFull) return;
+        var belowInventory = getAdjacentInventory(Direction.DOWN);
+        if (belowInventory.isEmpty()) return;
+        var extract = ItemHelper.extract(belowInventory.get(), stack -> {
+            if (!PackageItem.isPackage(stack)) return false;
+            String filterString = getFilterString();
+            return filterString == null || !PackageItem.matchAddress(stack, filterString);
+        }, false);
+        if (extract.isEmpty()) return;
+
+        var leftover = ItemHandlerHelper.insertItem(inventory, extract, true);
+        if (!leftover.isEmpty()) return;
+        ItemHandlerHelper.insertItem(inventory, extract, false);
+
+    }
+
+    protected void tryPushingToBelow() {
+        var belowInventory = getAdjacentInventory(Direction.DOWN);
+        if (belowInventory.isEmpty()) return;
+
+        var extract = ItemHelper.extract(inventory, stack -> {
+            if (!PackageItem.isPackage(stack)) return false;
+            String filterString = getFilterString();
+            return filterString == null || PackageItem.matchAddress(stack, filterString);
+        }, false);
+        if (extract.isEmpty()) return;
+
+        var leftover = ItemHandlerHelper.insertItem(belowInventory.get(), extract, true);
+        if (!leftover.isEmpty()) return;
+        ItemHandlerHelper.insertItem(belowInventory.get(), extract, false);
     }
 
     @Override
