@@ -5,19 +5,25 @@ import com.simibubi.create.content.logistics.box.PackageItem;
 import com.simibubi.create.content.logistics.packagePort.PackagePortBlockEntity;
 import com.simibubi.create.content.logistics.packagerLink.WiFiParticle;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.item.ItemHelper;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +68,10 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
         if (level == null) return;
         if (level.isClientSide()) return;
 
+        tryPullingFromBelow();
         trySendingPackage();
+        tryPushingToBelow();
+        sendData();
     }
 
     protected void trySendingPackage() {
@@ -131,6 +140,47 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
             this.inventoryFull = inventoryFull;
             link.update(addressFilter, shouldAcceptPackage());
         }
+    }
+
+    protected @Nullable IItemHandler getAdjacentInventory(Direction side) {
+        assert level != null;
+        BlockEntity blockEntity = level.getBlockEntity(worldPosition.relative(side));
+        if (blockEntity == null || blockEntity instanceof PhlogiportBlockEntity)
+            return null;
+        return blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, side.getOpposite()).orElse(null);
+    }
+
+    protected void tryPullingFromBelow() {
+        if (inventoryFull) return;
+        var belowInventory = getAdjacentInventory(Direction.DOWN);
+        if (belowInventory == null) return;
+        var extract = ItemHelper.extract(belowInventory, stack -> {
+            if (!PackageItem.isPackage(stack)) return false;
+            String filterString = getFilterString();
+            return filterString == null || !PackageItem.matchAddress(stack, filterString);
+        }, false);
+        if (extract.isEmpty()) return;
+
+        var leftover = ItemHandlerHelper.insertItem(inventory, extract, true);
+        if (!leftover.isEmpty()) return;
+        ItemHandlerHelper.insertItem(inventory, extract, false);
+
+    }
+
+    protected void tryPushingToBelow() {
+        var belowInventory = getAdjacentInventory(Direction.DOWN);
+        if (belowInventory == null) return;
+
+        var extract = ItemHelper.extract(inventory, stack -> {
+            if (!PackageItem.isPackage(stack)) return false;
+            String filterString = getFilterString();
+            return filterString == null || PackageItem.matchAddress(stack, filterString);
+        }, false);
+        if (extract.isEmpty()) return;
+
+        var leftover = ItemHandlerHelper.insertItem(belowInventory, extract, true);
+        if (!leftover.isEmpty()) return;
+        ItemHandlerHelper.insertItem(belowInventory, extract, false);
     }
 
     @Override
