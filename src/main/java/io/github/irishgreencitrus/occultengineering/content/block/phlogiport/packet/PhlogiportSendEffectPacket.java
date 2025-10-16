@@ -23,12 +23,13 @@ public record PhlogiportSendEffectPacket(BlockPos position, boolean isReceiver, 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handle(LocalPlayer player) {
-        var level = Minecraft.getInstance().level;
-        if (level == null) return;
-        if (level.getBlockEntity(position) instanceof PhlogiportBlockEntity pbe) {
-            pbe.playEffect(isReceiver, success);
-
-        }
+        Minecraft.getInstance().execute(() -> {
+            var level = Minecraft.getInstance().level;
+            if (level == null) return;
+            if (level.getBlockEntity(position) instanceof PhlogiportBlockEntity pbe) {
+                pbe.playEffect(isReceiver, success);
+            }
+        });
     }
 
     @Override

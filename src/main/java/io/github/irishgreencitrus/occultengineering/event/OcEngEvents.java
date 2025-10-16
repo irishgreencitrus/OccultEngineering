@@ -32,7 +32,6 @@ public class OcEngEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // TODO: do the rest of these
-        // TODO: also fix crafting recipes
         PulverizerBlockEntity.registerCapabilities(event);
         PhlogiportBlockEntity.registerCapabilities(event);
     }

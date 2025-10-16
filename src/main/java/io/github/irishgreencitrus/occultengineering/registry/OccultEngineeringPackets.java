@@ -1,6 +1,7 @@
 package io.github.irishgreencitrus.occultengineering.registry;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.packet.ThirdEyeActivationPacket;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PentacleAltarConfirmPacket;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PucalithSendOptionPacket;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.packet.PhlogiportSendEffectPacket;
@@ -16,6 +17,7 @@ public enum OccultEngineeringPackets implements BasePacketPayload.PacketTypeProv
     // CLIENT TO SERVER
     PENTACLE_ALTAR_CONFIRM(PentacleAltarConfirmPacket.class, PentacleAltarConfirmPacket.STREAM_CODEC),
     PUCALITH_SEND_OPTION(PucalithSendOptionPacket.class, PucalithSendOptionPacket.STREAM_CODEC),
+    THIRD_EYE_ACTIVATION(ThirdEyeActivationPacket.class, ThirdEyeActivationPacket.STREAM_CODEC),
 
     // SERVER TO CLIENT
     PHLOGIPORT_SEND_EFFECT(PhlogiportSendEffectPacket.class, PhlogiportSendEffectPacket.STREAM_CODEC);

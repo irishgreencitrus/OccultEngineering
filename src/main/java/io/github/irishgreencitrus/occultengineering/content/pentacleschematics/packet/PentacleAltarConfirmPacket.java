@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.content.pentacleschematics.
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarMenu;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.core.BlockPos;
@@ -24,22 +25,23 @@ public record PentacleAltarConfirmPacket(String pentacleLocation) implements Ser
 
     @Override
     public void handle(ServerPlayer player) {
-        if (player == null) return;
-        Level level = player.getCommandSenderWorld();
-        BlockPos altarPos = ((PentacleAltarMenu) player.containerMenu).contentHolder
-                .getBlockPos();
-        BlockEntity be = level.getBlockEntity(altarPos);
-        if (be == null) return;
-        if (be instanceof PentacleAltarBlockEntity altar) {
-            altar.inventory.setStackInSlot(0, ItemStack.EMPTY);
-            altar.inventory.setStackInSlot(1,
-                    PentacleSchematicItem.create(Objects.requireNonNull(ResourceLocation.tryParse(pentacleLocation)))
-            );
-        }
+        player.server.execute(() -> {
+            Level level = player.getCommandSenderWorld();
+            BlockPos altarPos = ((PentacleAltarMenu) player.containerMenu).contentHolder
+                    .getBlockPos();
+            BlockEntity be = level.getBlockEntity(altarPos);
+            if (be == null) return;
+            if (be instanceof PentacleAltarBlockEntity altar) {
+                altar.inventory.setStackInSlot(0, ItemStack.EMPTY);
+                altar.inventory.setStackInSlot(1,
+                        PentacleSchematicItem.create(Objects.requireNonNull(ResourceLocation.tryParse(pentacleLocation)))
+                );
+            }
+        });
     }
 
     @Override
     public PacketTypeProvider getTypeProvider() {
-        return null;
+        return OccultEngineeringPackets.PENTACLE_ALTAR_CONFIRM;
     }
 }
