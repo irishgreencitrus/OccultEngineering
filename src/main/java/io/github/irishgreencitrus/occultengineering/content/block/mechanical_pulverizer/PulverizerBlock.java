@@ -9,7 +9,6 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -55,9 +54,11 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
     }
 
     @Override
-    // TODO: double check this works
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
+        // If we don't do this, this function is triggered twice
+        if (hand == InteractionHand.OFF_HAND) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         var be = getBlockEntity(level, pos);
         if (be == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -91,8 +92,7 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
                 );
             }
 
-            pulverizer.setChanged();
-            pulverizer.sendData();
+            pulverizer.notifyUpdate();
         });
 
         return ItemInteractionResult.SUCCESS;

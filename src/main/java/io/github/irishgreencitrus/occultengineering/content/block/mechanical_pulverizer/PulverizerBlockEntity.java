@@ -10,6 +10,7 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBl
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,10 +26,12 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class PulverizerBlockEntity extends KineticBlockEntity {
@@ -72,38 +75,30 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     public void tick() {
         super.tick();
         if (getSpeed() == 0) return;
-        for (int i = 0; i < outputInv.getSlots(); i++) {
-            if (outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i)) return;
-        }
+
+        if (outputInv.getStackInSlot(0).getCount() == outputInv.getStackInSlot(0).getMaxStackSize()) return;
 
         if (level == null) return;
 
-        if (timer > 0) {
+        if (timer <= 0) {
+            if (inputInv.getStackInSlot(0).isEmpty()) return;
+            var recipe = findCurrentRecipe(inputInv.getStackInSlot(0));
+
+            timer = recipe
+                    .map(crushingRecipeRecipeHolder -> crushingRecipeRecipeHolder.value().getCrushingTime())
+                    .orElse(100);
+            notifyUpdate();
+        } else {
             timer -= getProcessingSpeed();
             if (level.isClientSide) {
                 spawnParticles();
                 return;
             }
-            if (timer <= 0)
+            if (timer <= 0) {
                 process();
-            return;
-        }
-
-        if (inputInv.getStackInSlot(0).isEmpty()) return;
-        var inventoryIn = new TieredSingleRecipeInput(inputInv.getStackInSlot(0), this.tier.get());
-        if (lastRecipe == null || !lastRecipe.value().matches(inventoryIn, level)) {
-            var recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
-            if (recipe.isPresent()) {
-                lastRecipe = recipe.get();
-                timer = lastRecipe.value().getCrushingTime();
-            } else {
-                timer = 100;
+                notifyUpdate();
             }
-            sendData();
-            return;
         }
-        timer = lastRecipe.value().getCrushingTime();
-        sendData();
     }
 
     @Override
@@ -125,22 +120,22 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
     private void process() {
         if (level == null) return;
-        var inventoryIn = new TieredSingleRecipeInput(inputInv.getStackInSlot(0), this.tier.get());
         var inputStack = inputInv.getStackInSlot(0);
 
-        if (lastRecipe == null || !lastRecipe.value().matches(inventoryIn, level)) {
-            var recipe  = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
-            if (recipe.isEmpty())
-                return;
-            lastRecipe = recipe.get();
-        }
+        var recipe = findCurrentRecipe(inputStack);
+
+        if (recipe.isEmpty()) return;
+
+        var input = new TieredSingleRecipeInput(inputStack, this.tier.get());
+        var result = recipe.get().value().assemble(input, level.registryAccess());
+
+        var remainder = ItemHandlerHelper.insertItem(outputInv, result, true);
+        // If we can't fit the remainder, don't process it
+        if (!remainder.isEmpty()) return;
+
         inputStack.shrink(1);
         inputInv.setStackInSlot(0, inputStack);
-        var result = lastRecipe.value().getResultItem(level.registryAccess());
-        outputInv.setStackInSlot(0, result);
-
-        sendData();
-        setChanged();
+        ItemHandlerHelper.insertItem(outputInv, result, false);
     }
 
     private void spawnParticles() {
@@ -163,21 +158,50 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
     public boolean canProcess(ItemStack stack) {
         if (level == null) return false;
-        var input = new TieredSingleRecipeInput(stack, 1);
+
+        // Can't process a different item if there's already one in the output slot
+        var recipe = findCurrentRecipe(stack);
+        if (recipe.isEmpty()) return false;
+
+        var emptySlot = outputInv.getStackInSlot(0).isEmpty();
+        if (emptySlot) return true;
+
+
+        var input = new TieredSingleRecipeInput(stack, this.tier.get());
+
+        var matchingItem = outputInv.getStackInSlot(0).is(
+                recipe.get().value().assemble(input, level.registryAccess()).getItem());
+
+        if (!matchingItem) return false;
+
+        var output = recipe.get().value().assemble(input, level.registryAccess());
+        var remainder = ItemHandlerHelper.insertItem(outputInv, output, true);
+
+        // We won't process something if it puts it over our stack size
+        return remainder.isEmpty();
+    }
+
+    private Optional<RecipeHolder<CrushingRecipe>> findCurrentRecipe(ItemStack stack) {
+        if (level == null) return Optional.empty();
+        var input = new TieredSingleRecipeInput(stack, this.tier.get());
 
         if (lastRecipe != null && lastRecipe.value().matches(input, level)) {
-            return true;
+            return Optional.ofNullable(lastRecipe);
         }
 
-        var type = OccultismRecipes.CRUSHING_TYPE.get();
-        return level.getRecipeManager().getRecipeFor(type, input, level).isPresent();
+        var recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), input, level);
+
+        recipe.ifPresent(
+                r -> lastRecipe = r);
+
+        return recipe;
     }
 
     @Override
     protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         compound.putInt("timer", timer);
         compound.put("input_inventory", inputInv.serializeNBT(registries));
-        compound.put("output_inventory", inputInv.serializeNBT(registries));
+        compound.put("output_inventory", outputInv.serializeNBT(registries));
         super.write(compound, registries, clientPacket);
     }
 
