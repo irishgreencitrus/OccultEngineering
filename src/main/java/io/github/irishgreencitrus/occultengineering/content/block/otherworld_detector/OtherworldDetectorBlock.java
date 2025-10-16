@@ -42,12 +42,6 @@ public class OtherworldDetectorBlock extends Block implements IBE<OtherworldDete
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
-        worldIn.setBlock(pos, state.setValue(POWERED, false), 2);
-        worldIn.updateNeighborsAt(pos, this);
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         IBE.onRemove(state, level, pos, newState);
