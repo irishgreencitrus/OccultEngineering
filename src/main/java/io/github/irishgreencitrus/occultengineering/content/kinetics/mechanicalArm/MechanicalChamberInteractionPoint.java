@@ -49,8 +49,9 @@ public class MechanicalChamberInteractionPoint extends ArmInteractionPointType {
 
         @Override
         public ItemStack extract(ArmBlockEntity arm, int slot, int amount, boolean simulate) {
-            if (getHandler(arm) == null) return ItemStack.EMPTY;
-            if (getHandler(arm).getStackInSlot(0).is(OccultEngineeringTags.MECHANICAL_CHAMBER_INSERTABLE)) {
+            var handler = getHandler(arm);
+            if (handler == null) return ItemStack.EMPTY;
+            if (handler.getStackInSlot(0).is(OccultEngineeringTags.MECHANICAL_CHAMBER_INSERTABLE)) {
                 return ItemStack.EMPTY;
             } else {
                 return super.extract(arm, slot, amount, simulate);

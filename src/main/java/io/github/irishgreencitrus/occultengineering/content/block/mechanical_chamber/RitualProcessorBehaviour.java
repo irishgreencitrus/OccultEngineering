@@ -209,7 +209,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
                     ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
 
                     //sets up nbt configuration for miner
-                    result.getItem().onCraftedBy(result, level, (Player) null);
+                    result.getItem().onCraftedBy(result, level, null);
 
                     //copy over spirit name
                     ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
@@ -224,7 +224,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
         currentRitualRecipe = null;
         currentRitualRecipeId = null;
         currentTime = 0;
-        if (remainingAdditionalIngredients != null) remainingAdditionalIngredients.clear();;
+        if (remainingAdditionalIngredients != null) remainingAdditionalIngredients.clear();
         consumedIngredients.clear();
 
         blockEntity.setChanged();
