@@ -90,10 +90,8 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (level == null) return;
+                notifyUpdate();
                 lastChangeTime = level.getGameTime();
-                if (level.isClientSide) {
-                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
-                }
             }
         };
 

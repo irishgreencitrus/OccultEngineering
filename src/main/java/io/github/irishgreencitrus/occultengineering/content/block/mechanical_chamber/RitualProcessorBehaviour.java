@@ -20,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -29,6 +28,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -165,10 +165,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
         consumedIngredients.clear();
         remainingAdditionalIngredients = new ArrayList<>(ritualRecipe.value().getIngredients());
 
-        blockEntity.setChanged();
-        blockEntity.refreshBlockState();
-
-        level.updateNeighborsAt(getPos(), blockEntity.getBlockState().getBlock());
+        blockEntity.notifyUpdate();
     }
 
     @Override
@@ -227,9 +224,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
         if (remainingAdditionalIngredients != null) remainingAdditionalIngredients.clear();
         consumedIngredients.clear();
 
-        blockEntity.setChanged();
-        level.sendBlockUpdated(getPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 2);
-        level.updateNeighborsAt(getPos(), blockEntity.getBlockState().getBlock());
+        blockEntity.notifyUpdate();
     }
 
     @Override
@@ -255,6 +250,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
     public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(nbt, registries, clientPacket);
         this.consumedIngredients.clear();
+        itemStackHandlerGetter.get().deserializeNBT(registries, nbt.getCompound("inventory"));
         if (this.currentRitualRecipeId != null || this.getRitualRecipe().isPresent()) {
             if (nbt.contains("consumedIngredients")) {
                 ListTag list = nbt.getList("consumedIngredients", Tag.TAG_COMPOUND);
@@ -275,6 +271,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
 
     @Override
     public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+        nbt.put("inventory", itemStackHandlerGetter.get().serializeNBT(registries));
         if (isRitualActive()) {
             var recipe = currentRitualRecipe;
             assert recipe != null;

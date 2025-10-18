@@ -29,12 +29,13 @@ public class MechanicalChamberRenderer extends KineticBlockEntityRenderer<Mechan
     @Override
     public void renderSafe(MechanicalChamberBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
         super.renderSafe(blockEntity, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);
-        if (blockEntity.itemStackHandler == null) {
+        var handler = blockEntity.itemStackHandler;
+        if (handler == null) {
             OccultEngineering.LOGGER.warn("itemStackHandler is null");
             return;
         }
 
-        var stack = blockEntity.itemStackHandler.getStackInSlot(0);
+        var stack = handler.getStackInSlot(0);
         long time = blockEntity.getLevel().getGameTime();
 
         var facing = Direction.UP;
@@ -56,7 +57,7 @@ public class MechanicalChamberRenderer extends KineticBlockEntityRenderer<Mechan
         poseStack.translate(0.5, 0.15 + yOffset, 0.5);
 
         //use system time to become independent of game time
-        long systemTime = blockEntity.getLevel().getGameTime();
+        long systemTime = System.currentTimeMillis();
         //rotate item slowly around y-axis
         float angle = (systemTime / 16) % 360;
         poseStack.mulPose(Axis.YP.rotationDegrees(angle));
