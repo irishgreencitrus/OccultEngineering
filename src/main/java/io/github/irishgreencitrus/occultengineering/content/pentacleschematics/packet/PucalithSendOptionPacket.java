@@ -32,15 +32,17 @@ public record PucalithSendOptionPacket(Option option) implements ServerboundPack
 
     @Override
     public void handle(ServerPlayer player) {
-        if (player == null || !(player.containerMenu instanceof PucalithMenu))
-            return;
-        PucalithBlockEntity be = ((PucalithMenu) player.containerMenu).contentHolder;
-        switch (option) {
-            case PLAY -> be.onPlayButton();
-            case PAUSE -> be.onPauseButton();
-            case STOP -> be.onStopButton();
-            default -> OccultEngineering.LOGGER.warn("Got an unexpected Pucalith option of {}", option);
-        }
-        be.sendUpdate = true;
+        player.server.execute(() -> {
+            if (!(player.containerMenu instanceof PucalithMenu))
+                return;
+            PucalithBlockEntity be = ((PucalithMenu) player.containerMenu).contentHolder;
+            switch (option) {
+                case PLAY -> be.onPlayButton();
+                case PAUSE -> be.onPauseButton();
+                case STOP -> be.onStopButton();
+                default -> OccultEngineering.LOGGER.warn("Got an unexpected Pucalith option of {}", option);
+            }
+            be.sendUpdate = true;
+        });
     }
 }
