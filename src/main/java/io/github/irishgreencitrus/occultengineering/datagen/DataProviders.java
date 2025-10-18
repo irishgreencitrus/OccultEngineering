@@ -23,6 +23,7 @@ public class DataProviders {
         var generator = event.getGenerator();
         var output = generator.getPackOutput();
         var registries = event.getLookupProvider();
+        generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output, registries));
 
         if (event.includeServer()) {
             OcEngRecipeProvider.registerAllProcessing(generator, output, registries);

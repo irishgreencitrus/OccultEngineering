@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:ingots/sterling_silver"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "occultengineering:sterling_silver_nugget"
+  }
+}

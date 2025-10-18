@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "occultism:otherworld_goggles"
+    },
+    {
+      "item": "create:goggles"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "occultengineering:combined_goggles"
+  }
+}
