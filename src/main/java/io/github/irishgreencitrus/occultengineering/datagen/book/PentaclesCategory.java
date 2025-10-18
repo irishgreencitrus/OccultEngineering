@@ -33,9 +33,11 @@ public class PentaclesCategory extends CategoryProvider {
     @Override
     protected void generateEntries() {
         var overview = add(makeOverviewEntry(entryMap, 'O'));
+        /*
         var craftPuca = add(makeCraftPucaEntry(entryMap, 'p'));
         craftPuca.withParent(BookEntryParentModel.create(overview.getId()));
         craftPuca.withCondition(BookTrueConditionModel.create());
+         */
     }
 
     @Override
@@ -51,14 +53,6 @@ public class PentaclesCategory extends CategoryProvider {
     @Override
     public String categoryId() {
         return CATEGORY_ID;
-    }
-
-    @Override
-    public BookCategoryModel generate() {
-        add(context().categoryName(), "Pentacles");
-        return BookCategoryModel.create(modLoc(categoryId()), context().categoryName())
-                .withIcon(OccultismItems.PENTACLE_CRAFT.get())
-                .withShowCategoryButton(true);
     }
 
     private BookEntryModel makeOverviewEntry(CategoryEntryMap entryMap, char icon) {

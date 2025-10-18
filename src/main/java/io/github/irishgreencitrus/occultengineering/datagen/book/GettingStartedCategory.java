@@ -110,14 +110,6 @@ public class GettingStartedCategory extends CategoryProvider {
         return CATEGORY_ID;
     }
 
-    @Override
-    public BookCategoryModel generate() {
-        add(context().categoryName(), "Getting Started");
-        return BookCategoryModel.create(modLoc(categoryId()), context().categoryName())
-                .withIcon(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS)
-                .withShowCategoryButton(true);
-    }
-
     private BookEntryModel makeIntroEntry(CategoryEntryMap entryMap, char icon) {
         var entryId = "intro";
         context().entry(entryId);

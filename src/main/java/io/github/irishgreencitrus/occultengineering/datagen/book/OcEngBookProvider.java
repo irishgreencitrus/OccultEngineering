@@ -1,11 +1,9 @@
 package io.github.irishgreencitrus.occultengineering.datagen.book;
 
-import com.klikli_dev.modonomicon.api.datagen.BookProvider;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
 import com.klikli_dev.modonomicon.api.datagen.SingleBookSubProvider;
 import com.klikli_dev.modonomicon.api.datagen.book.BookModel;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import net.minecraft.data.PackOutput;
 
 import java.util.List;
 
@@ -24,10 +22,10 @@ public class OcEngBookProvider extends SingleBookSubProvider {
 
     @Override
     protected void generateCategories() {
-        var sortNum = 0;
+        var sortNum = 1;
         var categories = List.of(
-                new GettingStartedCategory(this).generate().withSortNumber(sortNum++),
-                new PentaclesCategory(this).generate().withSortNumber(sortNum)
+                new GettingStartedCategory(this).generate().withSortNumber(sortNum++)
+                , new PentaclesCategory(this).generate().withSortNumber(sortNum)
         );
         for (var category : categories) {
             this.add(category);
@@ -42,5 +40,15 @@ public class OcEngBookProvider extends SingleBookSubProvider {
     @Override
     protected String bookTooltip() {
         return "A guide to all Occult Engineering";
+    }
+
+    @Override
+    protected BookModel additionalSetup(BookModel book) {
+        return super.additionalSetup(book)
+                .withCustomBookItem(modLoc("dictionary_of_spirits"))
+                .withGenerateBookItem(false)
+                .withAutoAddReadConditions(true)
+                .withAllowOpenBooksWithInvalidLinks(true)
+                ;
     }
 }

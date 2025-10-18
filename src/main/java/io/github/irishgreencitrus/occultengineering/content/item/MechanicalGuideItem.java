@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -41,7 +40,8 @@ public class MechanicalGuideItem extends ModonomiconItem {
 
         if (pLevel.isClientSide) {
             var book = BookDataManager.get().getBook(ENCYCLOPEDIA_OF_SOULS);
-            BookGuiManager.get().openBook(book.getLeafletAddress());
+            if (book != null)
+                BookGuiManager.get().openBook(book.getLeafletAddress());
         }
 
         return InteractionResultHolder.sidedSuccess(itemInHand, pLevel.isClientSide);
