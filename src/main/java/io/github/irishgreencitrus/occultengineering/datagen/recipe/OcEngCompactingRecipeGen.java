@@ -8,6 +8,7 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFl
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 
 import java.util.concurrent.CompletableFuture;
@@ -51,9 +52,12 @@ public class OcEngCompactingRecipeGen extends CompactingRecipeGen {
                     .output(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), 10)),
 
     PHLOGISTON = create(OccultEngineering.asResource("phlogiston"), b ->
-            b.require(Fluids.LAVA, 100)
-                    .require(OccultismItems.AFRIT_ESSENCE.get())
-                    .requiresHeat(HeatCondition.HEATED)
+            b.require(Fluids.LAVA, 500)
+                    .require(Items.BLAZE_POWDER)
+                    .require(Items.BLAZE_POWDER)
+                    .require(Items.BLAZE_POWDER)
+                    .require(Items.BLAZE_POWDER)
+                    .requiresHeat(HeatCondition.SUPERHEATED)
                     .output(OccultEngineeringItems.PHLOGISTON));
 
     public OcEngCompactingRecipeGen(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

@@ -1,9 +1,9 @@
-// 1.21.1	2025-10-13T19:19:50.033662	Occult Engineering's Processing Recipes
+// 1.21.1	2025-10-18T14:41:08.153732	Occult Engineering's Processing Recipes
 425e574eae9a6b9d562a6c2a3d67eec2de63ff2f data/occultengineering/recipe/compacting/chalk_brass_impure.json
 4cf5111b88791324a80fb31702b996dc5d3a974d data/occultengineering/recipe/compacting/chalk_copper_impure.json
 8f699e41161b137d906e768812decc19c470eb2d data/occultengineering/recipe/compacting/chalk_white_impure.json
 755151c7dcaed9b4067e3c35caa3fc0d50fb8ce7 data/occultengineering/recipe/compacting/chalk_zinc_impure.json
-f67ef00939ffdd4420770095ae652dda68de1994 data/occultengineering/recipe/compacting/phlogiston.json
+1cf3765052d1e9e3e193efbf9da1de04a9eb794b data/occultengineering/recipe/compacting/phlogiston.json
 753d6ce1e54d2343bbcd055b43b6423c360b2f33 data/occultengineering/recipe/compacting/spirit_solution_from_seeds.json
 4005ef0c16c00c66d11bef94ce100ef261616909 data/occultengineering/recipe/filling/bind_afrit_book.json
 624af790180a80fbd86f07bff7a7e038773f6f10 data/occultengineering/recipe/filling/bind_djinni_book.json
