@@ -38,7 +38,7 @@ public class MechanicalChamberInteractionPoint extends ArmInteractionPointType {
                 if (be == null) return stack;
                 else if (be instanceof MechanicalChamberBlockEntity mbe) {
                     // You can only insert using a Mechanical Arm once the rest of the ritual is valid.
-                    var ritual = mbe.getRitualFor(level, be.getBlockPos(), stack, null);
+                    var ritual = mbe.getRitualFor(level, stack);
                     if (ritual.isPresent()) {
                         return super.insert(arm, stack, simulate);
                     }

@@ -2,7 +2,6 @@ package io.github.irishgreencitrus.occultengineering.registry;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;

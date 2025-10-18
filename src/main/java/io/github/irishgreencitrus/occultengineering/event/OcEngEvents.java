@@ -2,6 +2,7 @@ package io.github.irishgreencitrus.occultengineering.event;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.command.OcEngCommands;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlockEntity;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,5 +35,6 @@ public class OcEngEvents {
         // TODO: do the rest of these
         PulverizerBlockEntity.registerCapabilities(event);
         PhlogiportBlockEntity.registerCapabilities(event);
+        MechanicalChamberBlockEntity.registerCapabilities(event);
     }
 }
