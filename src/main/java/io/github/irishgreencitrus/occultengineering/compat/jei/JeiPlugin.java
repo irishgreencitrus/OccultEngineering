@@ -35,21 +35,14 @@ public class JeiPlugin implements IModPlugin {
     protected static IJeiRuntime runtime;
     private final List<CreateRecipeCategory<?>> allCategories = new ArrayList<>();
 
-    public static IJeiRuntime getJeiRuntime() {
-        return runtime;
-    }
-
     public void loadCategories() {
         allCategories.clear();
-        // FIXME: why doesn't this appear in JEI? Check Create's implementation first.
-        allCategories.add(
-                builder(SpiritFireRecipe.class)
-                        .addTypedRecipes(OccultismRecipes.SPIRIT_FIRE_TYPE::get)
-                        .catalystStack(getOcEngFan("fan_enspirit"))
-                        .doubleItemIcon(AllItems.PROPELLER.get(), OccultismBlocks.SPIRIT_CAMPFIRE.get())
-                        .emptyBackground(178, 72)
-                        .build("fan_enspirit", FanEnspiritCategory::new)
-        );
+        builder(SpiritFireRecipe.class)
+                .addTypedRecipes(OccultismRecipes.SPIRIT_FIRE_TYPE)
+                .catalystStack(getOcEngFan("fan_enspirit"))
+                .doubleItemIcon(AllItems.PROPELLER.get(), OccultismBlocks.SPIRIT_CAMPFIRE.get())
+                .emptyBackground(178, 72)
+                .build(OccultEngineering.asResource("fan_enspirit"), FanEnspiritCategory::new);
     }
 
     private static Supplier<ItemStack> getOcEngFan(String name) {
@@ -98,6 +91,7 @@ public class JeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
         allCategories.forEach(c -> c.registerCatalysts(registration));
+        OccultEngineering.LOGGER.info("{} registered {} recipe catalysts", getPluginUid(), allCategories.size());
         registration.addRecipeCatalyst(new ItemStack(OccultEngineeringBlocks.MECHANICAL_CHAMBER), JeiRecipeTypes.RITUAL);
         registration.addRecipeCatalyst(new ItemStack(OccultEngineeringBlocks.MECHANICAL_PULVERIZER), JeiRecipeTypes.CRUSHING);
     }
@@ -105,5 +99,6 @@ public class JeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registration) {
         allCategories.forEach(c -> c.registerRecipes(registration));
+        OccultEngineering.LOGGER.info("{} registered {} recipes", getPluginUid(), allCategories.size());
     }
 }
