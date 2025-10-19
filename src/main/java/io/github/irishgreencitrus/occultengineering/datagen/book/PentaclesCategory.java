@@ -33,11 +33,9 @@ public class PentaclesCategory extends CategoryProvider {
     @Override
     protected void generateEntries() {
         var overview = add(makeOverviewEntry(entryMap, 'O'));
-        /*
         var craftPuca = add(makeCraftPucaEntry(entryMap, 'p'));
         craftPuca.withParent(BookEntryParentModel.create(overview.getId()));
         craftPuca.withCondition(BookTrueConditionModel.create());
-         */
     }
 
     @Override

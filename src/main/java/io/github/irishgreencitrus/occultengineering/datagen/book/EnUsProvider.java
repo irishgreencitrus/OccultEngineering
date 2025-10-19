@@ -3,11 +3,13 @@ package io.github.irishgreencitrus.occultengineering.datagen.book;
 import com.klikli_dev.modonomicon.api.datagen.AbstractModonomiconLanguageProvider;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.mixin.accessor.LangDataAccessor;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -22,6 +24,12 @@ public class EnUsProvider extends AbstractModonomiconLanguageProvider {
 
     @Override
     protected void addTranslations() {
+    }
+
+    @Override
+    public @NotNull Map<String, String> data() {
+        // this is fixed in a more modern version of modonomicon, but I don't really want to update yet.
+        return ((LangDataAccessor) this).getData();
     }
 
     @Override
@@ -45,5 +53,9 @@ public class EnUsProvider extends AbstractModonomiconLanguageProvider {
         }
 
         return CompletableFuture.allOf();
+    }
+
+    public void consume(@NotNull BiConsumer<String, String> consumer) {
+        data().forEach(consumer);
     }
 }

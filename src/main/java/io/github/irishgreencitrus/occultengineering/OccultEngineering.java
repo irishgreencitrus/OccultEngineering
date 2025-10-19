@@ -42,7 +42,7 @@ public class OccultEngineering {
 
         REGISTRATE.registerEventListeners(modEventBus);
 
-        DataProviders.registerAdditionalLangProviders();
+        DataProviders.registerRegistrateProviders();
 
         OccultEngineeringCreativeModeTab.register(modEventBus);
 
