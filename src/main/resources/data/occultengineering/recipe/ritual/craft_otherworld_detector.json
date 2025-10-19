@@ -7,7 +7,8 @@
   "pentacle_id": "occultengineering:craft_puca",
   "duration": 300,
   "ritual_dummy": {
-    "item": "occultengineering:ritual_dummy_craft_otherworld_detector"
+    "count": 1,
+    "id": "occultengineering:ritual_dummy_craft_otherworld_detector"
   },
   "ingredients": [
     {
@@ -21,6 +22,7 @@
     }
   ],
   "result": {
-    "item": "occultengineering:otherworld_detector"
+    "count": 1,
+    "id": "occultengineering:otherworld_detector"
   }
 }

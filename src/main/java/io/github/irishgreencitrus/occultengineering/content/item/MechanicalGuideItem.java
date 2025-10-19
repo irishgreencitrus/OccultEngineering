@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.content.item;
 import com.klikli_dev.modonomicon.api.ModonomiconConstants;
 import com.klikli_dev.modonomicon.book.Book;
 import com.klikli_dev.modonomicon.client.gui.BookGuiManager;
+import com.klikli_dev.modonomicon.client.gui.book.BookAddress;
 import com.klikli_dev.modonomicon.data.BookDataManager;
 import com.klikli_dev.modonomicon.item.ModonomiconItem;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
@@ -40,8 +41,10 @@ public class MechanicalGuideItem extends ModonomiconItem {
 
         if (pLevel.isClientSide) {
             var book = BookDataManager.get().getBook(ENCYCLOPEDIA_OF_SOULS);
-            if (book != null)
-                BookGuiManager.get().openBook(book.getLeafletAddress());
+            if (book != null) {
+                OccultEngineering.LOGGER.info("Opening book: {} -> {}", book.getId(), book.getName());
+                BookGuiManager.get().openBook(BookAddress.defaultFor(book));
+            }
         }
 
         return InteractionResultHolder.sidedSuccess(itemInHand, pLevel.isClientSide);

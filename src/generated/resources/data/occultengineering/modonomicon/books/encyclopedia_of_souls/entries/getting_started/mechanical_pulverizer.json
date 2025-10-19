@@ -2,7 +2,7 @@
   "background_u_index": 0,
   "background_v_index": 0,
   "category": "getting_started",
-  "description": "",
+  "description": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_pulverizer.description",
   "hide_while_locked": false,
   "icon": {
     "item": "occultengineering:mechanical_pulverizer"

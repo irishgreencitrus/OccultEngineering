@@ -471,7 +471,7 @@ public class GettingStartedCategory extends CategoryProvider {
         context().entry(entryId);
 
         lang().add(context().entryName(), "Mechanical Pulverizer");
-        lang().add(context().entryDescription(), "Dust galore!");
+        lang().add(context().entryDescription(), "It grinds through the competition");
 
         context().page("mechanical_pulverizer");
         var mechanicalPulverizer = BookSpotlightPageModel.create()
@@ -488,6 +488,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_PULVERIZER)
                 .withLocation(entryMap.get(icon))
                 .withPages(mechanicalPulverizer);

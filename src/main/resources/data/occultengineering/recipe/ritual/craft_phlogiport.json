@@ -7,7 +7,8 @@
   "pentacle_id": "occultengineering:craft_puca",
   "duration": 300,
   "ritual_dummy": {
-    "item": "occultengineering:ritual_dummy_craft_phlogiport"
+    "count": 1,
+    "id": "occultengineering:ritual_dummy_craft_phlogiport"
   },
   "ingredients": [
     {
@@ -24,6 +25,7 @@
     }
   ],
   "result": {
-    "item": "occultengineering:phlogiport"
+    "count": 1,
+    "id": "occultengineering:phlogiport"
   }
 }
