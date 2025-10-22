@@ -165,7 +165,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
         consumedIngredients.clear();
         remainingAdditionalIngredients = new ArrayList<>(ritualRecipe.value().getIngredients());
 
-        blockEntity.notifyUpdate();
+        blockDirty();
     }
 
     @Override
@@ -224,7 +224,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
         if (remainingAdditionalIngredients != null) remainingAdditionalIngredients.clear();
         consumedIngredients.clear();
 
-        blockEntity.notifyUpdate();
+        blockDirty();
     }
 
     @Override
@@ -242,6 +242,8 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
             result.ifPresent(
                     ritualRecipeRecipeHolder ->
                             currentRitualRecipe = ritualRecipeRecipeHolder);
+
+            currentRitualRecipeId = null;
         }
         return Optional.ofNullable(currentRitualRecipe);
     }
@@ -290,7 +292,11 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
 
     @Override
     public boolean isRitualActive() {
-        return currentRitualRecipe != null;
+        if (blockEntity.getLevel() == null) return false;
+        if (blockEntity.getLevel().isClientSide)
+            return currentRitualRecipe != null;
+        else
+            return getRitualRecipe().isPresent();
     }
 
     @Override
@@ -301,5 +307,11 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
     @Override
     public BehaviourType<?> getType() {
         return TYPE;
+    }
+
+    public void blockDirty() {
+        blockEntity.notifyUpdate();
+        if (blockEntity.getLevel() != null)
+            blockEntity.getLevel().sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
     }
 }

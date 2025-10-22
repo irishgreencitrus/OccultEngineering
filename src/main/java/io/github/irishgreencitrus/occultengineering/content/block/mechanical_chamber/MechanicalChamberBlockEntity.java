@@ -5,8 +5,13 @@ import com.klikli_dev.occultism.crafting.recipe.RitualRecipe;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
+import net.createmod.catnip.lang.LangBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -90,7 +95,10 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (level == null) return;
-                notifyUpdate();
+                if (processorBehaviour != null)
+                    processorBehaviour.blockDirty();
+                else
+                    setChanged();
                 lastChangeTime = level.getGameTime();
             }
         };
@@ -126,5 +134,52 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
                 r -> r.value().matches(pLevel, getBlockPos(), stack)
         ).findFirst().orElse(null);
         return Optional.ofNullable(ritualRecipe);
+    }
+
+    private static Component getPentacleName(ResourceLocation resourceLocation) {
+        return Component.translatable("multiblock." + resourceLocation.getNamespace() + "." + resourceLocation.getPath());
+    }
+
+    private static LangBuilder lang() {
+        return new LangBuilder(OccultEngineering.MODID);
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        var parent = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        if (processorBehaviour != null && processorBehaviour.isRitualActive()) {
+            lang()
+                    .translate("tooltip.ritualspeed")
+                    .space()
+                    .text(String.valueOf(processorBehaviour.ritualSpeedMultiplier.get()))
+                    .text("x")
+                    .style(ChatFormatting.GRAY).forGoggles(tooltip);
+
+            assert processorBehaviour.currentRitualRecipe != null;
+            if (!isPlayerSneaking) return parent;
+            lang()
+                    .translate("tooltip.currentpentacle")
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip);
+
+            lang().space()
+                    .add(getPentacleName(processorBehaviour.currentRitualRecipe.value().getPentacleId()))
+                    .style(ChatFormatting.YELLOW).forGoggles(tooltip);
+
+            lang()
+                    .translate("tooltip.currentritualrecipe")
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip);
+            // I promise there's nothing wrong with passing null here
+            lang()
+                    .space()
+                    .add(processorBehaviour.currentRitualRecipe.value().getResultItem(null).getHoverName())
+                    .style(ChatFormatting.GREEN)
+                    .forGoggles(tooltip);
+        } else {
+            var builder = new LangBuilder(OccultEngineering.MODID);
+            builder.translate("tooltip.ritualnotactive").style(ChatFormatting.RED).forGoggles(tooltip);
+        }
+        return parent;
     }
 }

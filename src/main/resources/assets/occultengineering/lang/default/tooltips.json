@@ -1,5 +1,8 @@
 {
-  "occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier",
+  "occultengineering.tooltip.ritualspeed": "Ritual Speed Multiplier:",
+  "occultengineering.tooltip.currentpentacle": "Current Pentacle:",
+  "occultengineering.tooltip.currentritualrecipe": "Crafting:",
+  "occultengineering.tooltip.ritualnotactive": "Ritual Not Active",
   "item.occultengineering.combined_goggles.otherworld_disabled": "Not Otherworldly",
   "item.occultengineering.combined_goggles.otherworld_enabled": "Otherworldly",
   "item.occultengineering.combined_goggles.use_to_change": "Right-Click to change",
