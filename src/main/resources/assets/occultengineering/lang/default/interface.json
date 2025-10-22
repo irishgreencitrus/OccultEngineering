@@ -14,5 +14,8 @@
   "gui.occultengineering.pucalith.title": "Púcalith",
   "entity.occultengineering.puca": "Púca",
   "gui.occultengineering.pentacle_schematic.place_hint": "Set pentacle center position to %1$s",
-  "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place."
+  "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place.",
+  "occultengineering.display_source.current_ritual_result": "Resulting Item",
+  "occultengineering.display_source.current_pentacle": "Current Pentacle",
+  "occultengineering.display_source.ritual_completion": "Ritual Completion"
 }

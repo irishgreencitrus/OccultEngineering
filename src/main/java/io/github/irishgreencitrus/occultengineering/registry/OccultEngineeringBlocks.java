@@ -27,6 +27,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 
+import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -48,6 +49,9 @@ public class OccultEngineeringBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
             .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
+            .transform(displaySource(OccultEngineeringDisplaySources.CURRENT_PENTACLE))
+            .transform(displaySource(OccultEngineeringDisplaySources.CURRENT_RITUAL_RESULT))
+            .transform(displaySource(OccultEngineeringDisplaySources.RITUAL_COMPLETION))
             .simpleItem()
             .register();
 

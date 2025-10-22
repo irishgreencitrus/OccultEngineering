@@ -136,7 +136,7 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         return Optional.ofNullable(ritualRecipe);
     }
 
-    private static Component getPentacleName(ResourceLocation resourceLocation) {
+    public static Component getPentacleName(ResourceLocation resourceLocation) {
         return Component.translatable("multiblock." + resourceLocation.getNamespace() + "." + resourceLocation.getPath());
     }
 
