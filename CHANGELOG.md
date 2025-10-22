@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.9.2] - 2025-10-22
+### :sparkles: New Features
+- [`d72750b`](https://github.com/irishgreencitrus/OccultEngineering/commit/d72750b6739817200339f6aac33d153231ad43b8) - Add tooltip entries to the Mechanical Chamber. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`ca052ec`](https://github.com/irishgreencitrus/OccultEngineering/commit/ca052ec57d7d689ca395acecd1ab05ace4e50292) - Add display sources to the Mechanical Chamber. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.9.0] - 2025-10-10
 Hello everyone, I'm sorry it's taken such a long time to make a new release of Create: Occult Engineering (like 4 months), but I've finally done one!
 
@@ -125,3 +131,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.20.1-0.7.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.6.0...beta/v1.20.1-0.7.0
 [beta/v1.20.1-0.8.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.0...beta/v1.20.1-0.8.1
 [beta/v1.20.1-0.9.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.1...beta/v1.20.1-0.9.0
+[beta/v1.21.1-0.9.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.9.1...beta/v1.21.1-0.9.2
