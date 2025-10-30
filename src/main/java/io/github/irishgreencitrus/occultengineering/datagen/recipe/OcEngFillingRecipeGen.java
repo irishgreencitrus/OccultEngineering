@@ -1,18 +1,11 @@
 package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
-import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.api.data.recipe.FillingRecipeGen;
-import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class OcEngFillingRecipeGen extends FillingRecipeGen {

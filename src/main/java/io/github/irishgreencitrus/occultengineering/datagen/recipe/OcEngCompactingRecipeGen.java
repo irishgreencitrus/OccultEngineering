@@ -7,11 +7,7 @@ import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.level.material.Fluids;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.*;
 

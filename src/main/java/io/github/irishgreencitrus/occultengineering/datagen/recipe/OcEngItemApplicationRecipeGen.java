@@ -7,10 +7,7 @@ import io.github.irishgreencitrus.occultengineering.compat.Mods;
 import io.github.irishgreencitrus.occultengineering.datagen.JsonDatagenIngredient;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
-
-import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class OcEngItemApplicationRecipeGen extends ItemApplicationRecipeGen {
