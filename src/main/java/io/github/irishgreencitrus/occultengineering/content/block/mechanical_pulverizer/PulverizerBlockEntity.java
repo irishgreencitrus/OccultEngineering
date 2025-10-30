@@ -116,7 +116,7 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         ItemHandlerHelper.insertItem(outputInv, result, false);
     }
 
-    private boolean canProcess(ItemStack stack) {
+    public boolean canProcess(ItemStack stack) {
         if (level == null) return false;
 
         // Can't process a different item if there's already something in the output slot.
