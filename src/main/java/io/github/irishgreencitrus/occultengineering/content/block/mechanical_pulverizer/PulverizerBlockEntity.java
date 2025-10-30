@@ -22,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -58,39 +59,30 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     public void tick() {
         super.tick();
         if (getSpeed() == 0) return;
-        for (int i = 0; i < outputInv.getSlots(); i++) {
-            if (outputInv.getStackInSlot(i).getCount() == outputInv.getSlotLimit(i)) return;
-        }
+
+        if (outputInv.getStackInSlot(0).getCount() == outputInv.getStackInSlot(0).getMaxStackSize()) return;
 
         if (level == null) return;
 
-        if (timer > 0) {
+        if (timer <= 0) {
+            if (inputInv.getStackInSlot(0).isEmpty()) return;
+            var recipe = findCurrentRecipe(inputInv.getStackInSlot(0));
+
+            timer = recipe
+                    .map(CrushingRecipe::getCrushingTime)
+                    .orElse(100);
+            notifyUpdate();
+        } else {
             timer -= getProcessingSpeed();
             if (level.isClientSide) {
                 spawnParticles();
                 return;
             }
-            if (timer <= 0)
+            if (timer <= 0) {
                 process();
-            return;
-        }
-
-        if (inputInv.getStackInSlot(0).isEmpty()) return;
-        var inputStack = inputInv.getStackInSlot(0);
-        var inventoryIn = new ItemStackFakeInventory(inputStack);
-        if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<CrushingRecipe> recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
-            if (recipe.isPresent()) {
-                lastRecipe = recipe.get();
-                timer = lastRecipe.getCrushingTime();
-            } else {
-                timer = 100;
+                notifyUpdate();
             }
-            sendData();
-            return;
         }
-        timer = lastRecipe.getCrushingTime();
-        sendData();
     }
 
     @Override
@@ -104,6 +96,64 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         super.destroy();
         ItemHelper.dropContents(level, worldPosition, inputInv);
         ItemHelper.dropContents(level, worldPosition, outputInv);
+    }
+
+    private void process() {
+        if (level == null) return;
+        var inputStack = inputInv.getStackInSlot(0);
+        var recipe = findCurrentRecipe(inputStack);
+
+        if (recipe.isEmpty()) return;
+
+        var input = new ItemStackFakeInventory(inputStack);
+        var result = recipe.get().assemble(input, level.registryAccess());
+
+        var remainder = ItemHandlerHelper.insertItem(outputInv, result, true);
+        // If we can't fit the remainder, don't process it.
+        if (!remainder.isEmpty()) return;
+        inputStack.shrink(1);
+        inputInv.setStackInSlot(0, inputStack);
+        ItemHandlerHelper.insertItem(outputInv, result, false);
+    }
+
+    private boolean canProcess(ItemStack stack) {
+        if (level == null) return false;
+
+        // Can't process a different item if there's already something in the output slot.
+        var recipe = findCurrentRecipe(stack);
+        if (recipe.isEmpty()) return false;
+
+        var emptySlot = outputInv.getStackInSlot(0).isEmpty();
+        if (emptySlot) return true;
+
+
+        var input = new ItemStackFakeInventory(stack);
+
+        var matchingItem = outputInv.getStackInSlot(0).is(
+                recipe.get().assemble(input, level.registryAccess()).getItem());
+
+        if (!matchingItem) return false;
+
+        var output = recipe.get().assemble(input, level.registryAccess());
+        var remainder = ItemHandlerHelper.insertItem(outputInv, output, true);
+
+        // We won't process something if it puts it over our stack size
+        return remainder.isEmpty();
+    }
+
+
+    private Optional<CrushingRecipe> findCurrentRecipe(ItemStack stack) {
+        if (level == null) return Optional.empty();
+        // no tiers in 1.20.1
+        var input = new ItemStackFakeInventory(stack);
+
+        if (lastRecipe != null && lastRecipe.matches(input, level)) {
+            return Optional.ofNullable(lastRecipe);
+        }
+
+        var recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), input, level);
+        recipe.ifPresent(r -> lastRecipe = r);
+        return recipe;
     }
 
     @Override
@@ -132,25 +182,6 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
     }
 
-    private void process() {
-        if (level == null) return;
-        var inputStack = inputInv.getStackInSlot(0);
-        var inventoryIn = new ItemStackFakeInventory(inputStack);
-        if (lastRecipe == null || !lastRecipe.matches(inventoryIn, level)) {
-            Optional<CrushingRecipe> recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventoryIn, level);
-            if (recipe.isEmpty())
-                return;
-            lastRecipe = recipe.get();
-        }
-        inputStack.shrink(1);
-        inputInv.setStackInSlot(0, inputStack);
-        var result = lastRecipe.getResultItem(level.registryAccess());
-        outputInv.setStackInSlot(0, result);
-
-        sendData();
-        setChanged();
-    }
-
     private void spawnParticles() {
         if (level == null) return;
         if (level.random.nextInt(3) != 0) return;
@@ -167,16 +198,6 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
         var target = VecHelper.rotate(new Vec3(0, -0.5f, 0.2f), yRot, Direction.Axis.Y);
         level.addParticle(data, center.x, center.y, center.z, target.x, target.y, target.z);
-    }
-
-    public boolean canProcess(ItemStack stack) {
-        if (level == null) return false;
-        ItemStackFakeInventory inventory = new ItemStackFakeInventory(stack);
-
-        if (lastRecipe != null && lastRecipe.matches(inventory, level)) {
-            return true;
-        }
-        return level.getRecipeManager().getRecipeFor(OccultismRecipes.CRUSHING_TYPE.get(), inventory, level).isPresent();
     }
 
     private class PulverizerInventoryHandler extends CombinedInvWrapper {
