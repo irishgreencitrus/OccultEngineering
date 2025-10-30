@@ -12,7 +12,7 @@ buildscript {
 
 plugins {
     id 'idea'
-    id "net.neoforged.moddev.legacyforge" version "2.0.78"
+    id "net.neoforged.moddev.legacyforge" version "2.0.107"
 }
 
 if (System.getenv('MOD_VERSION') != null) {
@@ -172,7 +172,7 @@ repositories {
 
 dependencies {
     // CREATE MOD
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
     modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
     modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}")
     modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")

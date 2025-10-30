@@ -1,22 +1,23 @@
 package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
-import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.api.data.recipe.CompactingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.*;
 
 @SuppressWarnings("unused")
-public class OcEngCompactingRecipeGen extends ProcessingRecipeGen {
+public class OcEngCompactingRecipeGen extends CompactingRecipeGen {
     GeneratedRecipe
-
             IMPURE_WHITE_CHALK = create(OccultEngineering.asResource("chalk_white_impure"), b ->
             b.require(OccultismItems.BURNT_OTHERSTONE::get)
                     .require(OccultismItems.BURNT_OTHERSTONE::get)
@@ -56,11 +57,6 @@ public class OcEngCompactingRecipeGen extends ProcessingRecipeGen {
                     .output(OccultEngineeringItems.PHLOGISTON));
 
     public OcEngCompactingRecipeGen(PackOutput generator) {
-        super(generator);
-    }
-
-    @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.COMPACTING;
+        super(generator, OccultEngineering.MODID);
     }
 }

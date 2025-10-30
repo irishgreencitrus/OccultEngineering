@@ -2,17 +2,21 @@ package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.api.data.recipe.FillingRecipeGen;
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.FinishedRecipe;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
-public class OcEngFillingRecipeGen extends ProcessingRecipeGen {
-    CreateRecipeProvider.GeneratedRecipe
+public class OcEngFillingRecipeGen extends FillingRecipeGen {
+    GeneratedRecipe
             BIND_FOLIOT_BOOK = create(OccultEngineering.asResource("bind_foliot_book"), b ->
             b.require(OccultismItems.BOOK_OF_BINDING_FOLIOT::get)
                     .require(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), 25)
@@ -39,11 +43,6 @@ public class OcEngFillingRecipeGen extends ProcessingRecipeGen {
                     .output(OccultEngineeringItems.BOOK_OF_BINDING_BOUND_PUCA));
 
     public OcEngFillingRecipeGen(PackOutput generator) {
-        super(generator);
-    }
-
-    @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.FILLING;
+        super(generator, OccultEngineering.MODID);
     }
 }

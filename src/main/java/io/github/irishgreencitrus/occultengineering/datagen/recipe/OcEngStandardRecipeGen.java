@@ -43,7 +43,6 @@ import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused")
 public class OcEngStandardRecipeGen extends OcEngRecipeProvider {
-    //Marker items = enterFolder("items");
 
     String currentFolder = "";
 

@@ -53,7 +53,7 @@ public class FanEnspiritType implements FanProcessingType {
                 OccultismRecipes.SPIRIT_FIRE_TYPE.get(), fakeInventory, level
         );
         return recipe.map(
-                spiritFireRecipe -> RecipeApplier.applyRecipeOn(level, itemStack, spiritFireRecipe)
+                spiritFireRecipe -> RecipeApplier.applyRecipeOn(level, itemStack, spiritFireRecipe, true)
         ).orElse(null);
     }
 

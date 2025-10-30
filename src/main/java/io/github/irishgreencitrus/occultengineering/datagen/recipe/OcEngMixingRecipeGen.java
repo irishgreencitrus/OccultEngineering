@@ -1,11 +1,9 @@
 package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
 import com.klikli_dev.occultism.registry.OccultismItems;
-import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.api.data.recipe.MixingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
@@ -20,9 +18,9 @@ import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngR
 import static io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I.silverDust;
 
 @SuppressWarnings("unused")
-public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
+public class OcEngMixingRecipeGen extends MixingRecipeGen {
     public OcEngMixingRecipeGen(PackOutput output) {
-        super(output);
+        super(output, OccultEngineering.MODID);
     }
 
     GeneratedRecipe
@@ -110,10 +108,5 @@ public class OcEngMixingRecipeGen extends ProcessingRecipeGen {
             }
             return recipe;
         });
-    }
-
-    @Override
-    protected IRecipeTypeInfo getRecipeType() {
-        return AllRecipeTypes.MIXING;
     }
 }
