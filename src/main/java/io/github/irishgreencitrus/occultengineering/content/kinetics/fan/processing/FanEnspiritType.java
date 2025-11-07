@@ -45,7 +45,7 @@ public class FanEnspiritType implements FanProcessingType {
         var recipeInput = new SingleRecipeInput(itemStack);
         var recipe = level.getRecipeManager().getRecipeFor(OccultismRecipes.SPIRIT_FIRE_TYPE.get(), recipeInput, level);
         return recipe.map(
-                spiritFireRecipe -> RecipeApplier.applyRecipeOn(level, itemStack, spiritFireRecipe)
+                spiritFireRecipe -> RecipeApplier.applyRecipeOn(level, itemStack, spiritFireRecipe.value(), false)
         ).orElse(null);
     }
 

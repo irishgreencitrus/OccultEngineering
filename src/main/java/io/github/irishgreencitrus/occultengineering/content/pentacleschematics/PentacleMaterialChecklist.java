@@ -243,12 +243,14 @@ public class PentacleMaterialChecklist {
         }
 
         pages.add(currentPage);
+        /*
         ClipboardEntry.saveAll(pages, clipboard);
         ClipboardOverrides.switchTo(ClipboardType.WRITTEN, clipboard);
+         */
 
         clipboard.set(DataComponents.CUSTOM_NAME, CreateLang.translateDirect("materialChecklist")
                         .setStyle(Style.EMPTY.withItalic(Boolean.FALSE)));
-        clipboard.set(AllDataComponents.CLIPBOARD_READ_ONLY, Unit.INSTANCE);
+        //clipboard.set(AllDataComponents.CLIPBOARD_CONTENT, Unit.INSTANCE);
         return clipboard;
     }
 

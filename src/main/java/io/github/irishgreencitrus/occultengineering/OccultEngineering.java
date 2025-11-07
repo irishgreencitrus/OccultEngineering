@@ -5,7 +5,10 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import io.github.irishgreencitrus.occultengineering.compat.ModIntegration;
+import io.github.irishgreencitrus.occultengineering.compat.Mods;
 import io.github.irishgreencitrus.occultengineering.compat.curios.OcEngCurios;
+import io.github.irishgreencitrus.occultengineering.compat.enchant_industry.OcEngEnchantIndustry;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportNetworkHandler;
 import io.github.irishgreencitrus.occultengineering.datagen.DataProviders;
@@ -56,15 +59,23 @@ public class OccultEngineering {
         OccultEngineeringBrains.register(modEventBus);
         OccultEngineeringParticleTypes.register(modEventBus);
         OccultEngineeringPackets.register();
+        OccultEngineeringRecipeTypes.register(modEventBus);
 
         OccultEngineeringConfig.register(modLoadingContext, modContainer);
 
         modEventBus.addListener(OccultEngineering::init);
         modEventBus.addListener(OccultEngineering::onRegister);
         modEventBus.addListener(OccultEngineeringEntities::registerEntityAttributes);
-
         OcEngCurios.init(modEventBus);
+
+        loadModIntegrations();
+
+        Mods.LOADED_INTEGRATIONS.forEach(it -> it.onCommonSetup(modEventBus));
         LOGGER.info("Setup is complete.");
+    }
+
+    public static void loadModIntegrations() {
+        Mods.loadIntegration(Mods.ENCHANTMENT_INDUSTRY, OcEngEnchantIndustry::new);
     }
 
     public static void init(final FMLCommonSetupEvent event) {

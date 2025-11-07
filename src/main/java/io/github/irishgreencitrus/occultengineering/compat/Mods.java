@@ -5,18 +5,28 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModList;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 public enum Mods {
     CREATE_CONNECTED("create_connected"),
+    ENCHANTMENT_INDUSTRY("create_enchantment_industry"),
     CURIOS("curios"),
     DREAMS_DESIRES("create_dd"),
     JEI("jei"),
     ;
 
-    public final String id;
+    public static final List<ModIntegration> LOADED_INTEGRATIONS = new ArrayList<>();
 
+    public static void loadIntegration(Mods required, Supplier<ModIntegration> integration) {
+        if (required.isLoaded()) {
+            LOADED_INTEGRATIONS.add(integration.get());
+        }
+    }
+
+    public final String id;
     Mods(String id) {
         this.id = id;
     }
