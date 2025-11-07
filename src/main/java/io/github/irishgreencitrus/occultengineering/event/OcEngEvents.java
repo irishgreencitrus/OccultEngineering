@@ -2,6 +2,8 @@ package io.github.irishgreencitrus.occultengineering.event;
 
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.command.OcEngCommands;
+import io.github.irishgreencitrus.occultengineering.compat.Mods;
+import io.github.irishgreencitrus.occultengineering.compat.enchant_industry.OcEngEnchantIndustry;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockEntity;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlockEntity;
@@ -20,12 +22,14 @@ public class OcEngEvents {
 
     @SubscribeEvent
     public static void onLoadWorld(LevelEvent.Load event) {
+        Mods.LOADED_INTEGRATIONS.forEach(it -> it.onWorldLoad(event));
         var world = event.getLevel();
         OccultEngineering.PHLOGIPORT_NETWORK.onLoadWorld(world);
     }
 
     @SubscribeEvent
     public static void onUnloadWorld(LevelEvent.Unload event) {
+        Mods.LOADED_INTEGRATIONS.forEach(it -> it.onWorldUnload(event));
         var world = event.getLevel();
         OccultEngineering.PHLOGIPORT_NETWORK.onUnloadWorld(world);
     }

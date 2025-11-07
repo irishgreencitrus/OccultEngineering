@@ -39,17 +39,17 @@ public class OccultEngineeringItems {
             .register();
 
     public static final ItemEntry<ChalkItem> COPPER_CHALK = REGISTRATE.item("chalk_copper",
-                    p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.COPPER_CHALK))
+                    p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.COPPER_CHALK.get()))
             .lang("Copper Chalk")
             .register();
 
     public static final ItemEntry<ChalkItem> ZINC_CHALK = REGISTRATE.item("chalk_zinc",
-                    p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.ZINC_CHALK))
+                    p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.ZINC_CHALK.get()))
             .lang("Zinc Chalk")
             .register();
 
     public static final ItemEntry<ChalkItem> BRASS_CHALK = REGISTRATE.item("chalk_brass",
-                    p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.BRASS_CHALK))
+                    p -> new ChalkItem(new Item.Properties().setNoRepair().durability(128), OccultEngineeringBlocks.BRASS_CHALK.get()))
             .lang("Brass Chalk")
             .register();
 

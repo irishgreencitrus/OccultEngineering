@@ -27,4 +27,9 @@ public class OccultEngineeringTags {
             Registries.ITEM,
             OccultEngineering.asResource("mechanical_chamber_insertable")
     );
+
+    public static final TagKey<Item> BINDING_BOOK_PRINTABLE = TagKey.create(
+            Registries.ITEM,
+            OccultEngineering.asResource("binding_book_printable")
+    );
 }

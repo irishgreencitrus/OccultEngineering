@@ -1,0 +1,13 @@
+{
+  "type": "occultengineering:dyeing_item",
+  "input": [
+    {
+      "item": "occultism:book_of_binding_empty"
+    }
+  ],
+  "dye_amount": 250,
+  "dye_color": "blue",
+  "result": {
+    "id": "occultism:book_of_binding_foliot"
+  }
+}

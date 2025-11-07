@@ -1,5 +1,7 @@
 package io.github.irishgreencitrus.occultengineering;
 
+import io.github.irishgreencitrus.occultengineering.compat.ModIntegration;
+import io.github.irishgreencitrus.occultengineering.compat.Mods;
 import io.github.irishgreencitrus.occultengineering.config.OccultEngineeringConfig;
 import io.github.irishgreencitrus.occultengineering.content.ponder.OccultEngineeringPonderPlugin;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringEntities;
@@ -24,6 +26,7 @@ public class OccultEngineeringClient {
         modEventBus.addListener(OccultEngineeringClient::setup);
         modEventBus.addListener(OccultEngineeringEntities::clientRegisterRenderers);
         modEventBus.addListener(OccultEngineeringParticleTypes::registerProviders);
+        Mods.LOADED_INTEGRATIONS.forEach(ModIntegration::onClientSetup);
         OccultEngineering.LOGGER.info("Client setup is complete.");
     }
 
