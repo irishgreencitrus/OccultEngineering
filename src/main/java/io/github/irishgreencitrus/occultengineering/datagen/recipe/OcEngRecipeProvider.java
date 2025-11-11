@@ -1,24 +1,23 @@
 package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 
-import com.simibubi.create.AllTags;
 import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public final class OcEngRecipeProvider extends RecipeProvider {
     static final List<ProcessingRecipeGen<?,?,?>> GENERATORS = new ArrayList<>();
@@ -51,13 +50,16 @@ public final class OcEngRecipeProvider extends RecipeProvider {
         });
     }
 
-    protected static class Marker {
-        protected Marker() {
-        }
-    }
-
     protected static class I {
         protected I() {
+        }
+
+        static <T> TagKey<T> tag(Registry<T> registry, ResourceLocation id) {
+            return TagKey.create(registry.key(), id);
+        }
+
+        static TagKey<Item> commonItemTag(String name) {
+            return tag(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath("c", name));
         }
 
         static TagKey<Item> copper() {
@@ -65,31 +67,31 @@ public final class OcEngRecipeProvider extends RecipeProvider {
         }
 
         static TagKey<Item> silverDust() {
-            return AllTags.commonItemTag("dusts/silver");
+            return commonItemTag("dusts/silver");
         }
 
         static TagKey<Item> copperDust() {
-            return AllTags.commonItemTag("dusts/copper");
+            return commonItemTag("dusts/copper");
         }
 
         static TagKey<Item> zincDust() {
-            return AllTags.commonItemTag("dusts/zinc");
+            return commonItemTag("dusts/zinc");
         }
 
         static TagKey<Item> brassDust() {
-            return AllTags.commonItemTag("dusts/brass");
+            return commonItemTag("dusts/brass");
         }
 
         static TagKey<Item> sterlingNugget() {
-            return AllTags.commonItemTag("nuggets/sterling_silver");
+            return commonItemTag("nuggets/sterling_silver");
         }
 
         static TagKey<Item> sterlingIngot() {
-            return AllTags.commonItemTag("ingots/sterling_silver");
+            return commonItemTag("ingots/sterling_silver");
         }
 
         static TagKey<Item> sterlingBlock() {
-            return AllTags.commonItemTag("storage_blocks/sterling_silver");
+            return commonItemTag("storage_blocks/sterling_silver");
         }
     }
 }

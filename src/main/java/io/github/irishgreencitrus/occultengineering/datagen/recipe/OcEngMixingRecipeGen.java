@@ -3,7 +3,6 @@ package io.github.irishgreencitrus.occultengineering.datagen.recipe;
 import com.klikli_dev.occultism.registry.OccultismItems;
 import com.simibubi.create.api.data.recipe.MixingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.foundation.fluid.FluidIngredient;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
@@ -13,6 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -78,12 +79,12 @@ public class OcEngMixingRecipeGen extends MixingRecipeGen {
     }
 
     private GeneratedRecipe bookOfBindingSpirit(ResourceLocation loc, ItemLike outputBook, int spiritSolutionMb, ItemLike... dyes) {
-        var fluidIngredient = FluidIngredient.fromFluid(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), spiritSolutionMb);
+        var fluidIngredient = SizedFluidIngredient.of(new FluidStack(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), spiritSolutionMb));
         bookOfBindingFromRaw(loc, outputBook, fluidIngredient, dyes);
         return bookOfBindingFromEmptyBook(ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), loc.getPath() + "_from_empty"), outputBook, fluidIngredient, dyes);
     }
 
-    private GeneratedRecipe bookOfBindingFromRaw(ResourceLocation loc, ItemLike outputBook, @Nullable FluidIngredient fluidIngredient, ItemLike... dyes) {
+    private GeneratedRecipe bookOfBindingFromRaw(ResourceLocation loc, ItemLike outputBook, @Nullable SizedFluidIngredient fluidIngredient, ItemLike... dyes) {
         return create(loc, b -> {
             var recipe = b.require(OccultismItems.TABOO_BOOK::get)
                     .require(OccultismItems.PURIFIED_INK::get)
@@ -99,7 +100,7 @@ public class OcEngMixingRecipeGen extends MixingRecipeGen {
         });
     }
 
-    private GeneratedRecipe bookOfBindingFromEmptyBook(ResourceLocation loc, ItemLike outputBook, @Nullable FluidIngredient fluidIngredient, ItemLike... dyes) {
+    private GeneratedRecipe bookOfBindingFromEmptyBook(ResourceLocation loc, ItemLike outputBook, @Nullable SizedFluidIngredient fluidIngredient, ItemLike... dyes) {
         return create(loc, b -> {
             var recipe = b.require(OccultismItems.BOOK_OF_BINDING_EMPTY::get)
                     .output(outputBook);

@@ -6,7 +6,7 @@
       "item": "occultism:otherworld_essence"
     },
     {
-      "type": "fluid_stack",
+      "type": "neoforge:single",
       "amount": 1000,
       "fluid": "minecraft:water"
     }

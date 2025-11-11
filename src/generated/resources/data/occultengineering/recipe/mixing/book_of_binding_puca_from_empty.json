@@ -8,9 +8,9 @@
       "item": "minecraft:red_dye"
     },
     {
-      "type": "fluid_stack",
+      "type": "neoforge:single",
       "amount": 50,
-      "fluid": "occultengineering:spirit_solution"
+      "fluid": "occultengineering:flowing_spirit_solution"
     }
   ],
   "results": [
