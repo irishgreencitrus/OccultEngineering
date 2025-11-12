@@ -12,6 +12,7 @@ import io.github.irishgreencitrus.occultengineering.content.item.BookOfBindingBo
 import io.github.irishgreencitrus.occultengineering.content.item.CombinedGogglesItem;
 import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
+import io.github.irishgreencitrus.occultengineering.content.item.model.CombinedGogglesModel;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
@@ -85,7 +86,7 @@ public class OccultEngineeringItems {
     public static final ItemEntry<CombinedGogglesItem> COMBINED_GOGGLES = REGISTRATE
             .item("combined_goggles", CombinedGogglesItem::new)
             .properties(p -> p.stacksTo(1))
-            .onRegister(CreateRegistrate.itemModel(() -> GogglesModel::new))
+            .onRegister(CreateRegistrate.itemModel(() -> CombinedGogglesModel::new))
             .lang("Otherworldly Engineer's Goggles")
             .register();
 
