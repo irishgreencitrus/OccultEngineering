@@ -1,14 +1,9 @@
 package io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector;
 
-import com.klikli_dev.occultism.Occultism;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.packet.ThirdEyeActivationPacket;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -28,13 +23,10 @@ public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
         super.tick();
         if (level == null || level.isClientSide) return;
 
-        BlockState state = getBlockState();
         if (turnOffInTicks > 0) {
             turnOffInTicks--;
-            if (turnOffInTicks == 0) {
-                level.setBlockAndUpdate(worldPosition, state.setValue(OtherworldDetectorBlock.POWERED, false));
-                level.updateNeighborsAt(worldPosition, state.getBlock());
-            }
+            if (turnOffInTicks == 0)
+                deactivate();
         }
         var centre = worldPosition.getCenter();
 
@@ -48,6 +40,15 @@ public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
             var newSignal = Math.max(0,15 - (int) distance);
             activate(newSignal,4);
         }
+    }
+
+    public void deactivate() {
+        comparatorSignalStrength = 0;
+        var state = getBlockState();
+        if (level == null) return;
+
+        level.setBlockAndUpdate(worldPosition, state.setValue(OtherworldDetectorBlock.POWERED, false));
+        level.updateNeighborsAt(worldPosition, state.getBlock());
     }
 
     public void activate(int signalStrength, int ticks) {
