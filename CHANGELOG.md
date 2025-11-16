@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.10.1] - 2025-11-16
+### :sparkles: New Features
+- [`6efcf01`](https://github.com/irishgreencitrus/OccultEngineering/commit/6efcf01270ff5508a787362e1fb19dbd052dbde9) - Add a unique model for the combined goggles. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`3053300`](https://github.com/irishgreencitrus/OccultEngineering/commit/30533001cabc5e94ebccb53069481dac51591dc1) - Add a keybind for toggling the combined goggles when they are on your head. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :bug: Bug Fixes
+- [`c097758`](https://github.com/irishgreencitrus/OccultEngineering/commit/c097758b465eb52a2d3fdf9dca58a7201844ea2f) - Allow the otherworld detector to depower and repower comparators properly. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.10.0] - 2025-11-11
 ### :boom: BREAKING CHANGES
 - due to [`161ed7f`](https://github.com/irishgreencitrus/OccultEngineering/commit/161ed7fe093b6962f8e554fcc976fee840853e0c) - Update Create and Occultism dependencies. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*:
@@ -144,3 +153,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.20.1-0.9.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.1...beta/v1.20.1-0.9.0
 [beta/v1.21.1-0.9.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.9.1...beta/v1.21.1-0.9.2
 [beta/v1.21.1-0.10.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.9.2...beta/v1.21.1-0.10.0
+[beta/v1.21.1-0.10.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.0...beta/v1.21.1-0.10.1
