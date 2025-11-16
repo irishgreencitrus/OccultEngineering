@@ -3,16 +3,15 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.klikli_dev.occultism.common.item.DummyTooltipItem;
 import com.klikli_dev.occultism.common.item.spirit.BookOfBindingItem;
 import com.klikli_dev.occultism.common.item.tool.ChalkItem;
-import com.simibubi.create.content.equipment.goggles.GogglesModel;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.content.item.BookOfBindingBoundGlintItem;
-import io.github.irishgreencitrus.occultengineering.content.item.CombinedGogglesItem;
 import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
-import io.github.irishgreencitrus.occultengineering.content.item.model.CombinedGogglesModel;
+import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesItem;
+import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesModel;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 

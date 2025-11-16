@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.item;
+package io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles;
 
 import com.klikli_dev.occultism.common.item.armor.OtherworldGogglesItem;
 import com.klikli_dev.occultism.registry.OccultismDataComponents;
@@ -6,7 +6,6 @@ import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.nbt.ByteTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

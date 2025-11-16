@@ -17,5 +17,7 @@
   "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place.",
   "occultengineering.display_source.current_ritual_result": "Resulting Item",
   "occultengineering.display_source.current_pentacle": "Current Pentacle",
-  "occultengineering.display_source.ritual_completion": "Ritual Completion"
+  "occultengineering.display_source.ritual_completion": "Ritual Completion",
+  "key.occultengineering.toggle_combined_goggles": "Toggle Otherworldly Engineer's Goggles",
+  "key.categories.occultengineering.keys": "Occult Engineering"
 }
