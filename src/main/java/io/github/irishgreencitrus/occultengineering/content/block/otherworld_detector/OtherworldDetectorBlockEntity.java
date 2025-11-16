@@ -24,13 +24,10 @@ public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
         super.tick();
         if (level == null || level.isClientSide) return;
 
-        BlockState state = getBlockState();
         if (turnOffInTicks > 0) {
             turnOffInTicks--;
-            if (turnOffInTicks == 0) {
-                level.setBlockAndUpdate(worldPosition, state.setValue(OtherworldDetectorBlock.POWERED, false));
-                level.updateNeighborsAt(worldPosition, state.getBlock());
-            }
+            if (turnOffInTicks == 0)
+                deactivate();
         }
         var centre = worldPosition.getCenter();
 
@@ -44,6 +41,15 @@ public class OtherworldDetectorBlockEntity extends SmartBlockEntity {
             var newSignal = Math.max(0,15 - (int) distance);
             activate(newSignal,4);
         }
+    }
+
+    public void deactivate() {
+        comparatorSignalStrength = 0;
+        var state = getBlockState();
+        if (level == null) return;
+
+        level.setBlockAndUpdate(worldPosition, state.setValue(OtherworldDetectorBlock.POWERED, false));
+        level.updateNeighborsAt(worldPosition, state.getBlock());
     }
 
     public void activate(int signalStrength, int ticks) {
