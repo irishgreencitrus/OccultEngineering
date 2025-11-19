@@ -28,7 +28,6 @@ public class SummonWithBrainCommand {
     static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
         return Commands.literal("summon")
                 .requires(cs -> cs.hasPermission(2))
-                .requires(CommandSourceStack::isPlayer)
                 .then(Commands.argument("entity", ResourceArgument.resource(context, Registries.ENTITY_TYPE))
                         .suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                         .then(Commands.argument("brain",
@@ -45,18 +44,18 @@ public class SummonWithBrainCommand {
     private static int spawnEntity(CommandSourceStack source, Holder.Reference<EntityType<?>> type, ResourceLocation brainLocation, Vec3 pos, CompoundTag tag) throws CommandSyntaxException {
         Entity entity = createEntity(source, type, pos, tag, true);
         if (!(entity instanceof DynamicBrainSupplantable)) {
-            source.sendSuccess(() -> Component.literal("Created entity, but it does not have a dynamic brain"), true);
+            source.sendSuccess(() -> Component.translatable("command.occultengineering.brain.not_dynamic"), true);
             return Command.SINGLE_SUCCESS;
         }
         DynamicBrainFactory<?> dynamicBrainFactory = OccultEngineeringBrains.REGISTRY.get(brainLocation);
         if (dynamicBrainFactory == null) {
-            source.sendSuccess(() -> Component.literal("Created entity, but could not find brain " + brainLocation.toString()), true);
+            source.sendSuccess(() -> Component.translatable("command.occultengineering.brain.not_found", brainLocation.toString()), true);
             return Command.SINGLE_SUCCESS;
         }
         var brain = dynamicBrainFactory.create(entity);
 
         if (brain == null) {
-            source.sendSuccess(() -> Component.literal("Created entity, but the brain type " + brainLocation.toString() + " was invalid for this entity."), true);
+            source.sendSuccess(() -> Component.translatable("command.occultengineering.brain.not_for_this", brainLocation.toString()), true);
             return Command.SINGLE_SUCCESS;
         }
         ((DynamicBrainSupplantable) entity).supplantBrain(brain);
