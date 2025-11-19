@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.10.2] - 2025-11-19
+### :sparkles: New Features
+- [`a51566a`](https://github.com/irishgreencitrus/OccultEngineering/commit/a51566a8704748fc9d29f830527d5b84a63c967a) - New Crowdin updates *(PR [#42](https://github.com/irishgreencitrus/OccultEngineering/pull/42) by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :wrench: Chores
+- [`7966975`](https://github.com/irishgreencitrus/OccultEngineering/commit/79669759d9b2f29df6bb3d37fbcbf702735af234) - Update crowdin.yml *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`5de9b27`](https://github.com/irishgreencitrus/OccultEngineering/commit/5de9b27a8ce08535f9ddd94e335782dbba807353) - Revert changes to crowdin.yml *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.10.1] - 2025-11-16
 ### :sparkles: New Features
 - [`6efcf01`](https://github.com/irishgreencitrus/OccultEngineering/commit/6efcf01270ff5508a787362e1fb19dbd052dbde9) - Add a unique model for the combined goggles. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -154,3 +163,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.9.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.9.1...beta/v1.21.1-0.9.2
 [beta/v1.21.1-0.10.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.9.2...beta/v1.21.1-0.10.0
 [beta/v1.21.1-0.10.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.0...beta/v1.21.1-0.10.1
+[beta/v1.21.1-0.10.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.1...beta/v1.21.1-0.10.2
