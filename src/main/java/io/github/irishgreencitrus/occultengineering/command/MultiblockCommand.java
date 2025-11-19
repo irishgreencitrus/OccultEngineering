@@ -9,6 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Rotation;
@@ -16,8 +17,7 @@ import net.minecraft.world.level.block.Rotation;
 public class MultiblockCommand {
     static ArgumentBuilder<CommandSourceStack, ?> register() {
         return Commands.literal("multiblock")
-                .requires(cs -> cs.hasPermission(2))
-                .requires(CommandSourceStack::isPlayer)
+                .requires(cs -> cs.hasPermission(2) && cs.isPlayer())
                 .then(Commands.literal("place")
                         .then(Commands.argument("id", ResourceLocationArgument.id())
                                 .then(Commands.argument("location", BlockPosArgument.blockPos())
@@ -29,7 +29,18 @@ public class MultiblockCommand {
 
     private static int run(CommandContext<CommandSourceStack> ctx, ResourceLocation location, BlockPos blockPos, Level level) {
         var multiblock = MultiblockDataManager.get().getMultiblock(location);
-        multiblock.place(level, blockPos, Rotation.NONE);
-        return Command.SINGLE_SUCCESS;
+        if (multiblock == null) {
+            ctx.getSource().sendFailure(Component.translatable("command.occultengineering.multiblock.not_found", location));
+            return 0;
+        }
+
+        try {
+            multiblock.place(level, blockPos, Rotation.NONE);
+            ctx.getSource().sendSuccess(() -> Component.translatable("command.occultengineering.multiblock.success"), true);
+            return Command.SINGLE_SUCCESS;
+        } catch(Exception e) {
+            ctx.getSource().sendFailure(Component.translatable("command.occultengineering.multiblock.failure"));
+            return 0;
+        }
     }
 }

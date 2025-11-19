@@ -14,6 +14,7 @@ public class OcEngCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("occultengineering")
+                .requires(cs -> cs.hasPermission(2))
                 .then(MultiblockCommand.register())
                 .then(SummonWithBrainCommand.register(dispatcher, context));
         dispatcher.register(root);

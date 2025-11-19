@@ -16,5 +16,12 @@
   "gui.occultengineering.pentacle_schematic.place_hint": "Set pentacle center position to %1$s",
   "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place.",
   "key.occultengineering.toggle_combined_goggles": "Toggle Otherworldly Engineer's Goggles",
-  "key.categories.occultengineering.keys": "Occult Engineering"
+  "key.categories.occultengineering.keys": "Occult Engineering",
+  "command.occultengineering.no_permission": "You do not have permission to execute this command",
+  "command.occultengineering.brain.not_dynamic": "Spawned entity, but it does not have a dynamic brain",
+  "command.occultengineering.brain.not_found": "A dynamic brain was not found with id $1",
+  "command.occultengineering.brain.not_for_this": "A dynamic brain was found with id $1, but it is not for this entity",
+  "command.occultengineering.multiblock.not_found": "No multiblock with id $1 was found",
+  "command.occultengineering.multiblock.success": "Successfully placed multiblock",
+  "command.occultengineering.multiblock.failure": "Failed to place multiblock"
 }
