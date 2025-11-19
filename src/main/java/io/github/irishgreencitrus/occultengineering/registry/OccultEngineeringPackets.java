@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.registry;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.packet.ThirdEyeActivationPacket;
+import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.ToggleCombinedGogglesPacket;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PentacleAltarConfirmPacket;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PucalithSendOptionPacket;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.packet.PhlogiportSendEffectPacket;
@@ -28,6 +29,7 @@ public enum OccultEngineeringPackets {
     PENTACLE_ALTAR_CONFIRM(PentacleAltarConfirmPacket.class, PentacleAltarConfirmPacket::new, PLAY_TO_SERVER),
     PUCALITH_SEND_OPTION(PucalithSendOptionPacket.class, PucalithSendOptionPacket::new, PLAY_TO_SERVER),
     THIRD_EYE_ACTIVATION(ThirdEyeActivationPacket.class, ThirdEyeActivationPacket::new, PLAY_TO_SERVER),
+    TOGGLE_COMBINED_GOGGLES(ToggleCombinedGogglesPacket.class, ToggleCombinedGogglesPacket::new, PLAY_TO_SERVER),
 
     // SERVER TO CLIENT
     PHLOGIPORT_SEND_EFFECT(PhlogiportSendEffectPacket.class, PhlogiportSendEffectPacket::new, PLAY_TO_CLIENT);

@@ -8,10 +8,10 @@ import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.content.item.BookOfBindingBoundGlintItem;
-import io.github.irishgreencitrus.occultengineering.content.item.CombinedGogglesItem;
 import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
-import io.github.irishgreencitrus.occultengineering.content.item.model.CombinedGogglesModel;
+import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesItem;
+import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesModel;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 

@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.item;
+package io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles;
 
 import com.klikli_dev.occultism.common.item.armor.OtherworldGogglesItem;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;

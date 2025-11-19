@@ -1,4 +1,4 @@
-package io.github.irishgreencitrus.occultengineering.content.item.model;
+package io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPartialModels;

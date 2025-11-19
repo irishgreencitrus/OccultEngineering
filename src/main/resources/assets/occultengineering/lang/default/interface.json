@@ -14,5 +14,7 @@
   "gui.occultengineering.pucalith.title": "Púcalith",
   "entity.occultengineering.puca": "Púca",
   "gui.occultengineering.pentacle_schematic.place_hint": "Set pentacle center position to %1$s",
-  "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place."
+  "gui.occultengineering.pentacle_schematic.place_hint_creative": "Set pentacle center position to %1$s. Shift click again to place.",
+  "key.occultengineering.toggle_combined_goggles": "Toggle Otherworldly Engineer's Goggles",
+  "key.categories.occultengineering.keys": "Occult Engineering"
 }
