@@ -1,12 +1,21 @@
 {
   "type": "create:compacting",
-  "heatRequirement": "heated",
+  "heatRequirement": "superheated",
   "ingredients": [
     {
-      "item": "occultism:afrit_essence"
+      "item": "minecraft:blaze_powder"
     },
     {
-      "amount": 100,
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "amount": 500,
       "fluid": "minecraft:lava",
       "nbt": {}
     }

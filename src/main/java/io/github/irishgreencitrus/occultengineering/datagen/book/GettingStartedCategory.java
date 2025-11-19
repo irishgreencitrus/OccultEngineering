@@ -380,7 +380,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 It also interacts with Sterling Silver, weirdly.
                 \\
                 \\
-                Craft it by compacting Afrit Essence with Lava
+                Craft it by compacting 4 Blaze Powder with Lava, superheated
                 """);
 
         context().page("uses");
