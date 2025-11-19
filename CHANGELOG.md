@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.20.1-0.11.1] - 2025-11-19
+### :sparkles: New Features
+- [`687aa89`](https://github.com/irishgreencitrus/OccultEngineering/commit/687aa89b401ec661c6a81799909c06eebd83cf38) - New translations from Crowdin *(PR [#43](https://github.com/irishgreencitrus/OccultEngineering/pull/43) by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :wrench: Chores
+- [`2f5bf50`](https://github.com/irishgreencitrus/OccultEngineering/commit/2f5bf5048907f0b12667b6214f2973b00b8a27a4) - Update crowdin.yml *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`e5ad8b6`](https://github.com/irishgreencitrus/OccultEngineering/commit/e5ad8b643a9f11a7932dff2e17a3c4eaffc6f610) - Revert changes to crowdin.yml *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.11.0] - 2025-11-19
 ### :sparkles: New Features
 - [`1b0d2a4`](https://github.com/irishgreencitrus/OccultEngineering/commit/1b0d2a4c17a54b2424a4ab0e51bca79d2ff7a93a) - Cherry-pick combined goggles model from 1.21.1 *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -143,3 +152,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.20.1-0.9.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.1...beta/v1.20.1-0.9.0
 [beta/v1.20.1-0.10.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.10.0...beta/v1.20.1-0.10.1
 [beta/v1.20.1-0.11.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.10.1...beta/v1.20.1-0.11.0
+[beta/v1.20.1-0.11.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.11.0...beta/v1.20.1-0.11.1
