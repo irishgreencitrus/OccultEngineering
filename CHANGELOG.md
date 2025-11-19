@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.20.1-0.11.0] - 2025-11-19
+### :sparkles: New Features
+- [`1b0d2a4`](https://github.com/irishgreencitrus/OccultEngineering/commit/1b0d2a4c17a54b2424a4ab0e51bca79d2ff7a93a) - Cherry-pick combined goggles model from 1.21.1 *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`f4fb7e2`](https://github.com/irishgreencitrus/OccultEngineering/commit/f4fb7e2064a98dcecf5a002dfb37a93757995599) - Add a keybind for toggling the combined goggles when they are on your head. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`5812d8a`](https://github.com/irishgreencitrus/OccultEngineering/commit/5812d8a8276f0e3e113dfc64c42f9f7eb8b5117c) - **parity**: Update Phlogiston's crafting recipe. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :bug: Bug Fixes
+- [`9d1ad73`](https://github.com/irishgreencitrus/OccultEngineering/commit/9d1ad7361be5a563fcfda08b75de5524258fb416) - Fix failing build *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`d679788`](https://github.com/irishgreencitrus/OccultEngineering/commit/d67978821dd9bd3bf73c2cb0d10fac92b9f58455) - Allow the otherworld detector to depower and repower comparators properly. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.10.1] - 2025-10-30
 ### :bug: Bug Fixes
 - [`47d9aae`](https://github.com/irishgreencitrus/OccultEngineering/commit/47d9aae834402c972b130a9807d6c2d16a3a17cf) - Fix failing build *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -131,3 +142,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.20.1-0.8.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.0...beta/v1.20.1-0.8.1
 [beta/v1.20.1-0.9.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.8.1...beta/v1.20.1-0.9.0
 [beta/v1.20.1-0.10.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.10.0...beta/v1.20.1-0.10.1
+[beta/v1.20.1-0.11.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.10.1...beta/v1.20.1-0.11.0
