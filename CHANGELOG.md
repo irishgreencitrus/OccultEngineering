@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.10.3] - 2025-11-19
+### :sparkles: New Features
+- [`5eaf7be`](https://github.com/irishgreencitrus/OccultEngineering/commit/5eaf7bebc408155e3c83c2b1cc3ec5dbfca59094) - Tweak commands to add translation keys and be more resilient *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.10.2] - 2025-11-19
 ### :sparkles: New Features
 - [`a51566a`](https://github.com/irishgreencitrus/OccultEngineering/commit/a51566a8704748fc9d29f830527d5b84a63c967a) - New Crowdin updates *(PR [#42](https://github.com/irishgreencitrus/OccultEngineering/pull/42) by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -164,3 +169,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.10.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.9.2...beta/v1.21.1-0.10.0
 [beta/v1.21.1-0.10.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.0...beta/v1.21.1-0.10.1
 [beta/v1.21.1-0.10.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.1...beta/v1.21.1-0.10.2
+[beta/v1.21.1-0.10.3]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.2...beta/v1.21.1-0.10.3
