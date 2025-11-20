@@ -9,6 +9,14 @@
 
 > An integration between the Create mod and Occultism.
 
+This README is also available in the following languages:
+- [Español (España)](./README.es_es.md)
+- [Français (France)](./README.fr_fr.md)
+- [Gaeilge](./README.ga_IE.md)
+- [Português (Brasil)](./README.pt_br.md)
+- [Русский](./README.ru_ru.md)
+- [简体中文](./README.zh_cn.md)
+
 # Links
 - [Discord](https://discord.gg/B7Sd3eaTrs)
 - [CurseForge](https://www.curseforge.com/minecraft/mc-mods/create-occult-engineering)
@@ -105,5 +113,7 @@ much like the lumberjacks of the Occultism mod.
 Check out the [GitHub issues page](https://github.com/irishgreencitrus/OccultEngineering/issues) for planned features.
 
 Have any suggestions? Join the Discord or open an issue!
+
+> Please note: my native language is English, so forgive me if I have to translate back and forth.
 
 I'm normally pretty responsive, and I'll try to get back to you as soon as possible.
