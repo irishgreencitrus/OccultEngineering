@@ -117,3 +117,9 @@ Have any suggestions? Join the Discord or open an issue!
 > Please note: my native language is English, so forgive me if I have to translate back and forth.
 
 I'm normally pretty responsive, and I'll try to get back to you as soon as possible.
+
+# Note on AI usage
+The only part of this mod that I have used AI for is text translation which is available to edit on Crowdin.
+All code, assets and English text (including mistakes) are the work of me and other contributors or adapted from other MIT licensed projects such as Create and Occultism.
+
+TLDR: This project is the result of human work.
