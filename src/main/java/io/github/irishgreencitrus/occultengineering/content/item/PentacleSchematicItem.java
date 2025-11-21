@@ -9,8 +9,6 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringIt
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +32,6 @@ public class PentacleSchematicItem extends Item {
     public static ItemStack create(ResourceLocation pentacleLocation) {
         var blueprint = OccultEngineeringItems.PENTACLE_SCHEMATIC.asStack();
 
-        CompoundTag tag = new CompoundTag();
         // We're reusing some of Create's data components purely because it's easier
         blueprint.set(AllDataComponents.SCHEMATIC_DEPLOYED, false);
         blueprint.set(OccultEngineeringDataComponents.PENTSCHEM_RESOURCE_LOCATION, pentacleLocation);

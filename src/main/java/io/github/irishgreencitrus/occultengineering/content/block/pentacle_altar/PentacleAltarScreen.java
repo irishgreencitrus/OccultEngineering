@@ -13,8 +13,8 @@ import com.simibubi.create.foundation.gui.widget.SelectionScrollInput;
 import io.github.irishgreencitrus.occultengineering.content.pentacleschematics.packet.PentacleAltarConfirmPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringGuiTextures;
-import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPackets;
 import net.createmod.catnip.gui.element.GuiGameElement;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
@@ -88,9 +88,9 @@ public class PentacleAltarScreen extends AbstractSimiContainerScreen<PentacleAlt
             if (menu.canWrite() && pentaclesArea != null) {
                 // send packet to give player a pentacle schematic
                 var pentacleLocation = optionList.get(pentaclesArea.getState());
-                // TODO: work out how the networking function works now...
-                //OccultEngineeringPackets.PENTACLE_ALTAR_CONFIRM
-                //OccultEngineeringPackets.getChannel().sendToServer(new PentacleAltarConfirmPacket(pentacleLocation));
+                assert pentacleLocation != null;
+
+                CatnipServices.NETWORK.sendToServer(new PentacleAltarConfirmPacket(pentacleLocation));
             }
         });
         addRenderableWidget(confirmButton);
