@@ -15,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -50,10 +49,8 @@ public class OccultEngineeringCreativeModeTab {
             Set<Item> exclusions = new ReferenceOpenHashSet<>();
 
             var simpleExclusions = Set.of(
-                    OccultEngineeringItems.EMPTY_PENTACLE_SCHEMATIC,
                     OccultEngineeringItems.PENTACLE_SCHEMATIC,
                     OccultEngineeringItems.SPAWN_EGG_PUCA,
-                    OccultEngineeringBlocks.PENTACLE_ALTAR,
                     OccultEngineeringBlocks.PUCALITH
             );
 
