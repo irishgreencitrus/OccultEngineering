@@ -33,11 +33,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -219,6 +216,12 @@ public class PucaEntity extends PathfinderMob implements GeoEntity, SmartBrainOw
         this.entityData.define(DYNAMIC_BRAIN_ID, "");
     }
      */
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DYNAMIC_BRAIN_ID, "");
+    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
