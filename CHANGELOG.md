@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.11.0] - 2025-12-03
+### :bug: Bug Fixes
+- [`8b14d2f`](https://github.com/irishgreencitrus/OccultEngineering/commit/8b14d2f74ec4e5df30c0fb2c9b0dd314aa5e3a04) - Fix errors with crafting recipes. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.10.5] - 2025-11-24
 ### :bug: Bug Fixes
 - [`443a44a`](https://github.com/irishgreencitrus/OccultEngineering/commit/443a44acecaa6966a4ab71fe740026c616cea8f2) - Allow the PucaEntity to be spawned again *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -183,3 +188,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.10.3]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.2...beta/v1.21.1-0.10.3
 [beta/v1.21.1-0.10.4]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.3...beta/v1.21.1-0.10.4
 [beta/v1.21.1-0.10.5]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.4...beta/v1.21.1-0.10.5
+[beta/v1.21.1-0.11.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.5...beta/v1.21.1-0.11.0
