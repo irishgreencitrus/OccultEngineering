@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,7 +78,7 @@ public class OcEngMixingRecipeGen extends MixingRecipeGen {
     }
 
     private GeneratedRecipe bookOfBindingSpirit(ResourceLocation loc, ItemLike outputBook, int spiritSolutionMb, ItemLike... dyes) {
-        var fluidIngredient = SizedFluidIngredient.of(new FluidStack(OccultEngineeringFluids.SPIRIT_SOLUTION.get(), spiritSolutionMb));
+        var fluidIngredient = SizedFluidIngredient.of(OccultEngineeringFluids.SPIRIT_SOLUTION.getSource(), spiritSolutionMb);
         bookOfBindingFromRaw(loc, outputBook, fluidIngredient, dyes);
         return bookOfBindingFromEmptyBook(ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), loc.getPath() + "_from_empty"), outputBook, fluidIngredient, dyes);
     }

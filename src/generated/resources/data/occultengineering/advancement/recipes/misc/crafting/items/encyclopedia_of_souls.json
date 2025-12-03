@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "occultengineering:sterling_silver_ingot"
+            "items": "occultism:dictionary_of_spirits"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "occultengineering:crafting/null/sterling_silver_block_from_compacting"
+        "recipe": "occultengineering:crafting/items/encyclopedia_of_souls"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "occultengineering:crafting/null/sterling_silver_block_from_compacting"
+      "occultengineering:crafting/items/encyclopedia_of_souls"
     ]
   }
 }

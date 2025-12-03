@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "occultengineering:sterling_silver_ingot"
+            "items": "create:goggles"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "occultengineering:crafting/null/sterling_silver_nugget_from_decompacting"
+        "recipe": "occultengineering:crafting/items/combined_goggles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "occultengineering:crafting/null/sterling_silver_nugget_from_decompacting"
+      "occultengineering:crafting/items/combined_goggles"
     ]
   }
 }

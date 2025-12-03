@@ -11,10 +11,9 @@ import com.simibubi.create.AllItems;
 import com.simibubi.create.api.data.recipe.BaseRecipeProvider;
 import com.simibubi.create.foundation.mixin.accessor.MappedRegistryAccessor;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
-import io.github.irishgreencitrus.occultengineering.compat.Mods;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringItems;
 import net.createmod.catnip.registry.RegisteredObjectsHelper;
@@ -54,11 +53,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider.I;
-
 @SuppressWarnings("unused")
 public class OcEngStandardRecipeGen extends BaseRecipeProvider {
-    //Marker items = enterFolder("items");
+    Marker items = enterFolder("items");
 
     GeneratedRecipe
             ENCYCLOPEDIA_OF_SOULS = create(OccultEngineeringItems.ENCYCLOPEDIA_OF_SOULS)

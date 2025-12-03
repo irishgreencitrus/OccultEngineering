@@ -10,7 +10,7 @@
     {
       "type": "neoforge:single",
       "amount": 50,
-      "fluid": "occultengineering:flowing_spirit_solution"
+      "fluid": "occultengineering:spirit_solution"
     }
   ],
   "results": [
