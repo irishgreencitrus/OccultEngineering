@@ -117,8 +117,6 @@ public class OccultEngineeringItems {
             .lang("Silver Phlogistate")
             .register();
 
-    // TODO: change texture of impure chalks
-
     static {
         REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)
                 .model(OccultEngineeringItems::ritualDummyModel)

@@ -16,8 +16,8 @@ import io.github.irishgreencitrus.occultengineering.content.block.mechanical_cha
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
-import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlock;
+import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -38,9 +38,6 @@ public class OccultEngineeringBlocks {
     static {
         REGISTRATE.setCreativeTab(OccultEngineeringCreativeModeTab.CREATIVE_TAB);
     }
-
-    // TODO: use Occultism's tag.
-    // FUTURE: When Create gets updated to 1.21, use Occultism's tag, to prevent the pentacle jank.
 
     public static final BlockEntry<MechanicalChamberBlock> MECHANICAL_CHAMBER = REGISTRATE
             .block("mechanical_chamber", MechanicalChamberBlock::new)
