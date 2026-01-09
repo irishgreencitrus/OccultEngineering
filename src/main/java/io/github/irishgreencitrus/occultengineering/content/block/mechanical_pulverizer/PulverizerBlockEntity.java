@@ -6,6 +6,7 @@ import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.sound.SoundScapes;
+import io.github.irishgreencitrus.occultengineering.content.block.OcEngBlockStates;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -65,6 +67,12 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
     public void setTier(int tier) {
         this.tier = tier;
+        if (level != null && !level.isClientSide) {
+            var state = getBlockState();
+            if (state.hasProperty(OcEngBlockStates.TIER)) {
+                level.setBlock(worldPosition, state.setValue(OcEngBlockStates.TIER, tier), Block.UPDATE_ALL);
+            }
+        }
         setChanged();
     }
 

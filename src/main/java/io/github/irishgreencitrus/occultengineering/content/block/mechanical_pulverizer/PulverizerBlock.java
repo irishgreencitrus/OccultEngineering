@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pu
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
+import io.github.irishgreencitrus.occultengineering.content.block.OcEngBlockStates;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringDataComponents;
 import net.createmod.catnip.math.VoxelShaper;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -40,8 +42,15 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
             .forHorizontal(Direction.SOUTH);
 
 
+
     public PulverizerBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(OcEngBlockStates.TIER);
+        super.createBlockStateDefinition(builder);
     }
 
     @Override

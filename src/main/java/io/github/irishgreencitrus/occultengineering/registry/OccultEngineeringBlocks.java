@@ -19,6 +19,7 @@ import io.github.irishgreencitrus.occultengineering.content.block.otherworld_det
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
+import io.github.irishgreencitrus.occultengineering.datagen.OcEngBlockStateGen;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -116,7 +117,7 @@ public class OccultEngineeringBlocks {
             .initialProperties(SharedProperties::stone)
             .transform(pickaxeOnly())
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion())
-            .blockstate(BlockStateGen.horizontalBlockProvider(false))
+            .blockstate(OcEngBlockStateGen::horizontalBlockWithTier)
             .transform(OcEngStress.setImpact(4.0))
             .item(PulverizerBlockItem::new)
             .build()
