@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "occultengineering:item/crushing_upgrade_marid"
-  }
-}
