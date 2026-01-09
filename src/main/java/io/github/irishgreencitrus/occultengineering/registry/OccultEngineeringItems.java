@@ -8,8 +8,8 @@ import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.content.item.BookOfBindingBoundGlintItem;
-import io.github.irishgreencitrus.occultengineering.content.item.CrushingUpgradeItem;
 import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
+import io.github.irishgreencitrus.occultengineering.content.item.MechanicalUpgradeItem;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
 import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesItem;
 import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesModel;
@@ -118,19 +118,19 @@ public class OccultEngineeringItems {
             .lang("Silver Phlogistate")
             .register();
 
-    public static final ItemEntry<CrushingUpgradeItem> CRUSHING_UPGRADE_DJINNI = REGISTRATE
-            .item("crushing_upgrade_djinni", p -> new CrushingUpgradeItem(2,p))
-            .lang("Crushing Upgrade: Djinni")
+    public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_DJINNI = REGISTRATE
+            .item("mechanical_upgrade_djinni", p -> new MechanicalUpgradeItem(2,p))
+            .lang("Mechanical Upgrade: Djinni")
             .register();
 
-    public static final ItemEntry<CrushingUpgradeItem> CRUSHING_UPGRADE_AFRIT = REGISTRATE
-            .item("crushing_upgrade_afrit", p -> new CrushingUpgradeItem(3,p))
-            .lang("Crushing Upgrade: Afrit")
+    public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_AFRIT = REGISTRATE
+            .item("mechanical_upgrade_afrit", p -> new MechanicalUpgradeItem(3,p))
+            .lang("Mechanical Upgrade: Afrit")
             .register();
 
-    public static final ItemEntry<CrushingUpgradeItem> CRUSHING_UPGRADE_MARID = REGISTRATE
-            .item("crushing_upgrade_marid", p -> new CrushingUpgradeItem(4,p))
-            .lang("Crushing Upgrade: Marid")
+    public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_MARID = REGISTRATE
+            .item("mechanical_upgrade_marid", p -> new MechanicalUpgradeItem(4,p))
+            .lang("Mechanical Upgrade: Marid")
             .register();
 
     static {
