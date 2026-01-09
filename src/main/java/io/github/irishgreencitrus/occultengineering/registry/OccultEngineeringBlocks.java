@@ -14,6 +14,7 @@ import io.github.irishgreencitrus.occultengineering.config.OcEngStress;
 import io.github.irishgreencitrus.occultengineering.content.block.WrenchableBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlock;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockItem;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.phlogiport.PhlogiportBlock;
@@ -117,7 +118,8 @@ public class OccultEngineeringBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion())
             .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
-            .simpleItem()
+            .item(PulverizerBlockItem::new)
+            .build()
             .register();
 
     public static final BlockEntry<Block> STERLING_SILVER_BLOCK = REGISTRATE.block("sterling_silver_block", Block::new)

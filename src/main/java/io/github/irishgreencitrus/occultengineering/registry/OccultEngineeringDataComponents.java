@@ -5,7 +5,9 @@ import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -22,6 +24,11 @@ public class OccultEngineeringDataComponents {
     public static final DataComponentType<Vec3i> PENTSCHEM_BOUNDS = register(
             "pentacle_schematic_bounds",
             b -> b.persistent(Vec3i.CODEC).networkSynchronized(CatnipStreamCodecs.VEC3I)
+    );
+
+    public static final DataComponentType<Integer> CRUSHING_ITEM_TIER = register(
+            "crushing_item_tier",
+            b -> b.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
     );
 
     private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
