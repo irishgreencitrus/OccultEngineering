@@ -77,7 +77,11 @@ public class OcEngStandardRecipeGen extends BaseRecipeProvider {
     COMBINED_GOGGLES = create(OccultEngineeringItems.COMBINED_GOGGLES)
             .unlockedBy(AllItems.GOGGLES::get)
             .viaShapeless(b -> b.requires(OccultismItems.OTHERWORLD_GOGGLES::get)
-                    .requires(AllItems.GOGGLES));
+                    .requires(AllItems.GOGGLES)),
+
+    ZINC_INGOT_FROM_DUST = blastCrushedMetal(AllItems.ZINC_INGOT::get, OccultEngineeringItems.ZINC_DUST::get),
+
+    BRASS_INGOT_FROM_DUST = blastCrushedMetal(AllItems.BRASS_INGOT::get, OccultEngineeringItems.BRASS_DUST::get);
 
     /*
      * End of recipe list
