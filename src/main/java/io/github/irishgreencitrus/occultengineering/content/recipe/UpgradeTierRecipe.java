@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+// TODO: make this more generic
 public class UpgradeTierRecipe extends CustomRecipe {
     public UpgradeTierRecipe(CraftingBookCategory category) {
         super(category);
@@ -36,6 +37,13 @@ public class UpgradeTierRecipe extends CustomRecipe {
         return foundItem && foundUpgrade;
     }
 
+    public static ItemStack withTier(ItemStack original, int tier) {
+        var upgradableItem = original.copy();
+        if (original.has(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER))
+            upgradableItem.set(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, tier);
+        return upgradableItem;
+    }
+
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         var upgradableItem = ItemStack.EMPTY;
@@ -47,7 +55,7 @@ public class UpgradeTierRecipe extends CustomRecipe {
             if (stack.isEmpty()) continue;
             if (stack.getItem() instanceof MechanicalUpgradeItem mui) {
                 newTier = mui.getTier();
-            } else if (stack.getItem() instanceof PulverizerBlockItem pbi) {
+            } else if (stack.getItem() instanceof PulverizerBlockItem) {
                 oldTier = stack.getOrDefault(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, 1);
                 upgradableItem = stack.copy();
             } else {
