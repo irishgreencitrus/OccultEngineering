@@ -1,0 +1,43 @@
+{
+  "type": "occultism:ritual",
+  "ritual_type": "occultism:craft",
+  "activation_item": {
+    "item": "occultism:book_of_binding_bound_afrit"
+  },
+  "pentacle_id": "occultism:craft_afrit",
+  "duration": 300,
+  "ritual_dummy": {
+    "count": 1,
+    "id": "occultengineering:ritual_dummy_craft_mechanical_upgrade_afrit"
+  },
+  "ingredients": [
+    {
+      "item": "occultengineering:mechanical_upgrade_empty"
+    },
+    {
+      "tag": "c:dusts/brass"
+    },
+    {
+      "tag": "c:dusts/zinc"
+    },
+    {
+      "tag": "c:dusts/iesnium"
+    },
+    {
+      "tag": "c:dusts/emerald"
+    },
+    {
+      "tag": "c:dusts/lapis"
+    },
+    {
+      "tag": "c:dusts/amethyst"
+    },
+    {
+      "tag": "c:dusts/obsidian"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "occultengineering:mechanical_upgrade_afrit"
+  }
+}

@@ -33,6 +33,7 @@ public final class OcEngRecipeProvider extends RecipeProvider {
     public static void registerAllProcessing(DataGenerator gen, PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         GENERATORS.add(new OcEngCompactingRecipeGen(output, registries));
         GENERATORS.add(new OcEngMixingRecipeGen(output, registries));
+        GENERATORS.add(new OcEngPressingRecipeGen(output, registries));
         GENERATORS.add(new OcEngFillingRecipeGen(output, registries));
         GENERATORS.add(new OcEngItemApplicationRecipeGen(output, registries));
         gen.addProvider(true, new DataProvider() {

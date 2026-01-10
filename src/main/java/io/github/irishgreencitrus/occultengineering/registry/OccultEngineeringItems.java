@@ -118,6 +118,11 @@ public class OccultEngineeringItems {
             .lang("Silver Phlogistate")
             .register();
 
+    public static final ItemEntry<Item> MECHANICAL_UPGRADE_EMPTY = REGISTRATE
+            .item("mechanical_upgrade_empty", Item::new)
+            .lang("Empty Mechanical Upgrade")
+            .register();
+
     public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_DJINNI = REGISTRATE
             .item("mechanical_upgrade_djinni", p -> new MechanicalUpgradeItem(2,p))
             .lang("Mechanical Upgrade: Djinni")
@@ -147,6 +152,21 @@ public class OccultEngineeringItems {
         REGISTRATE.item("ritual_dummy_craft_phlogiport", DummyTooltipItem::new)
                 .model(OccultEngineeringItems::ritualDummyModel)
                 .lang("Ritual: Craft Phlogiport")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_upgrade_djinni", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Upgrade Djinni")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_upgrade_afrit", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Upgrade Afrit")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_upgrade_marid", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Upgrade Marid")
                 .register();
     }
 

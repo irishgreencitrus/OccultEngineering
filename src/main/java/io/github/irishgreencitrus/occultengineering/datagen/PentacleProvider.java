@@ -17,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.nio.file.Path;
@@ -28,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -50,8 +50,39 @@ public class PentacleProvider implements DataProvider {
                         "W c c W",
                         "CW   WC"
                 ),
-                new MappingBuilder().candle().whiteChalk().copperChalk().chamber().ground().build());
+                new MappingBuilder()
+                        .candle('C')
+                        .whiteChalk('W')
+                        .copperChalk('c')
+                        .chamber('0')
+                        .ground().build());
 
+        this.addPentacle("craft_puca_tier2",
+                createPattern(
+                        "  wwg gww  ",
+                        " zC  g  CG ",
+                        "cCzC S CGCc",
+                        "c C g z C c",
+                        "G  g c z  G",
+                        " GS c0c SG ",
+                        "G  z c g  G",
+                        "c C z g C c",
+                        "cCGC S CzCc",
+                        " GC  g  Cz ",
+                        "  wwg gww  "
+                ),
+                new MappingBuilder()
+                        .chamber('0')
+                        .candle('C')
+                        .lightGrayChalk('G')
+                        .skeleton('S')
+                        .copperChalk('c')
+                        .limeChalk('g')
+                        .whiteChalk('w')
+                        .zincChalk('z')
+                        .ground()
+                        .build()
+        );
     }
 
     private List<String> createPattern(String... rows) {
@@ -74,6 +105,16 @@ public class PentacleProvider implements DataProvider {
         JsonArray outerPattern = createOuterPattern(pattern);
 
         json.add("pattern", outerPattern);
+
+        // sanity check
+        var allChars = String.join("", pattern).chars().mapToObj(i -> (char) i).collect(Collectors.toSet());
+        allChars.removeAll(mappings.keySet());
+        allChars.remove('_');
+
+        if (!allChars.isEmpty()) {
+            var dif = allChars.stream().map(String::valueOf).collect(Collectors.joining());
+            throw new RuntimeException("Pentacle is missing mappings for following items: '" + dif + "'");
+        }
 
         JsonObject jsonMapping = new JsonObject();
         for (Entry<Character, JsonElement> entry : mappings.entrySet())
@@ -143,7 +184,6 @@ public class PentacleProvider implements DataProvider {
         }
 
         private MappingBuilder block(char c, Supplier<? extends Block> b) {
-
             JsonObject json = new JsonObject();
             json.addProperty("type", "modonomicon:block");
             json.addProperty("block", BuiltInRegistries.BLOCK.getKey(b.get()).toString());
@@ -176,49 +216,62 @@ public class PentacleProvider implements DataProvider {
             return this.block('0', OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL);
         }
 
-        private MappingBuilder chamber() {
-            return this.block('0', OccultEngineeringBlocks.MECHANICAL_CHAMBER);
+        private MappingBuilder chamber(char c) {
+            return this.block(c, OccultEngineeringBlocks.MECHANICAL_CHAMBER);
         }
 
-        private MappingBuilder copperChalk() {
-            return this.block('c', OccultEngineeringBlocks.COPPER_CHALK);
+        private MappingBuilder copperChalk(char c) {
+            return this.block(c, OccultEngineeringBlocks.COPPER_CHALK);
         }
 
-        private MappingBuilder zincChalk() {
-            return this.block('z', OccultEngineeringBlocks.ZINC_CHALK);
+        private MappingBuilder zincChalk(char c) {
+            return this.block(c, OccultEngineeringBlocks.ZINC_CHALK);
         }
 
-        private MappingBuilder brassChalk() {
-            return this.block('b', OccultEngineeringBlocks.BRASS_CHALK);
+        private MappingBuilder brassChalk(char c) {
+            return this.block(c, OccultEngineeringBlocks.BRASS_CHALK);
         }
 
-        private MappingBuilder candle() {
-            return this.tag('C', OccultismTags.Blocks.CANDLES);
+        private MappingBuilder candle(char c) {
+            return this.tag(c, OccultismTags.Blocks.CANDLES);
         }
 
-        private MappingBuilder whiteChalk() {
-            return this.block('W', OccultismBlocks.CHALK_GLYPH_WHITE);
+        private MappingBuilder whiteChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_WHITE);
         }
 
-        private MappingBuilder goldChalk() {
-            return this.block('G', OccultismBlocks.CHALK_GLYPH_YELLOW);
+        private MappingBuilder greenChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_GREEN);
         }
 
-        private MappingBuilder purpleChalk() {
-            return this.block('P', OccultismBlocks.CHALK_GLYPH_PURPLE);
+        private MappingBuilder limeChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_LIME);
         }
 
-        private MappingBuilder redChalk() {
-            return this.block('R', OccultismBlocks.CHALK_GLYPH_RED);
+        private MappingBuilder lightGrayChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_LIGHT_GRAY);
         }
 
-        private MappingBuilder crystal() {
-            return this.block('S', OccultismBlocks.SPIRIT_ATTUNED_CRYSTAL);
+        private MappingBuilder yellowChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_YELLOW);
         }
 
-        private MappingBuilder skeleton() {
-            return this.block('Z', () -> Blocks.SKELETON_SKULL);
+        private MappingBuilder purpleChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_PURPLE);
         }
+
+        private MappingBuilder redChalk(char c) {
+            return this.block(c, OccultismBlocks.CHALK_GLYPH_RED);
+        }
+
+        private MappingBuilder crystal(char c) {
+            return this.block(c, OccultismBlocks.SPIRIT_ATTUNED_CRYSTAL);
+        }
+
+        private MappingBuilder skeleton(char c) {
+            return this.block(c, () -> Blocks.SKELETON_SKULL);
+        }
+
 
         private MappingBuilder ground() {
             return this.display('*', OccultismBlocks.OTHERSTONE).display('+', () -> Blocks.STONE);

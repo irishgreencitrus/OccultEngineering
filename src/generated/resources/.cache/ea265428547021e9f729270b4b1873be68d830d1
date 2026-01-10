@@ -1,4 +1,4 @@
-// 1.21.1	2025-12-01T21:43:01.919756	Occult Engineering's Processing Recipes
+// 1.21.1	2026-01-10T12:37:17.70822	Occult Engineering's Processing Recipes
 54c4deddc2ac6966252ffe0ff371c7a90b7c4868 data/occultengineering/recipe/compacting/chalk_brass_impure.json
 b8392d9cd6795922763cedcfba1a674d9203f0e9 data/occultengineering/recipe/compacting/chalk_copper_impure.json
 8f699e41161b137d906e768812decc19c470eb2d data/occultengineering/recipe/compacting/chalk_white_impure.json
@@ -25,3 +25,4 @@ b0655b7a720ffcc7f668f360f6b87b81b8e892ea data/occultengineering/recipe/mixing/bo
 d7be70503a4dbc14fbd997c9d57fb8b2de757e0e data/occultengineering/recipe/mixing/spirit_solution_from_essence.json
 bdfa080fb20a8ce9564730886543352d1c1c6b05 data/occultengineering/recipe/mixing/spirit_solution_from_fruit.json
 851663cf7f5ff0b6fb03fbafa346cda8ca4f5dbf data/occultengineering/recipe/mixing/sterling_silver_ingot.json
+88c2dff5ce813ad61d4fd68cb4127f1b30230dfb data/occultengineering/recipe/pressing/mechanical_upgrade_empty.json
