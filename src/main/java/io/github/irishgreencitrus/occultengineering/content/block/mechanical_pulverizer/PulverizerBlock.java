@@ -3,13 +3,16 @@ package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pu
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
+import io.github.irishgreencitrus.occultengineering.content.block.OcEngBlockStates;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
+import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringDataComponents;
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,12 +22,16 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.Objects;
 
 @ParametersAreNonnullByDefault
@@ -35,8 +42,15 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
             .forHorizontal(Direction.SOUTH);
 
 
+
     public PulverizerBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(OcEngBlockStates.TIER);
+        super.createBlockStateDefinition(builder);
     }
 
     @Override
@@ -97,6 +111,30 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
 
         return ItemInteractionResult.SUCCESS;
     }
+
+    @Override
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        if (worldIn.isClientSide) return;
+        withBlockEntityDo(worldIn, pos, be -> be.setTier(stack.getOrDefault(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, 1)));
+    }
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+       var drops = super.getDrops(state, builder);
+
+       var be = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+       if (be instanceof PulverizerBlockEntity pbe) {
+           for (ItemStack stack : drops) {
+               if (stack.is(asItem())) {
+                   stack.set(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, pbe.getTier());
+               }
+           }
+       }
+
+       return drops;
+    }
+
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {

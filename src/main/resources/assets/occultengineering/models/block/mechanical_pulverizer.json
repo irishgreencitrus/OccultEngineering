@@ -5,8 +5,8 @@
     64
   ],
   "textures": {
-    "0": "occultengineering:block/mechanical_pulverizer",
-    "particle": "occultengineering:block/mechanical_pulverizer"
+    "0": "occultengineering:block/mechanical_pulverizer/tier1",
+    "particle": "occultengineering:block/mechanical_pulverizer/tier1"
   },
   "elements": [
     {

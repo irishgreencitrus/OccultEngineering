@@ -9,6 +9,7 @@ import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import io.github.irishgreencitrus.occultengineering.content.item.BookOfBindingBoundGlintItem;
 import io.github.irishgreencitrus.occultengineering.content.item.MechanicalGuideItem;
+import io.github.irishgreencitrus.occultengineering.content.item.MechanicalUpgradeItem;
 import io.github.irishgreencitrus.occultengineering.content.item.PentacleSchematicItem;
 import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesItem;
 import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.CombinedGogglesModel;
@@ -117,6 +118,26 @@ public class OccultEngineeringItems {
             .lang("Silver Phlogistate")
             .register();
 
+    public static final ItemEntry<Item> MECHANICAL_UPGRADE_EMPTY = REGISTRATE
+            .item("mechanical_upgrade_empty", Item::new)
+            .lang("Empty Mechanical Upgrade")
+            .register();
+
+    public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_DJINNI = REGISTRATE
+            .item("mechanical_upgrade_djinni", p -> new MechanicalUpgradeItem(2,p))
+            .lang("Mechanical Upgrade: Djinni")
+            .register();
+
+    public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_AFRIT = REGISTRATE
+            .item("mechanical_upgrade_afrit", p -> new MechanicalUpgradeItem(3,p))
+            .lang("Mechanical Upgrade: Afrit")
+            .register();
+
+    public static final ItemEntry<MechanicalUpgradeItem> MECHANICAL_UPGRADE_MARID = REGISTRATE
+            .item("mechanical_upgrade_marid", p -> new MechanicalUpgradeItem(4,p))
+            .lang("Mechanical Upgrade: Marid")
+            .register();
+
     static {
         REGISTRATE.item("ritual_dummy_craft_otherworld_detector", DummyTooltipItem::new)
                 .model(OccultEngineeringItems::ritualDummyModel)
@@ -131,6 +152,21 @@ public class OccultEngineeringItems {
         REGISTRATE.item("ritual_dummy_craft_phlogiport", DummyTooltipItem::new)
                 .model(OccultEngineeringItems::ritualDummyModel)
                 .lang("Ritual: Craft Phlogiport")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_upgrade_djinni", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Upgrade Djinni")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_upgrade_afrit", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Upgrade Afrit")
+                .register();
+
+        REGISTRATE.item("ritual_dummy_craft_mechanical_upgrade_marid", DummyTooltipItem::new)
+                .model(OccultEngineeringItems::ritualDummyModel)
+                .lang("Ritual: Craft Mechanical Upgrade Marid")
                 .register();
     }
 

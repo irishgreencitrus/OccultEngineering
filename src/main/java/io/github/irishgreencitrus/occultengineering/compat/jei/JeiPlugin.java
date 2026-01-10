@@ -12,6 +12,7 @@ import io.github.irishgreencitrus.occultengineering.compat.jei.category.FanEnspi
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlocks;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringFluids;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -98,6 +99,7 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registration) {
+        registration.addRecipes(RecipeTypes.CRAFTING, UpgradeTierRecipeMaker.createRecipes());
         allCategories.forEach(c -> c.registerRecipes(registration));
         OccultEngineering.LOGGER.info("{} registered {} recipes", getPluginUid(), allCategories.size());
     }

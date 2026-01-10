@@ -1,0 +1,73 @@
+{
+  "type": "modonomicon:dense",
+  "mapping": {
+    "*": {
+      "type": "modonomicon:display",
+      "display": "occultism:otherstone"
+    },
+    "+": {
+      "type": "modonomicon:display",
+      "display": "minecraft:stone"
+    },
+    "0": {
+      "type": "modonomicon:block",
+      "block": "occultengineering:mechanical_chamber"
+    },
+    "C": {
+      "type": "modonomicon:tag",
+      "tag": "#minecraft:candles"
+    },
+    "G": {
+      "type": "modonomicon:block",
+      "block": "occultism:chalk_glyph_light_gray"
+    },
+    "S": {
+      "type": "modonomicon:block",
+      "block": "minecraft:skeleton_skull"
+    },
+    "c": {
+      "type": "modonomicon:block",
+      "block": "occultengineering:copper_chalk"
+    },
+    "g": {
+      "type": "modonomicon:block",
+      "block": "occultism:chalk_glyph_lime"
+    },
+    "w": {
+      "type": "modonomicon:block",
+      "block": "occultism:chalk_glyph_white"
+    },
+    "z": {
+      "type": "modonomicon:block",
+      "block": "occultengineering:zinc_chalk"
+    }
+  },
+  "pattern": [
+    [
+      "__wwg_gww__",
+      "_zC__g__CG_",
+      "cCzC_S_CGCc",
+      "c_C_g_z_C_c",
+      "G__g_c_z__G",
+      "_GS_c0c_SG_",
+      "G__z_c_g__G",
+      "c_C_z_g_C_c",
+      "cCGC_S_CzCc",
+      "_GC__g__Cz_",
+      "__wwg_gww__"
+    ],
+    [
+      "*+*+*+*+*+*",
+      "+*+*+*+*+*+",
+      "*+*+*+*+*+*",
+      "+*+*+*+*+*+",
+      "*+*+*+*+*+*",
+      "+*+*+*+*+*+",
+      "*+*+*+*+*+*",
+      "+*+*+*+*+*+",
+      "*+*+*+*+*+*",
+      "+*+*+*+*+*+",
+      "*+*+*+*+*+*"
+    ]
+  ]
+}

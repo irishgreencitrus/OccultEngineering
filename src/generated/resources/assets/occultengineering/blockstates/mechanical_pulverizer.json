@@ -1,18 +1,63 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,tier=1": {
       "model": "occultengineering:block/mechanical_pulverizer",
       "y": 90
     },
-    "facing=north": {
+    "facing=east,tier=2": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier2",
+      "y": 90
+    },
+    "facing=east,tier=3": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier3",
+      "y": 90
+    },
+    "facing=east,tier=4": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier4",
+      "y": 90
+    },
+    "facing=north,tier=1": {
       "model": "occultengineering:block/mechanical_pulverizer"
     },
-    "facing=south": {
+    "facing=north,tier=2": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier2"
+    },
+    "facing=north,tier=3": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier3"
+    },
+    "facing=north,tier=4": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier4"
+    },
+    "facing=south,tier=1": {
       "model": "occultengineering:block/mechanical_pulverizer",
       "y": 180
     },
-    "facing=west": {
+    "facing=south,tier=2": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier2",
+      "y": 180
+    },
+    "facing=south,tier=3": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier3",
+      "y": 180
+    },
+    "facing=south,tier=4": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier4",
+      "y": 180
+    },
+    "facing=west,tier=1": {
       "model": "occultengineering:block/mechanical_pulverizer",
+      "y": 270
+    },
+    "facing=west,tier=2": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier2",
+      "y": 270
+    },
+    "facing=west,tier=3": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier3",
+      "y": 270
+    },
+    "facing=west,tier=4": {
+      "model": "occultengineering:block/mechanical_pulverizer_tier4",
       "y": 270
     }
   }
