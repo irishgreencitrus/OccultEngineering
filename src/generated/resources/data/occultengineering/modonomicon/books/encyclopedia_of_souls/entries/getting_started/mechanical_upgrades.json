@@ -56,6 +56,18 @@
       },
       "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_marid.text",
       "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_marid.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_pulverizer"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.upgrade_pulverizer.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.upgrade_pulverizer.title"
     }
   ],
   "parents": [

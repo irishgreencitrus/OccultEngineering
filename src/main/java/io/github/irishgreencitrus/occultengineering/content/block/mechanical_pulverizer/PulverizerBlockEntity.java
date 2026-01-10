@@ -130,7 +130,7 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     }
 
     public int getProcessingSpeed() {
-        return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
+        return Mth.clamp((int) Math.abs((tier * getSpeed()) / 32f), 1, 512);
     }
 
     private void process() {

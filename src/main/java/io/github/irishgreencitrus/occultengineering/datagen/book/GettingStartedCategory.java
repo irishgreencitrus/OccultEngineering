@@ -491,7 +491,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Mechanical Upgrade: Djinni");
-        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade the Mechanical Pulverizer to the Djinni equivalent tier.");
+        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade machines to the Djinni equivalent tier.");
 
         context().page("mechanical_upgrade_afrit");
         var mechanicalUpgradeAfrit = BookSpotlightPageModel.create()
@@ -500,7 +500,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Mechanical Upgrade: Afrit");
-        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade the Mechanical Pulverizer to the Afrit equivalent tier.");
+        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade machines to the Afrit equivalent tier.");
 
         context().page("mechanical_upgrade_marid");
         var mechanicalUpgradeMarid = BookSpotlightPageModel.create()
@@ -509,14 +509,23 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withText(context().pageText());
 
         lang().add(context().pageTitle(), "Mechanical Upgrade: Marid");
-        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade the Mechanical Pulverizer to the Marid equivalent tier.");
+        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade machines to the Marid equivalent tier.");
+
+        context().page("upgrade_pulverizer");
+        var upgradePulverizer = BookSpotlightPageModel.create()
+                .withItem(Ingredient.of(OccultEngineeringBlocks.MECHANICAL_PULVERIZER))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText());
+
+        lang().add(context().pageTitle(), "Upgrading the Mechanical Pulverizer");
+        lang().add(context().pageText(), "A higher tier Pulverizer can crush higher tier items, but it also crushes items faster at the same rotational speed (Tier 4 will crush 4x as fast as Tier 1 at 16 RPM).");
 
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
                 .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringItems.MECHANICAL_UPGRADE_EMPTY)
                 .withLocation(entryMap.get(icon))
-                .withPages(mechanicalUpgradeEmpty, mechanicalUpgradeDjinni, mechanicalUpgradeAfrit, mechanicalUpgradeMarid);
+                .withPages(mechanicalUpgradeEmpty, mechanicalUpgradeDjinni, mechanicalUpgradeAfrit, mechanicalUpgradeMarid, upgradePulverizer);
     }
 
     private BookEntryModel makePulverizerEntry(CategoryEntryMap entryMap, char icon) {

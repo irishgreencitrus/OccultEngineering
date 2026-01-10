@@ -1,4 +1,4 @@
-// 1.21.1	2026-01-10T14:57:10.152259	Registrate Provider for occultengineering [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+// 1.21.1	2026-01-10T15:04:35.931766	Registrate Provider for occultengineering [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/brass_chalk.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/copper_chalk.json
 47e991cab98678169796b54dc9e7bffb7f258c01 assets/occultengineering/blockstates/fan_enspirit_catalyst.json
@@ -11,8 +11,8 @@ fcb503c4b77a7af4580035449cc3426c17058598 assets/occultengineering/blockstates/pu
 856ac890f84bc8a3d4cef2b356b8b06a0b52734a assets/occultengineering/blockstates/spirit_solution.json
 08355f710746582caf11291dc6255d447e4e9709 assets/occultengineering/blockstates/sterling_silver_block.json
 87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/zinc_chalk.json
-a66ec0380b20873cef5488ded6a9ef59cab65654 assets/occultengineering/lang/en_ud.json
-b540b6efcea954007f7e75070f3237ccae3fb9b3 assets/occultengineering/lang/en_us.json
+82c713de0997cc9ceaa49624e9850ca771c651ed assets/occultengineering/lang/en_ud.json
+31c04074c5e51d902373e7d5d369cb9c784062e4 assets/occultengineering/lang/en_us.json
 33df31259a8fc2623e750a8816895dd908ed031d assets/occultengineering/models/block/chalk_glyph/0.json
 e905b130222c6d2896593bbfda7c6abd45aece35 assets/occultengineering/models/block/chalk_glyph/1.json
 5ce3d22ecd375adb9234fb992673aaca6e195991 assets/occultengineering/models/block/chalk_glyph/10.json
@@ -92,7 +92,7 @@ f931ea1598ebe537e8852dd0f9bbc1be80d2cc0c data/occultengineering/modonomicon/book
 51777224ed41b609bd599a4bf790205cc4173748 data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/intro.json
 b88423aaf72d78b78d3f928b59eec4c40b70338c data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/mechanical_chamber.json
 7b3aa64f0fbc71d29ee0ad425de479cb5623473a data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/mechanical_pulverizer.json
-38a160309d1ccfa4f057c72e6fdeaa4eeee30e73 data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/mechanical_upgrades.json
+90ed6c69a1a6f756d99664efd7e386fbca9422bf data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/mechanical_upgrades.json
 dbc469085f0f9af237dbde00c3c82771e62d8bc4 data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/otherworld_detector.json
 2d481500358052d772bd3f97e5e768aa0d24862f data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/pentacles_link.json
 3ce50534910ff049a72f351e28dfe36f27ea8aac data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/phlogiport.json
