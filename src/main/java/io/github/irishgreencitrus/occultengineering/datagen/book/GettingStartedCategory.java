@@ -1,10 +1,8 @@
 package io.github.irishgreencitrus.occultengineering.datagen.book;
 
-import com.klikli_dev.modonomicon.api.datagen.BookProvider;
 import com.klikli_dev.modonomicon.api.datagen.CategoryEntryMap;
 import com.klikli_dev.modonomicon.api.datagen.CategoryProvider;
 import com.klikli_dev.modonomicon.api.datagen.ModonomiconProviderBase;
-import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryParentModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookIconModel;
@@ -20,6 +18,7 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringIt
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
+@SuppressWarnings("SameParameterValue")
 public class GettingStartedCategory extends CategoryProvider {
     public static final String CATEGORY_ID = "getting_started";
 
@@ -46,7 +45,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 "__________________________________",
                 "_____i__b_________________________",
                 "__________________________________",
-                "_____S_ć_____e____________________",
+                "_____S_ć__U__e____________________",
                 "________M____ú___H________________",
                 "_____g__P_________________________",
                 "________D____&___?________________",
@@ -75,6 +74,9 @@ public class GettingStartedCategory extends CategoryProvider {
 
         var pulverizer = add(makePulverizerEntry(entryMap, 'P'));
         pulverizer.withParent(BookEntryParentModel.create(sterlingSilver.getId()));
+
+        var upgrades = add(makeUpgradesEntry(entryMap, 'U'));
+        upgrades.withParent(BookEntryParentModel.create(pulverizer.getId()));
 
         var detector = add(makeDetectorEntry(entryMap, 'D'));
         detector.withParent(BookEntryParentModel.create(sterlingSilver.getId()));
@@ -464,6 +466,57 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_CHAMBER)
                 .withLocation(entryMap.get(icon))
                 .withPages(mechanicalChamber, ritual);
+    }
+
+    private BookEntryModel makeUpgradesEntry(CategoryEntryMap entryMap, char icon) {
+        var entryId = "mechanical_upgrades";
+        context().entry(entryId);
+
+        lang().add(context().entryName(), "Mechanical Upgrades");
+        lang().add(context().entryDescription(), "For stronger machines");
+
+        context().page("mechanical_upgrade_empty");
+        var mechanicalUpgradeEmpty = BookSpotlightPageModel.create()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_EMPTY))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText());
+
+        lang().add(context().pageTitle(), "Empty Mechanical Upgrade");
+        lang().add(context().pageText(), "The base of Mechanical Upgrades can be crafted by pressing Otherrock with a Mechanical Press.");
+
+        context().page("mechanical_upgrade_djinni");
+        var mechanicalUpgradeDjinni = BookSpotlightPageModel.create()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_DJINNI))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText());
+
+        lang().add(context().pageTitle(), "Mechanical Upgrade: Djinni");
+        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade the Mechanical Pulverizer to the Djinni equivalent tier.");
+
+        context().page("mechanical_upgrade_afrit");
+        var mechanicalUpgradeAfrit = BookSpotlightPageModel.create()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_AFRIT))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText());
+
+        lang().add(context().pageTitle(), "Mechanical Upgrade: Afrit");
+        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade the Mechanical Pulverizer to the Afrit equivalent tier.");
+
+        context().page("mechanical_upgrade_marid");
+        var mechanicalUpgradeMarid = BookSpotlightPageModel.create()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_MARID))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText());
+
+        lang().add(context().pageTitle(), "Mechanical Upgrade: Marid");
+        lang().add(context().pageText(), "Crafted via an Occult Ritual, it can be used to upgrade the Mechanical Pulverizer to the Marid equivalent tier.");
+
+
+        return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
+                .withIcon(OccultEngineeringItems.MECHANICAL_UPGRADE_EMPTY)
+                .withLocation(entryMap.get(icon))
+                .withPages(mechanicalUpgradeEmpty, mechanicalUpgradeDjinni, mechanicalUpgradeAfrit, mechanicalUpgradeMarid);
     }
 
     private BookEntryModel makePulverizerEntry(CategoryEntryMap entryMap, char icon) {

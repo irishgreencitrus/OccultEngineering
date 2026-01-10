@@ -20,6 +20,6 @@ public class PulverizerBlockItem extends BlockItem {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         int tier = stack.getOrDefault(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, 1);
 
-        tooltipComponents.add(Component.literal("Tier: " + tier).withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltipComponents.add(Component.translatable("occultengineering.tooltip.tier", tier).withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 }

@@ -116,9 +116,7 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
         if (worldIn.isClientSide) return;
-        withBlockEntityDo(worldIn, pos, be -> {
-            be.setTier(stack.getOrDefault(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, 1));
-        });
+        withBlockEntityDo(worldIn, pos, be -> be.setTier(stack.getOrDefault(OccultEngineeringDataComponents.CRUSHING_ITEM_TIER, 1)));
     }
 
     @Override
