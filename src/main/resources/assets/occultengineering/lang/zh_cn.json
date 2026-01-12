@@ -209,6 +209,7 @@
   "occultengineering.tooltip.currentritualrecipe": "正在合成：",
   "occultengineering.tooltip.ritualnotactive": "仪式未启动",
   "occultengineering.tooltip.ritualspeed": "仪式速度乘数：",
+  "occultengineering.tooltip.tier": "等阶：%s",
   "ritual.occultengineering.craft_mechanical_chamber.conditions": "该仪式的部分条件仍未满足。",
   "ritual.occultengineering.craft_mechanical_chamber.finished": "成功合成动力仪式仓。",
   "ritual.occultengineering.craft_mechanical_chamber.interrupted": "魔精束缚中断。",
