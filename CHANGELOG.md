@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.12.1] - 2026-01-29
+### :sparkles: New Features
+- [`8620b31`](https://github.com/irishgreencitrus/OccultEngineering/commit/8620b317dd14d3d25f17b1604a551ecae2c1ac3a) - Update zh_cn for 1.21.1 *(PR [#60](https://github.com/irishgreencitrus/OccultEngineering/pull/60) by [@ChuijkYahus](https://github.com/ChuijkYahus))*
+
+### :bug: Bug Fixes
+- [`a93f52f`](https://github.com/irishgreencitrus/OccultEngineering/commit/a93f52fcd587e9576d8a2bd31132e96bdd07666b) - Fix crash when using an UpgradeRitual *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.12.0] - 2026-01-10
 ### :sparkles: New Features
 - [`672ba7a`](https://github.com/irishgreencitrus/OccultEngineering/commit/672ba7aa874ac7b9b87adbe80fd695fdc248e418) - New translations en_us.json (Portuguese, Brazilian) *(PR [#51](https://github.com/irishgreencitrus/OccultEngineering/pull/51) by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -205,3 +213,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.11.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.10.5...beta/v1.21.1-0.11.0
 [beta/v1.21.1-0.11.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.11.0...beta/v1.21.1-0.11.1
 [beta/v1.21.1-0.12.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.11.1...beta/v1.21.1-0.12.0
+[beta/v1.21.1-0.12.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.0...beta/v1.21.1-0.12.1
