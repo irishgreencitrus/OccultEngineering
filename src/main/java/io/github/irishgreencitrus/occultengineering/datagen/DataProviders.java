@@ -5,9 +5,11 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.utility.FilesHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.compat.curios.OcEngCuriosDataGen;
 import io.github.irishgreencitrus.occultengineering.content.ponder.OccultEngineeringPonderPlugin;
 import io.github.irishgreencitrus.occultengineering.datagen.book.UnifiedBookProvider;
-import io.github.irishgreencitrus.occultengineering.datagen.recipe.*;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngRecipeProvider;
+import io.github.irishgreencitrus.occultengineering.datagen.recipe.OcEngStandardRecipeGen;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.data.DataGenerator;
 import net.neoforged.bus.api.EventPriority;
@@ -26,7 +28,9 @@ public class DataProviders {
         var generator = event.getGenerator();
         var output = generator.getPackOutput();
         var registries = event.getLookupProvider();
+        var fileHelper = event.getExistingFileHelper();
         generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output, registries));
+        generator.addProvider(event.includeServer(), new OcEngCuriosDataGen(output, fileHelper, registries));
         createBook(event, generator);
 
         if (event.includeServer()) {

@@ -5,6 +5,7 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringIt
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -18,6 +19,7 @@ public class OcEngCurios {
     }
 
     public static void init(IEventBus modEventBus) {
+        modEventBus.addListener(OcEngCurios::onClientSetup);
         GogglesItem.addIsWearingPredicate(player -> resolveCuriosMap(player)
                 .map(curiosMap -> {
                     for (ICurioStacksHandler stacksHandler : curiosMap.values()) {
@@ -35,5 +37,9 @@ public class OcEngCurios {
 
         CatnipServices.PLATFORM.executeOnClientOnly(
                 () -> () -> modEventBus.addListener(OcEngCuriosRenderers::onLayerRegister));
+    }
+
+    private static void onClientSetup(final FMLClientSetupEvent event) {
+        OcEngCuriosRenderers.register();
     }
 }
