@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.12.2] - 2026-04-26
+### :sparkles: New Features
+- [`9cf2b67`](https://github.com/irishgreencitrus/OccultEngineering/commit/9cf2b67caee6b25be95581cf489e58d88ea76d75) - Also scale outputs by the output multiplier, like Occultism *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`0f83aa7`](https://github.com/irishgreencitrus/OccultEngineering/commit/0f83aa7057c92c7c7a59356db9ecb2433b98b89d) - Redo Curios support for 1.21.1 *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :bug: Bug Fixes
+- [`6552fab`](https://github.com/irishgreencitrus/OccultEngineering/commit/6552fab73ec9dbceae2e8d1c944eb8afa63adfc1) - Fix raw gold to raw silver recipe. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`9b56aaa`](https://github.com/irishgreencitrus/OccultEngineering/commit/9b56aaad3626ecbae0f80a1e0285e48ab0579f09) - Add tooltips for Mechanical Upgrade rituals. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.12.1] - 2026-01-29
 ### :sparkles: New Features
 - [`8620b31`](https://github.com/irishgreencitrus/OccultEngineering/commit/8620b317dd14d3d25f17b1604a551ecae2c1ac3a) - Update zh_cn for 1.21.1 *(PR [#60](https://github.com/irishgreencitrus/OccultEngineering/pull/60) by [@ChuijkYahus](https://github.com/ChuijkYahus))*
@@ -214,3 +224,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.11.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.11.0...beta/v1.21.1-0.11.1
 [beta/v1.21.1-0.12.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.11.1...beta/v1.21.1-0.12.0
 [beta/v1.21.1-0.12.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.0...beta/v1.21.1-0.12.1
+[beta/v1.21.1-0.12.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.1...beta/v1.21.1-0.12.2
