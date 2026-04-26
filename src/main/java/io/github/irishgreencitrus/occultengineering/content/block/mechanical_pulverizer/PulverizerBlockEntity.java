@@ -1,5 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer;
 
+import com.klikli_dev.occultism.Occultism;
 import com.klikli_dev.occultism.crafting.recipe.CrushingRecipe;
 import com.klikli_dev.occultism.crafting.recipe.TieredSingleRecipeInput;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
@@ -129,8 +130,27 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         ItemHelper.dropContents(level, worldPosition, outputInv);
     }
 
+
+    public float getOutputMultiplier() {
+        return switch (tier) {
+            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.tier2CrusherOutputMultiplier.get().floatValue();
+            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.tier3CrusherOutputMultiplier.get().floatValue();
+            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.tier4CrusherOutputMultiplier.get().floatValue();
+            default -> Occultism.SERVER_CONFIG.spiritJobs.tier1CrusherOutputMultiplier.get().floatValue();
+        };
+    }
+
+    public float getTimeMultiplier() {
+        return switch (tier) {
+            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.tier2CrusherTimeMultiplier.get().floatValue();
+            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.tier3CrusherTimeMultiplier.get().floatValue();
+            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.tier4CrusherTimeMultiplier.get().floatValue();
+            default -> Occultism.SERVER_CONFIG.spiritJobs.tier1CrusherTimeMultiplier.get().floatValue();
+        };
+    }
+
     public int getProcessingSpeed() {
-        return Mth.clamp((int) Math.abs((tier * getSpeed()) / 32f), 1, 512);
+        return Mth.clamp((int) Math.abs(getSpeed() / getTimeMultiplier() / 32f), 1, 512);
     }
 
     private void process() {
@@ -147,6 +167,10 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         var remainder = ItemHandlerHelper.insertItem(outputInv, result, true);
         // If we can't fit the remainder, don't process it
         if (!remainder.isEmpty()) return;
+
+        if (getOutputMultiplier() > 0 && !recipe.get().value().getIgnoreCrushingMultiplier()) {
+            result.setCount((int) (result.getCount() * getOutputMultiplier()));
+        }
 
         inputStack.shrink(1);
         inputInv.setStackInSlot(0, inputStack);
