@@ -133,19 +133,19 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
     public float getOutputMultiplier() {
         return switch (tier) {
-            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.tier2CrusherOutputMultiplier.get().floatValue();
-            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.tier3CrusherOutputMultiplier.get().floatValue();
-            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.tier4CrusherOutputMultiplier.get().floatValue();
-            default -> Occultism.SERVER_CONFIG.spiritJobs.tier1CrusherOutputMultiplier.get().floatValue();
+            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.crusherDjinni.outputMultiplier.get().floatValue();
+            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.crusherAfrit.outputMultiplier.get().floatValue();
+            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.crusherMarid.outputMultiplier.get().floatValue();
+            default -> Occultism.SERVER_CONFIG.spiritJobs.crusherFoliot.outputMultiplier.get().floatValue();
         };
     }
 
     public float getTimeMultiplier() {
         return switch (tier) {
-            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.tier2CrusherTimeMultiplier.get().floatValue();
-            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.tier3CrusherTimeMultiplier.get().floatValue();
-            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.tier4CrusherTimeMultiplier.get().floatValue();
-            default -> Occultism.SERVER_CONFIG.spiritJobs.tier1CrusherTimeMultiplier.get().floatValue();
+            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.crusherDjinni.timeMultiplier.get().floatValue();
+            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.crusherAfrit.timeMultiplier.get().floatValue();
+            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.crusherMarid.timeMultiplier.get().floatValue();
+            default -> Occultism.SERVER_CONFIG.spiritJobs.crusherFoliot.timeMultiplier.get().floatValue();
         };
     }
 
