@@ -45,14 +45,14 @@ side = "BOTH"
 [[dependencies.${ mod_id }]]
 modId = "occultism"
 type = "required"
-versionRange = "[1.197.0,2.0.0)"
+versionRange = "[1.215.0,2.0.0)"
 ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.${ mod_id }]]
 modId = "create"
 type = "required"
-versionRange = "[6.0.8,7.0.0)"
+versionRange = "[6.0.10,6.1.0)"
 ordering = "BEFORE"
 side = "BOTH"
 
