@@ -1,7 +1,6 @@
 package io.github.irishgreencitrus.occultengineering.event;
 
 import com.klikli_dev.occultism.Occultism;
-import io.github.irishgreencitrus.occultengineering.OccultEngineering;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.packet.ThirdEyeActivationPacket;
 import io.github.irishgreencitrus.occultengineering.content.item.combinedgoggles.ToggleCombinedGogglesPacket;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringKeybinds;
@@ -37,7 +36,6 @@ public class OcEngClientEvents {
         if (player == null) return;
 
         while (OccultEngineeringKeybinds.TOGGLE_COMBINED_GOGGLES.get().consumeClick()) {
-            OccultEngineering.LOGGER.info("Toggled combined goggles");
             CatnipServices.NETWORK.sendToServer(new ToggleCombinedGogglesPacket());
         }
 
