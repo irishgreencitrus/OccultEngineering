@@ -8,6 +8,7 @@ import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
+import top.theillusivec4.curios.api.CuriosCapability;
 
 public record ToggleCombinedGogglesPacket() implements ServerboundPacketPayload {
     public static final StreamCodec<ByteBuf, ToggleCombinedGogglesPacket> STREAM_CODEC = StreamCodec.unit(new ToggleCombinedGogglesPacket());
@@ -17,14 +18,34 @@ public record ToggleCombinedGogglesPacket() implements ServerboundPacketPayload 
         player.server.execute(() -> {
             var headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 
-            // TODO: curios support
-            if (!(headItem.getItem() instanceof CombinedGogglesItem)) return;
+            if (headItem.getItem() instanceof CombinedGogglesItem) {
+                // Maybe we should pass this from client -> server,
+                //  but this also seems fairly infallible.
+                var newState = !OtherworldGogglesItem.isGogglesItem(headItem);
 
-            // Maybe we should pass this from client -> server,
-            //  but this also seems fairly infallible.
-            var newState = !OtherworldGogglesItem.isGogglesItem(headItem);
+                headItem.set(OccultismDataComponents.OTHERWORLD_GOGGLES, newState);
+            } else {
+                var curiosHandler = player.getCapability(CuriosCapability.INVENTORY);
 
-            headItem.set(OccultismDataComponents.OTHERWORLD_GOGGLES, newState);
+                if (curiosHandler == null) {
+                    return;
+                }
+
+                for (var stackHandler : curiosHandler.getCurios().values()) {
+                    var dynamicStackHandler = stackHandler.getStacks();
+                    for (int i = 0; i < dynamicStackHandler.getSlots(); i++) {
+
+                        var stack = dynamicStackHandler.getStackInSlot(i);
+
+                        if (stack.isEmpty() || (!(stack.getItem() instanceof CombinedGogglesItem))) continue;
+
+                        var newState = !OtherworldGogglesItem.isGogglesItem(stack);
+                        stack.set(OccultismDataComponents.OTHERWORLD_GOGGLES, newState);
+
+                        return;
+                    }
+                }
+            }
         });
     }
 
