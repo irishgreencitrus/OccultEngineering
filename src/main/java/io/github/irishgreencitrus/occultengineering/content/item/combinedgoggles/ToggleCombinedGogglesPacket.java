@@ -5,7 +5,9 @@ import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
+import top.theillusivec4.curios.api.CuriosCapability;
 
 public class ToggleCombinedGogglesPacket extends SimplePacketBase {
 
@@ -24,15 +26,31 @@ public class ToggleCombinedGogglesPacket extends SimplePacketBase {
         player.server.execute(() -> {
             var headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 
-            // TODO: curios support
-            if (!(headItem.getItem() instanceof CombinedGogglesItem)) return;
+            if (headItem.getItem() instanceof CombinedGogglesItem) {
+                toggle(headItem);
+                return;
+            }
 
-            // Maybe we should pass this from client -> server,
-            //  but this also seems fairly infallible.
-            var newState = !OtherworldGogglesItem.isGogglesItem(headItem);
+            player.getCapability(CuriosCapability.INVENTORY).ifPresent(curiosHandler -> {
+                for (var stackHandler : curiosHandler.getCurios().values()) {
+                    var stacks = stackHandler.getStacks();
+                    for (int slot = 0; slot < stacks.getSlots(); slot++) {
+                        var stack = stacks.getStackInSlot(slot);
+                        if (!(stack.getItem() instanceof CombinedGogglesItem)) continue;
 
-            headItem.addTagElement(OtherworldGogglesItem.NBT_GOGGLES, ByteTag.valueOf(newState));
+                        toggle(stack);
+                        return;
+                    }
+                }
+            });
         });
         return true;
+    }
+
+    private static void toggle(ItemStack stack) {
+        // Maybe we should pass this from client -> server,
+        // but deriving the state here keeps the packet stateless.
+        var newState = !OtherworldGogglesItem.isGogglesItem(stack);
+        stack.addTagElement(OtherworldGogglesItem.NBT_GOGGLES, ByteTag.valueOf(newState));
     }
 }

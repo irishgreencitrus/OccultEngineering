@@ -27,6 +27,7 @@ public class DataProviders {
         generator.addProvider(event.includeServer(), new OcEngMixingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngFillingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngItemApplicationRecipeGen(output));
+        generator.addProvider(event.includeServer(), new OcEngPressingRecipeGen(output));
         generator.addProvider(event.includeServer(), new OcEngStandardRecipeGen(output));
 
         OccultEngineering.REGISTRATE.addDataGenerator(ProviderType.LANG, provider -> {

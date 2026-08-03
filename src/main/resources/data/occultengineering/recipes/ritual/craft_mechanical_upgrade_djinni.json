@@ -1,0 +1,35 @@
+{
+  "type": "occultism:ritual",
+  "ritual_type": "occultism:craft",
+  "activation_item": {
+    "item": "occultism:book_of_binding_bound_djinni"
+  },
+  "pentacle_id": "occultism:craft_djinni",
+  "duration": 200,
+  "ritual_dummy": {
+    "item": "occultengineering:ritual_dummy_craft_mechanical_upgrade_djinni"
+  },
+  "ingredients": [
+    {
+      "item": "occultengineering:mechanical_upgrade_empty"
+    },
+    {
+      "tag": "forge:dusts/zinc"
+    },
+    {
+      "tag": "forge:dusts/gold"
+    },
+    {
+      "tag": "forge:dusts/copper"
+    },
+    {
+      "tag": "forge:dusts/silver"
+    },
+    {
+      "tag": "forge:dusts/iron"
+    }
+  ],
+  "result": {
+    "item": "occultengineering:mechanical_upgrade_djinni"
+  }
+}

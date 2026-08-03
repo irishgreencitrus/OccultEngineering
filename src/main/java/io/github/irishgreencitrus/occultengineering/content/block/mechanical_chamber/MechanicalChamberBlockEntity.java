@@ -1,15 +1,13 @@
 package io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber;
 
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
-import com.klikli_dev.occultism.common.ritual.CraftMinerSpiritRitual;
-import com.klikli_dev.occultism.common.ritual.CraftRitual;
-import com.klikli_dev.occultism.common.ritual.CraftWithSpiritNameRitual;
-import com.klikli_dev.occultism.common.ritual.Ritual;
+import com.klikli_dev.occultism.common.ritual.*;
 import com.klikli_dev.occultism.crafting.recipe.RitualRecipe;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.klikli_dev.occultism.util.ItemNBTUtil;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.mixin.accessor.SummonRitualAccessor;
 import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -136,8 +135,8 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
     public void startRitual(@NotNull RitualRecipe recipe) {
         if (this.level != null && this.level.isClientSide) return;
 
-        // We don't support summoning entities in an automated system!
-        assert recipe.getEntityToSummon() == null;
+        // Job spirits are captured directly into their resulting Book of Calling.
+        assert recipe.getEntityToSummon() == null || recipe.getRitual() instanceof SummonSpiritWithJobRitual;
 
         // We don't support item use or sacrifices in an automated system!
         assert !recipe.requiresItemUse() && !recipe.requiresSacrifice();
@@ -269,17 +268,48 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
         return calc <= 0 ? 1 : calc;
     }
 
+    public static Component getPentacleName(ResourceLocation resourceLocation) {
+        return Component.translatable("multiblock." + resourceLocation.getNamespace() + "." + resourceLocation.getPath());
+    }
+
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         var parent = super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-        if (getCurrentRitualRecipe() != null) {
-            var builder = new LangBuilder(OccultEngineering.MODID);
-            builder
+        var recipe = getCurrentRitualRecipe();
+        if (recipe != null) {
+            new LangBuilder(OccultEngineering.MODID)
                     .translate("tooltip.ritualspeed")
                     .text(" ")
                     .text(String.valueOf(getRitualSpeedMultiplier()))
                     .text("x")
                     .style(ChatFormatting.GRAY).forGoggles(tooltip);
+
+            if (!isPlayerSneaking) return parent;
+
+            new LangBuilder(OccultEngineering.MODID)
+                    .translate("tooltip.currentpentacle")
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip);
+            new LangBuilder(OccultEngineering.MODID)
+                    .text(" ")
+                    .add(getPentacleName(recipe.getPentacleId()))
+                    .style(ChatFormatting.YELLOW)
+                    .forGoggles(tooltip);
+
+            new LangBuilder(OccultEngineering.MODID)
+                    .translate("tooltip.currentritualrecipe")
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip);
+            new LangBuilder(OccultEngineering.MODID)
+                    .text(" ")
+                    .add(recipe.getResultItem(level == null ? null : level.registryAccess()).getHoverName())
+                    .style(ChatFormatting.GREEN)
+                    .forGoggles(tooltip);
+        } else {
+            new LangBuilder(OccultEngineering.MODID)
+                    .translate("tooltip.ritualnotactive")
+                    .style(ChatFormatting.RED)
+                    .forGoggles(tooltip);
         }
         return parent;
     }
@@ -325,6 +355,50 @@ public class MechanicalChamberBlockEntity extends KineticBlockEntity {
                     //copy over spirit name
                     ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
                     itemStackHandler.insertItem(0, result, false);
+                } else if (recipe.getRitual() instanceof SummonSpiritWithJobRitual ritual) {
+                    // Create the spirit without adding it to the world, then store it in the
+                    // resulting Book of Calling so the player can release it normally.
+                    ItemStack copy = activationItem.copy();
+                    ItemStack result = ritual.getBookOfCallingBound(level.registryAccess(), activationItem);
+                    if (result.isEmpty()) {
+                        OccultEngineering.LOGGER.warn(
+                                "Ritual {} did not provide a Book of Calling; falling back to its default completion handler",
+                                recipe.getId());
+                        ritual.finish(level, getBlockPos(), null, null, activationItem);
+                    } else {
+                        activationItem.shrink(1);
+
+                        ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getBlockPos().getX() + 0.5,
+                                getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
+
+                        var entityType = recipe.getEntityToSummon();
+                        if (entityType != null) {
+                            var entity = entityType.create(level);
+                            if (entity != null) {
+                                if (entity instanceof LivingEntity living) {
+                                    ritual.prepareLivingEntityForSpawn(living,
+                                            level, getBlockPos(), null, null,
+                                            ItemNBTUtil.getBoundSpiritName(copy),
+                                            ((SummonRitualAccessor) ritual).getTame());
+                                    ritual.applyEntityNbt(entity);
+                                    ritual.initSummoned(living, level, getBlockPos(), null, null);
+                                }
+
+                                CompoundTag entityData = new CompoundTag();
+                                var id = entity.getEncodeId();
+                                if (id != null) {
+                                    entityData.putString("id", id);
+                                }
+                                entityData = entity.saveWithoutId(entityData);
+
+                                ItemNBTUtil.setSpiritEntityData(result, entityData);
+                                ItemNBTUtil.setSpiritEntityUUID(result, entity.getUUID());
+                                ItemNBTUtil.setBoundSpiritName(result, entity.getName().getString());
+                            }
+                        }
+
+                        itemStackHandler.setStackInSlot(0, result);
+                    }
                 } else {
                     recipe.getRitual().finish(this.level, this.getBlockPos(), null, null, activationItem);
                 }

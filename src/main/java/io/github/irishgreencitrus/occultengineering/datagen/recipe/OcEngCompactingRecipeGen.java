@@ -53,7 +53,7 @@ public class OcEngCompactingRecipeGen extends CompactingRecipeGen {
                     .require(Items.BLAZE_POWDER)
                     .require(Items.BLAZE_POWDER)
                     .require(Items.BLAZE_POWDER)
-                    .requiresHeat(HeatCondition.SUPERHEATED)
+                    .requiresHeat(HeatCondition.HEATED)
                     .output(OccultEngineeringItems.PHLOGISTON));
 
     public OcEngCompactingRecipeGen(PackOutput generator) {
