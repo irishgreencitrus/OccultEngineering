@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.20.1-0.11.4] - 2026-08-03
+### :sparkles: New Features
+- [`0d0f5a1`](https://github.com/irishgreencitrus/OccultEngineering/commit/0d0f5a11ab90ce3677704cdee828d105389ebc03) - New translations en_us.json (Portuguese, Brazilian) *(PR [#50](https://github.com/irishgreencitrus/OccultEngineering/pull/50) by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :bug: Bug Fixes
+- [`689a9c7`](https://github.com/irishgreencitrus/OccultEngineering/commit/689a9c701b6ddda2de6b8036b3f734d16b7e81d5) - **backport**: Don't load client-side particles in server-side code *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :wrench: Chores
+- [`3faf0d8`](https://github.com/irishgreencitrus/OccultEngineering/commit/3faf0d8b32bdcb957e69567aa7bf5a6cb3182211) - Update issue templates *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`85fdb1b`](https://github.com/irishgreencitrus/OccultEngineering/commit/85fdb1b45d790038d8978245785329e5ab7d8bf1) - Update mc-publish *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.20.1-0.11.3] - 2025-11-21
 ### :sparkles: New Features
 - [`58beac4`](https://github.com/irishgreencitrus/OccultEngineering/commit/58beac434afce70d22c4eed9ef707fb67d5c7e56) - zh_cn lang update *(PR [#47](https://github.com/irishgreencitrus/OccultEngineering/pull/47) by [@ChuijkYahus](https://github.com/ChuijkYahus))*
@@ -170,3 +182,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.20.1-0.11.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.11.0...beta/v1.20.1-0.11.1
 [beta/v1.20.1-0.11.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.11.1...beta/v1.20.1-0.11.2
 [beta/v1.20.1-0.11.3]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.11.2...beta/v1.20.1-0.11.3
+[beta/v1.20.1-0.11.4]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.20.1-0.11.3...beta/v1.20.1-0.11.4
