@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "accessor.LangDataAccessor",
+    "accessor.SummonRitualAccessor",
     "accessor.TagMatcherAccessor",
     "accessor.TankSegmentAccessor"
   ],

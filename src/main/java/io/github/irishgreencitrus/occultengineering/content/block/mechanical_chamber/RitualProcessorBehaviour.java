@@ -9,6 +9,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.irishgreencitrus.occultengineering.OccultEngineering;
+import io.github.irishgreencitrus.occultengineering.mixin.accessor.SummonRitualAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -21,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -101,7 +103,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
                         centre.x + cosAdjusted,
                         centre.y + 0.2 + cosAdjusted,
                         centre.z + sinAdjusted,
-                1,0,0,0,0.003);
+                        1, 0, 0, 0, 0.003);
             }
         }
 
@@ -157,9 +159,12 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
         if (level.isClientSide()) return;
 
         // These three things are not supported. Yet...
-        if (ritualRecipe.value().getEntityToSummon() != null
-            || ritualRecipe.value().requiresItemUse()
-            || ritualRecipe.value().requiresSacrifice()) return;
+        if (ritualRecipe.value().requiresItemUse()
+                || ritualRecipe.value().requiresSacrifice()) {
+            OccultEngineering.LOGGER.warn("Ritual {} requires an unsupported feature", ritualRecipe.id());
+            return;
+        }
+        ;
 
         currentRitualRecipe = ritualRecipe;
         currentTime = 0;
@@ -182,73 +187,117 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
             if (ritualCompleted) {
                 var activationItem = itemStackHandler.getStackInSlot(0);
                 // OVERRIDE: Instead of dropping the item on the floor, we leave it in the chamber.
-                if (recipe.value().getRitual() instanceof CraftRitual) {
-                    ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getPos().getX() + 0.5,
-                            getPos().getY() + 0.5, getPos().getZ() + 0.5, 1, 0, 0, 0, 0);
+                switch (recipe.value().getRitual()) {
+                    case CraftRitual ignored -> {
+                        ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getPos().getX() + 0.5,
+                                getPos().getY() + 0.5, getPos().getZ() + 0.5, 1, 0, 0, 0, 0);
 
-                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
-                    itemStackHandler.setStackInSlot(0, result);
-                } else if (recipe.value().getRitual() instanceof CraftWithSpiritNameRitual) {
-                    var copy = activationItem.copy();
+                        ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
+                        itemStackHandler.setStackInSlot(0, result);
 
-                    ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getPos().getX() + 0.5,
-                            getPos().getY() + 0.5, getPos().getZ() + 0.5, 1, 0, 0, 0, 0);
-
-                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
-                    ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
-                    itemStackHandler.setStackInSlot(0, result);
-                } else if (recipe.value().getRitual() instanceof CraftMinerSpiritRitual) {
-                    ItemStack copy = activationItem.copy();
-                    activationItem.shrink(1); //remove activation item.
-
-                    ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getPos().getX() + 0.5,
-                            getPos().getY() + 0.5, getPos().getZ() + 0.5, 1, 0, 0, 0, 0);
-
-                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
-
-                    //sets up nbt configuration for miner
-                    result.getItem().onCraftedBy(result, level, null);
-
-                    //copy over spirit name
-                    ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
-                    itemStackHandler.setStackInSlot(0, result);
-                } else if (recipe.value().getRitual() instanceof UpgradeRitual) {
-                    ItemStack copy = activationItem.copy();
-                    activationItem.shrink(1); //remove activation item.
-
-                    ItemStack base = consumedIngredients.getFirst().copy();
-
-                    ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, blockEntity.getBlockPos().getX() + 0.5,
-                            blockEntity.getBlockPos().getY() + 0.5, blockEntity.getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
-
-                    ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
-                    Rarity rarity = result.getRarity();
-
-                    result.applyComponents(base.getComponents());
-                    if (result.has(DataComponents.MAX_DAMAGE)) {
-                        int maxDurability = result.getMaxDamage();
-                        result.applyComponents(DataComponentMap.builder()
-                                .set(DataComponents.MAX_DAMAGE, maxDurability)
-                                .build());
                     }
-                    if (copy.has(OccultismDataComponents.SPIRIT_NAME))
+                    case CraftWithSpiritNameRitual ignored -> {
+                        var copy = activationItem.copy();
+
+                        ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getPos().getX() + 0.5,
+                                getPos().getY() + 0.5, getPos().getZ() + 0.5, 1, 0, 0, 0, 0);
+
+                        ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
                         ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
+                        itemStackHandler.setStackInSlot(0, result);
+                    }
+                    case CraftMinerSpiritRitual ignored -> {
+                        ItemStack copy = activationItem.copy();
+                        activationItem.shrink(1); //remove activation item.
 
-                    result.applyComponents(DataComponentMap.builder()
-                            .set(DataComponents.RARITY, rarity)
-                            .build());
+                        ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, getPos().getX() + 0.5,
+                                getPos().getY() + 0.5, getPos().getZ() + 0.5, 1, 0, 0, 0, 0);
 
-                    itemStackHandler.setStackInSlot(0, result);
-                } else {
-                    OccultEngineering.LOGGER.warn("Falling back to default handler for {} with ritual {}", recipe.id(), recipe.value().getRitual().factoryId);
-                    try {
-                        recipe.value().getRitual().finish(level, getPos(), null, null, activationItem);
-                    } catch (NullPointerException exception) {
-                        OccultEngineering.LOGGER.error("A null pointer exception occurred with the default handler, dropping activation item and ingredients.");
-                        dropStackNearby(level, itemStackHandler.extractItem(0, 1, false));
-                        for (var item: consumedIngredients)
-                            dropStackNearby(level, item);
-                        consumedIngredients.clear();
+                        ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
+
+                        //sets up nbt configuration for miner
+                        result.getItem().onCraftedBy(result, level, null);
+
+                        //copy over spirit name
+                        ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
+                        itemStackHandler.setStackInSlot(0, result);
+                    }
+                    case UpgradeRitual ignored -> {
+                        ItemStack copy = activationItem.copy();
+                        activationItem.shrink(1); //remove activation item.
+
+                        ItemStack base = consumedIngredients.getFirst().copy();
+
+                        ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, blockEntity.getBlockPos().getX() + 0.5,
+                                blockEntity.getBlockPos().getY() + 0.5, blockEntity.getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
+
+                        ItemStack result = recipe.value().getResultItem(level.registryAccess()).copy();
+                        Rarity rarity = result.getRarity();
+
+                        result.applyComponents(base.getComponents());
+                        if (result.has(DataComponents.MAX_DAMAGE)) {
+                            int maxDurability = result.getMaxDamage();
+                            result.applyComponents(DataComponentMap.builder()
+                                    .set(DataComponents.MAX_DAMAGE, maxDurability)
+                                    .build());
+                        }
+                        if (copy.has(OccultismDataComponents.SPIRIT_NAME))
+                            ItemNBTUtil.setBoundSpiritName(result, ItemNBTUtil.getBoundSpiritName(copy));
+
+                        result.applyComponents(DataComponentMap.builder()
+                                .set(DataComponents.RARITY, rarity)
+                                .build());
+
+                        itemStackHandler.setStackInSlot(0, result);
+                    }
+                    case SummonSpiritWithJobRitual ritual -> {
+                        // this is a little weird, we need to summon the entity
+                        // and then immediately bind it to the book
+                        ItemStack copy = activationItem.copy();
+
+                        ItemStack result = ritual.getBookOfCallingBound(level.registryAccess(), activationItem);
+                        activationItem.shrink(1);
+
+
+                        ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, blockEntity.getBlockPos().getX() + 0.5,
+                                blockEntity.getBlockPos().getY() + 0.5, blockEntity.getBlockPos().getZ() + 0.5, 1, 0, 0, 0, 0);
+
+                        var entityType = ritual.recipe.getEntityToSummon();
+                        if (entityType != null) {
+                            var entity = entityType.create(level);
+
+                            if (entity instanceof LivingEntity living) {
+                                ritual.prepareLivingEntityForSpawn(living,
+                                        level, getPos(), null, null,
+                                        ItemNBTUtil.getBoundSpiritName(copy), ((SummonRitualAccessor) ritual).getTame());
+                                ritual.applyEntityNbt(entity);
+                            }
+
+                            var entityData = new CompoundTag();
+                            var id = entity.getEncodeId();
+                            if (id != null) {
+                                entityData.putString("id", id);
+                            }
+                            entityData = entity.saveWithoutId(entityData);
+
+                            ItemNBTUtil.setSpiritEntityData(result, entityData);
+                            ItemNBTUtil.setSpiritEntityUUID(result, entity.getUUID());
+                            ItemNBTUtil.setBoundSpiritName(result, entity.getName().getString());
+                        }
+
+                        itemStackHandler.setStackInSlot(0, result);
+                    }
+                    default -> {
+                        OccultEngineering.LOGGER.warn("Falling back to default handler for {} with ritual {}", recipe.id(), recipe.value().getRitual().factoryId);
+                        try {
+                            recipe.value().getRitual().finish(level, getPos(), null, null, activationItem);
+                        } catch (NullPointerException exception) {
+                            OccultEngineering.LOGGER.error("A null pointer exception occurred with the default handler, dropping activation item and ingredients.");
+                            dropStackNearby(level, itemStackHandler.extractItem(0, 1, false));
+                            for (var item : consumedIngredients)
+                                dropStackNearby(level, item);
+                            consumedIngredients.clear();
+                        }
                     }
                 }
             } else {
@@ -278,7 +327,7 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
             // variable, I'm using one anyway
             @SuppressWarnings("unchecked")
             var result = recipe.filter(r -> r.value() instanceof RitualRecipe)
-                  .map(r -> (RecipeHolder<RitualRecipe>) r);
+                    .map(r -> (RecipeHolder<RitualRecipe>) r);
 
             result.ifPresent(
                     ritualRecipeRecipeHolder ->
