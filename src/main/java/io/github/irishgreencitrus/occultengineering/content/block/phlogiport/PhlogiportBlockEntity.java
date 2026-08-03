@@ -121,7 +121,7 @@ public class PhlogiportBlockEntity extends PackagePortBlockEntity {
                     var distance = worldPosition.distManhattan(pbe.worldPosition);
 
                     // Offset it slightly so it looks like the signal is coming from the antenna
-                    var signalCenter = worldPosition.getCenter().add(PhlogiportSignalParticle.offset);
+                    var signalCenter = worldPosition.getCenter().add(PhlogiportSignalParticleData.ANTENNA_OFFSET);
 
                     serverLevel.sendParticles(
                             new PhlogiportSignalParticleData(new BlockPositionSource(pbe.getBlockPos()), distance),

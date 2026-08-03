@@ -12,8 +12,15 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.gameevent.EntityPositionSource;
 import net.minecraft.world.level.gameevent.PositionSource;
+import net.minecraft.world.phys.Vec3;
 
 public record PhlogiportSignalParticleData(PositionSource destination, int arrivalInTicks) implements ParticleOptions {
+    /**
+        Adding 13/32f makes the particle appear at
+        approximately the height of the antenna.
+     */
+    public static final Vec3 ANTENNA_OFFSET = new Vec3(0, 13f / 32f, 0);
+
     private static final Codec<PositionSource> SAFE_POSITION_SOURCE_CODEC =
             PositionSource.CODEC.validate((p) -> p instanceof EntityPositionSource ? DataResult.error(() -> "Entity position sources are not allowed.") : DataResult.success(p));
 

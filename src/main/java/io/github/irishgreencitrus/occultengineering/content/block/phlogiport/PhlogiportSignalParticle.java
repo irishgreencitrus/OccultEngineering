@@ -20,12 +20,6 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
     private final PositionSource target;
     private final Vec3 startingPosition;
 
-    /*
-        Adding 13/32f makes the particle appear at
-        approximately the height of the antenna.
-     */
-    public static final Vec3 offset = new Vec3(0f, 13f / 32f, 0f);
-
     protected PhlogiportSignalParticle(ClientLevel level, double x, double y, double z, PositionSource target, int lifetime) {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.quadSize = 0.5F;
@@ -54,7 +48,7 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
         float percentage = (float) this.age / this.lifetime;
 
-        var newPos = this.startingPosition.lerp(targetPos.get().add(offset), percentage);
+        var newPos = this.startingPosition.lerp(targetPos.get().add(PhlogiportSignalParticleData.ANTENNA_OFFSET), percentage);
 
         this.x = newPos.x();
         this.y = newPos.y();
@@ -80,7 +74,7 @@ public class PhlogiportSignalParticle extends TextureSheetParticle {
 
         var targetPosOpt = target.getPosition(level);
         if (targetPosOpt.isPresent()) {
-            Vector3f travelAxis = targetPosOpt.get().add(offset).subtract(currentPos).normalize().toVector3f();
+            Vector3f travelAxis = targetPosOpt.get().add(PhlogiportSignalParticleData.ANTENNA_OFFSET).subtract(currentPos).normalize().toVector3f();
 
             var localX = travelAxis.normalize();
             localX.normalize();
