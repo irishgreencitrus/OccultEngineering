@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.13.1] - 2026-08-03
+### :bug: Bug Fixes
+- [`da5d7c6`](https://github.com/irishgreencitrus/OccultEngineering/commit/da5d7c68502c4bceea07fb3ab1e68eabfea6a2ec) - Don't load client-side particles in server-side code *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :wrench: Chores
+- [`965a8a0`](https://github.com/irishgreencitrus/OccultEngineering/commit/965a8a0b2288bb2af48df6313eb02b17b16952ac) - Update mc-publish *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`1a127c1`](https://github.com/irishgreencitrus/OccultEngineering/commit/1a127c14a7f463598cc201c8cf4c1c5365e2cd7f) - Fix big fat typo *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.13.0] - 2026-08-03
 ### :sparkles: New Features
 - [`8eb916d`](https://github.com/irishgreencitrus/OccultEngineering/commit/8eb916da03088a95d34bc3c8f93b5f760019286d) - Add curios support to ToggleCombinedGogglesPacket *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -247,3 +256,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.12.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.1...beta/v1.21.1-0.12.2
 [beta/v1.21.1-0.12.3]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.2...beta/v1.21.1-0.12.3
 [beta/v1.21.1-0.13.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.3...beta/v1.21.1-0.13.0
+[beta/v1.21.1-0.13.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.13.0...beta/v1.21.1-0.13.1
