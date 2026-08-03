@@ -1,0 +1,84 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "occultengineering:getting_started",
+  "description": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "occultengineering:mechanical_upgrade_empty"
+  },
+  "name": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.name",
+  "pages": [
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_upgrade_empty"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_empty.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_empty.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_upgrade_djinni"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_djinni.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_djinni.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_upgrade_afrit"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_afrit.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_afrit.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_upgrade_marid"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_marid.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.mechanical_upgrade_marid.title"
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "item": {
+        "item": "occultengineering:mechanical_pulverizer"
+      },
+      "text": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.upgrade_pulverizer.text",
+      "title": "book.occultengineering.encyclopedia_of_souls.getting_started.mechanical_upgrades.upgrade_pulverizer.title"
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "occultengineering:getting_started/mechanical_pulverizer",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": -7,
+  "y": 0
+}

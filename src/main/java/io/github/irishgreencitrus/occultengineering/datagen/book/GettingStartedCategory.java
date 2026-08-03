@@ -44,7 +44,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 "__________________________________",
                 "_____i__b_________________________",
                 "__________________________________",
-                "_____S_ć_____e____________________",
+                "_____S_ć__U__e____________________",
                 "________M____ú___H________________",
                 "_____g__P_________________________",
                 "________D____&___?________________",
@@ -73,6 +73,9 @@ public class GettingStartedCategory extends CategoryProvider {
 
         var pulverizer = add(makePulverizerEntry(entryMap, 'P'));
         pulverizer.withParent(BookEntryParentModel.create(sterlingSilver.getId()));
+
+        var upgrades = add(makeUpgradesEntry(entryMap, 'U'));
+        upgrades.withParent(BookEntryParentModel.create(pulverizer.getId()));
 
         var detector = add(makeDetectorEntry(entryMap, 'D'));
         detector.withParent(BookEntryParentModel.create(sterlingSilver.getId()));
@@ -477,12 +480,77 @@ public class GettingStartedCategory extends CategoryProvider {
                 .withPages(mechanicalChamber, ritual);
     }
 
+    private BookEntryModel makeUpgradesEntry(CategoryEntryMap entryMap, char icon) {
+        var entryId = "mechanical_upgrades";
+        context().entry(entryId);
+
+        lang().add(context().entryName(), "Mechanical Upgrades");
+        lang().add(context().entryDescription(), "For stronger machines");
+
+        context().page("mechanical_upgrade_empty");
+        var mechanicalUpgradeEmpty = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_EMPTY))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Empty Mechanical Upgrade");
+        lang().add(context().pageText(),
+                "The base of Mechanical Upgrades can be crafted by pressing Otherstone with a Mechanical Press.");
+
+        context().page("mechanical_upgrade_djinni");
+        var mechanicalUpgradeDjinni = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_DJINNI))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Mechanical Upgrade: Djinni");
+        lang().add(context().pageText(),
+                "Crafted via an Occult Ritual, it can be used to upgrade machines to the Djinni equivalent tier.");
+
+        context().page("mechanical_upgrade_afrit");
+        var mechanicalUpgradeAfrit = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_AFRIT))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Mechanical Upgrade: Afrit");
+        lang().add(context().pageText(),
+                "Crafted via an Occult Ritual, it can be used to upgrade machines to the Afrit equivalent tier.");
+
+        context().page("mechanical_upgrade_marid");
+        var mechanicalUpgradeMarid = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringItems.MECHANICAL_UPGRADE_MARID))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Mechanical Upgrade: Marid");
+        lang().add(context().pageText(),
+                "Crafted via an Occult Ritual, it can be used to upgrade machines to the Marid equivalent tier.");
+
+        context().page("upgrade_pulverizer");
+        var upgradePulverizer = BookSpotlightPageModel.builder()
+                .withItem(Ingredient.of(OccultEngineeringBlocks.MECHANICAL_PULVERIZER))
+                .withTitle(context().pageTitle())
+                .withText(context().pageText())
+                .build();
+        lang().add(context().pageTitle(), "Upgrading the Mechanical Pulverizer");
+        lang().add(context().pageText(),
+                "A higher tier Pulverizer can crush higher tier items, but it also crushes items faster at the same rotational speed (Tier 4 will crush 4x as fast as Tier 1 at 16 RPM).");
+
+        return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
+                .withIcon(OccultEngineeringItems.MECHANICAL_UPGRADE_EMPTY)
+                .withLocation(entryMap.get(icon))
+                .withPages(mechanicalUpgradeEmpty, mechanicalUpgradeDjinni, mechanicalUpgradeAfrit,
+                        mechanicalUpgradeMarid, upgradePulverizer);
+    }
+
     private BookEntryModel makePulverizerEntry(CategoryEntryMap entryMap, char icon) {
         var entryId = "mechanical_pulverizer";
         context().entry(entryId);
 
         lang().add(context().entryName(), "Mechanical Pulverizer");
-        lang().add(context().entryDescription(), "Dust galore!");
+        lang().add(context().entryDescription(), "It grinds through the competition");
 
         context().page("mechanical_pulverizer");
         var mechanicalPulverizer = BookSpotlightPageModel.builder()
@@ -500,6 +568,7 @@ public class GettingStartedCategory extends CategoryProvider {
                 """);
 
         return BookEntryModel.create(fullyQualifiedEntryId(), context().entryName())
+                .withDescription(context().entryDescription())
                 .withIcon(OccultEngineeringBlocks.MECHANICAL_PULVERIZER)
                 .withLocation(entryMap.get(icon))
                 .withPages(mechanicalPulverizer);

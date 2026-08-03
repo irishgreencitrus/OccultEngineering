@@ -1,0 +1,7 @@
+{
+  "parent": "occultengineering:block/mechanical_pulverizer",
+  "textures": {
+    "0": "occultengineering:block/mechanical_pulverizer/tier3",
+    "particle": "occultengineering:block/mechanical_pulverizer/tier3"
+  }
+}

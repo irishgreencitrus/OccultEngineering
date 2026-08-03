@@ -1,11 +1,13 @@
 package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer;
 
+import com.klikli_dev.occultism.Occultism;
 import com.klikli_dev.occultism.crafting.recipe.CrushingRecipe;
-import com.klikli_dev.occultism.crafting.recipe.ItemStackFakeInventory;
+import com.klikli_dev.occultism.crafting.recipe.TieredItemStackFakeInventory;
 import com.klikli_dev.occultism.registry.OccultismRecipes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.sound.SoundScapes;
+import io.github.irishgreencitrus.occultengineering.content.block.OcEngBlockStates;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,10 +33,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class PulverizerBlockEntity extends KineticBlockEntity {
+    private static final float LEGACY_MARID_TIME_MULTIPLIER = 0.2f;
+    private static final float PARITY_MARID_TIME_MULTIPLIER = 0.3f;
+
     public ItemStackHandler inputInv;
     public ItemStackHandler outputInv;
     public LazyOptional<IItemHandler> capability;
     public int timer;
+    private int tier;
     // This is Occultism's CrushingRecipe, not Create's
     private CrushingRecipe lastRecipe;
 
@@ -43,6 +49,23 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         inputInv = new ItemStackHandler(1);
         outputInv = new ItemStackHandler(1);
         capability = LazyOptional.of(PulverizerInventoryHandler::new);
+        tier = 1;
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public void setTier(int tier) {
+        this.tier = tier;
+        lastRecipe = null;
+        if (level != null && !level.isClientSide) {
+            var state = getBlockState();
+            if (state.hasProperty(OcEngBlockStates.TIER)) {
+                level.setBlock(worldPosition, state.setValue(OcEngBlockStates.TIER, tier), 3);
+            }
+        }
+        setChanged();
     }
 
     @Override
@@ -105,12 +128,12 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
 
         if (recipe.isEmpty()) return;
 
-        var input = new ItemStackFakeInventory(inputStack);
-        var result = recipe.get().assemble(input, level.registryAccess());
+        var result = assembleResult(recipe.get(), inputStack);
 
         var remainder = ItemHandlerHelper.insertItem(outputInv, result, true);
         // If we can't fit the remainder, don't process it.
         if (!remainder.isEmpty()) return;
+
         inputStack.shrink(1);
         inputInv.setStackInSlot(0, inputStack);
         ItemHandlerHelper.insertItem(outputInv, result, false);
@@ -127,25 +150,30 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
         if (emptySlot) return true;
 
 
-        var input = new ItemStackFakeInventory(stack);
-
-        var matchingItem = outputInv.getStackInSlot(0).is(
-                recipe.get().assemble(input, level.registryAccess()).getItem());
+        var output = assembleResult(recipe.get(), stack);
+        var matchingItem = outputInv.getStackInSlot(0).is(output.getItem());
 
         if (!matchingItem) return false;
 
-        var output = recipe.get().assemble(input, level.registryAccess());
         var remainder = ItemHandlerHelper.insertItem(outputInv, output, true);
 
         // We won't process something if it puts it over our stack size
         return remainder.isEmpty();
     }
 
+    private ItemStack assembleResult(CrushingRecipe recipe, ItemStack stack) {
+        var input = new TieredItemStackFakeInventory(stack, tier);
+        var result = recipe.assemble(input, level.registryAccess());
+        if (getOutputMultiplier() > 0 && !recipe.getIgnoreCrushingMultiplier()) {
+            result.setCount((int) (result.getCount() * getOutputMultiplier()));
+        }
+        return result;
+    }
+
 
     private Optional<CrushingRecipe> findCurrentRecipe(ItemStack stack) {
         if (level == null) return Optional.empty();
-        // no tiers in 1.20.1
-        var input = new ItemStackFakeInventory(stack);
+        var input = new TieredItemStackFakeInventory(stack, tier);
 
         if (lastRecipe != null && lastRecipe.matches(input, level)) {
             return Optional.ofNullable(lastRecipe);
@@ -159,6 +187,7 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     @Override
     protected void write(CompoundTag compound, boolean clientPacket) {
         compound.putInt("timer", timer);
+        compound.putInt("tier", tier);
         compound.put("input_inventory", inputInv.serializeNBT());
         compound.put("output_inventory", outputInv.serializeNBT());
         super.write(compound, clientPacket);
@@ -167,6 +196,7 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
         timer = compound.getInt("timer");
+        tier = compound.contains("tier") ? compound.getInt("tier") : 1;
         inputInv.deserializeNBT(compound.getCompound("input_inventory"));
         outputInv.deserializeNBT(compound.getCompound("output_inventory"));
         super.read(compound, clientPacket);
@@ -179,7 +209,32 @@ public class PulverizerBlockEntity extends KineticBlockEntity {
     }
 
     public int getProcessingSpeed() {
-        return Mth.clamp((int) Math.abs(getSpeed() / 16f), 1, 512);
+        return Mth.clamp((int) Math.abs(getSpeed() / getTimeMultiplier() / 32f), 1, 512);
+    }
+
+    public float getOutputMultiplier() {
+        return switch (tier) {
+            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.tier2CrusherOutputMultiplier.get().floatValue();
+            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.tier3CrusherOutputMultiplier.get().floatValue();
+            case 4 -> Occultism.SERVER_CONFIG.spiritJobs.tier4CrusherOutputMultiplier.get().floatValue();
+            default -> Occultism.SERVER_CONFIG.spiritJobs.tier1CrusherOutputMultiplier.get().floatValue();
+        };
+    }
+
+    public float getTimeMultiplier() {
+        return switch (tier) {
+            case 2 -> Occultism.SERVER_CONFIG.spiritJobs.tier2CrusherTimeMultiplier.get().floatValue();
+            case 3 -> Occultism.SERVER_CONFIG.spiritJobs.tier3CrusherTimeMultiplier.get().floatValue();
+            case 4 -> {
+                var configured = Occultism.SERVER_CONFIG.spiritJobs.tier4CrusherTimeMultiplier.get().floatValue();
+                // Occultism 1.20's legacy default is 0.2, while the 1.21 default used by this
+                // feature is 0.3. Preserve every other server configuration value.
+                yield configured == LEGACY_MARID_TIME_MULTIPLIER
+                        ? PARITY_MARID_TIME_MULTIPLIER
+                        : configured;
+            }
+            default -> Occultism.SERVER_CONFIG.spiritJobs.tier1CrusherTimeMultiplier.get().floatValue();
+        };
     }
 
     private void spawnParticles() {

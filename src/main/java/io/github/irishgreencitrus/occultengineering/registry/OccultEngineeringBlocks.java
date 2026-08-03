@@ -14,10 +14,12 @@ import io.github.irishgreencitrus.occultengineering.config.OcEngStress;
 import io.github.irishgreencitrus.occultengineering.content.block.WrenchableBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_chamber.MechanicalChamberBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlock;
+import io.github.irishgreencitrus.occultengineering.content.block.mechanical_pulverizer.PulverizerBlockItem;
 import io.github.irishgreencitrus.occultengineering.content.block.otherworld_detector.OtherworldDetectorBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pentacle_altar.PentacleAltarBlock;
 import io.github.irishgreencitrus.occultengineering.content.block.pucalith.PucalithBlock;
 import io.github.irishgreencitrus.occultengineering.content.phlogiport.PhlogiportBlock;
+import io.github.irishgreencitrus.occultengineering.datagen.OcEngBlockStateGen;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 
+import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOnly;
 import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
@@ -47,6 +50,9 @@ public class OccultEngineeringBlocks {
             .properties(p -> p.mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion())
             .blockstate(BlockStateGen.horizontalBlockProvider(false))
             .transform(OcEngStress.setImpact(4.0))
+            .transform(displaySource(OccultEngineeringDisplaySources.CURRENT_PENTACLE))
+            .transform(displaySource(OccultEngineeringDisplaySources.CURRENT_RITUAL_RESULT))
+            .transform(displaySource(OccultEngineeringDisplaySources.RITUAL_COMPLETION))
             .simpleItem()
             .register();
 
@@ -113,9 +119,10 @@ public class OccultEngineeringBlocks {
             .initialProperties(SharedProperties::stone)
             .transform(pickaxeOnly())
             .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion())
-            .blockstate(BlockStateGen.horizontalBlockProvider(false))
+            .blockstate(OcEngBlockStateGen::horizontalBlockWithTier)
             .transform(OcEngStress.setImpact(4.0))
-            .simpleItem()
+            .item(PulverizerBlockItem::new)
+            .build()
             .register();
 
     public static final BlockEntry<Block> STERLING_SILVER_BLOCK = REGISTRATE.block("sterling_silver_block", Block::new)

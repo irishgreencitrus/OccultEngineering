@@ -3,6 +3,7 @@ package io.github.irishgreencitrus.occultengineering.content.block.mechanical_pu
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
+import io.github.irishgreencitrus.occultengineering.content.block.OcEngBlockStates;
 import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringBlockEntities;
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -10,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,12 +21,16 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.Objects;
 
 @ParametersAreNonnullByDefault
@@ -40,6 +46,12 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
     }
 
     @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(OcEngBlockStates.TIER);
+        super.createBlockStateDefinition(builder);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(HORIZONTAL_FACING));
@@ -52,6 +64,27 @@ public class PulverizerBlock extends HorizontalKineticBlock implements IBE<Pulve
                 HORIZONTAL_FACING,
                 Objects.requireNonNullElseGet(preferred, context::getHorizontalDirection).getOpposite()
         );
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (level.isClientSide) return;
+        withBlockEntityDo(level, pos, pulverizer -> pulverizer.setTier(PulverizerBlockItem.getTier(stack)));
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+        var drops = super.getDrops(state, builder);
+        var blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockEntity instanceof PulverizerBlockEntity pulverizer) {
+            for (ItemStack stack : drops) {
+                if (stack.is(asItem())) {
+                    PulverizerBlockItem.setTier(stack, pulverizer.getTier());
+                }
+            }
+        }
+        return drops;
     }
 
     @Override

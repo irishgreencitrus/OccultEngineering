@@ -1,0 +1,14 @@
+{
+  "type": "create:pressing",
+  "ingredients": [
+    {
+      "item": "occultism:otherstone"
+    }
+  ],
+  "results": [
+    {
+      "chance": 0.05,
+      "item": "occultengineering:mechanical_upgrade_empty"
+    }
+  ]
+}
