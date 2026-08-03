@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [beta/v1.21.1-0.13.0] - 2026-08-03
+### :sparkles: New Features
+- [`8eb916d`](https://github.com/irishgreencitrus/OccultEngineering/commit/8eb916da03088a95d34bc3c8f93b5f760019286d) - Add curios support to ToggleCombinedGogglesPacket *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`23d09ae`](https://github.com/irishgreencitrus/OccultEngineering/commit/23d09ae3f0962e2df802e4990f93f85794510b0c) - Make Phlogiston use regular heating rather than superheating *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`14f6164`](https://github.com/irishgreencitrus/OccultEngineering/commit/14f61646f67ae14ff466dec32ce491642d42cd24) - Add more translations *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`23283ed`](https://github.com/irishgreencitrus/OccultEngineering/commit/23283ed727b9cc16fa93d697529b215dacc8ab09) - Allow summon spirit with jobs to directly spit out bound books. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+- [`535f445`](https://github.com/irishgreencitrus/OccultEngineering/commit/535f445cced1a212a4d4048f76624954605d48eb) - Make phlogiston crafted with regular heating, and add chalk glyph 13 *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :bug: Bug Fixes
+- [`7e94e6a`](https://github.com/irishgreencitrus/OccultEngineering/commit/7e94e6ad18be241eecbdfa5aa3bc4aea1e90dfb4) - Stop logging on every combined goggle toggle. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+### :wrench: Chores
+- [`7bada80`](https://github.com/irishgreencitrus/OccultEngineering/commit/7bada807168823b42eb50982e336875dd8abb367) - Update dependencies *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
+
+
 ## [beta/v1.21.1-0.12.3] - 2026-04-27
 ### :bug: Bug Fixes
 - [`0741631`](https://github.com/irishgreencitrus/OccultEngineering/commit/0741631c761424752ef9f6807e346f113cb60b2e) - Update Occultism dependency to fix crash on pulverizer use. *(commit by [@irishgreencitrus](https://github.com/irishgreencitrus))*
@@ -231,3 +246,4 @@ Join me on the Discord, or make a GitHub feature request and if it's good and fi
 [beta/v1.21.1-0.12.1]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.0...beta/v1.21.1-0.12.1
 [beta/v1.21.1-0.12.2]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.1...beta/v1.21.1-0.12.2
 [beta/v1.21.1-0.12.3]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.2...beta/v1.21.1-0.12.3
+[beta/v1.21.1-0.13.0]: https://github.com/irishgreencitrus/OccultEngineering/compare/beta/v1.21.1-0.12.3...beta/v1.21.1-0.13.0
