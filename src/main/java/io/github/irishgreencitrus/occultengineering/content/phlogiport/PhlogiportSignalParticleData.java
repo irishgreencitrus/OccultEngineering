@@ -19,6 +19,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Locale;
 
 public class PhlogiportSignalParticleData implements ParticleOptions {
+    /** Offset from the block centre to the top of the Phlogiport antenna. */
+    public static final Vec3 ANTENNA_OFFSET = new Vec3(0, 13f / 32f, 0);
+
     public static final Codec<PhlogiportSignalParticleData> CODEC = RecordCodecBuilder.create(i ->
             i.group(
                     PositionSource.CODEC.fieldOf("destination").forGetter(p -> p.destination),
