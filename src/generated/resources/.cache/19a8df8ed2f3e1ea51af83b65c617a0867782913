@@ -1,6 +1,6 @@
-// 1.21.1	2026-04-26T14:04:04.351462	Registrate Provider for occultengineering [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
-87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/brass_chalk.json
-87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/copper_chalk.json
+// 1.21.1	2026-08-03T11:30:19.697712	Registrate Provider for occultengineering [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider]
+c8ae5db82d8c5ff9fbf73d10b5921c650acdbab3 assets/occultengineering/blockstates/brass_chalk.json
+c8ae5db82d8c5ff9fbf73d10b5921c650acdbab3 assets/occultengineering/blockstates/copper_chalk.json
 47e991cab98678169796b54dc9e7bffb7f258c01 assets/occultengineering/blockstates/fan_enspirit_catalyst.json
 54e5140b2873f570b21b170cc10ae705191d81c3 assets/occultengineering/blockstates/mechanical_chamber.json
 05eab33c17810c6528d3d20bced03ec88fd92777 assets/occultengineering/blockstates/mechanical_pulverizer.json
@@ -10,7 +10,7 @@ c7425898da94ffa2510cf08b2f338b58a6afb005 assets/occultengineering/blockstates/ot
 fcb503c4b77a7af4580035449cc3426c17058598 assets/occultengineering/blockstates/pucalith.json
 856ac890f84bc8a3d4cef2b356b8b06a0b52734a assets/occultengineering/blockstates/spirit_solution.json
 08355f710746582caf11291dc6255d447e4e9709 assets/occultengineering/blockstates/sterling_silver_block.json
-87c0bb71f6a12c93da8498d09c7fc8c5a141e30c assets/occultengineering/blockstates/zinc_chalk.json
+c8ae5db82d8c5ff9fbf73d10b5921c650acdbab3 assets/occultengineering/blockstates/zinc_chalk.json
 b4e1aaf740b557eea739567837a114f421c0a034 assets/occultengineering/lang/en_ud.json
 ae7943fe8793406b38915932d5f38453a8537785 assets/occultengineering/lang/en_us.json
 33df31259a8fc2623e750a8816895dd908ed031d assets/occultengineering/models/block/chalk_glyph/0.json
@@ -18,6 +18,7 @@ e905b130222c6d2896593bbfda7c6abd45aece35 assets/occultengineering/models/block/c
 5ce3d22ecd375adb9234fb992673aaca6e195991 assets/occultengineering/models/block/chalk_glyph/10.json
 9ed5199a86f87f6a4e31ea2996b15ac923df3c74 assets/occultengineering/models/block/chalk_glyph/11.json
 16651b171905e5db92107bd3442419f295afa42c assets/occultengineering/models/block/chalk_glyph/12.json
+62220e3fcb1a0d2902ce882ce691dd5208b4274d assets/occultengineering/models/block/chalk_glyph/13.json
 530995e4d1617340c6d9f1e38cc6d5937c96df38 assets/occultengineering/models/block/chalk_glyph/2.json
 b7b93e4c493bfda359b79b34fe71005363967baa assets/occultengineering/models/block/chalk_glyph/3.json
 af3adf84106fa25d684629edc6a647a9fc4a5c06 assets/occultengineering/models/block/chalk_glyph/4.json
@@ -84,7 +85,7 @@ dd51d1882f19027b7af535d2ffafb69376671e5b data/occultengineering/loot_table/block
 e10b2a6d669b589fd157e366ada3001c8b46c59a data/occultengineering/loot_table/blocks/pucalith.json
 04f9e0b60a6187dcfa41d3c48abe5bd588892e2b data/occultengineering/loot_table/blocks/sterling_silver_block.json
 943aec57643f1b03062b4e1e8fe0b20c3242cad9 data/occultengineering/loot_table/blocks/zinc_chalk.json
-5bd46ae6ea54de41d2a1115a32e21e27edfc475e data/occultengineering/modonomicon/books/encyclopedia_of_souls/book.json
+54cbc1a30ecf65d6877f4c112fa4021e0756ff7d data/occultengineering/modonomicon/books/encyclopedia_of_souls/book.json
 940466ae72156d9a3e0f30c9cfc256257fad0434 data/occultengineering/modonomicon/books/encyclopedia_of_souls/categories/getting_started.json
 38e3bf714e79cbad250d93de740cfa22652f1115 data/occultengineering/modonomicon/books/encyclopedia_of_souls/categories/pentacles.json
 2e5fdd35a79319dcf8c76694aa8fdc54d15606e6 data/occultengineering/modonomicon/books/encyclopedia_of_souls/entries/getting_started/basics.json

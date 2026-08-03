@@ -164,7 +164,6 @@ public class RitualProcessorBehaviour extends BlockEntityBehaviour implements IR
             OccultEngineering.LOGGER.warn("Ritual {} requires an unsupported feature", ritualRecipe.id());
             return;
         }
-        ;
 
         currentRitualRecipe = ritualRecipe;
         currentTime = 0;

@@ -1,6 +1,6 @@
 {
   "type": "create:compacting",
-  "heat_requirement": "superheated",
+  "heat_requirement": "heated",
   "ingredients": [
     {
       "item": "minecraft:blaze_powder"
