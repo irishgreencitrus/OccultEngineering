@@ -7,7 +7,6 @@ import io.github.irishgreencitrus.occultengineering.registry.OccultEngineeringPa
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.net.base.ServerboundPacketPayload;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,15 +16,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Objects;
 
-public record PentacleAltarConfirmPacket(String pentacleLocation) implements ServerboundPacketPayload {
+public record PentacleAltarConfirmPacket(ResourceLocation pentacleLocation) implements ServerboundPacketPayload {
     public static final StreamCodec<ByteBuf, PentacleAltarConfirmPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8, PentacleAltarConfirmPacket::pentacleLocation,
+            ResourceLocation.STREAM_CODEC, PentacleAltarConfirmPacket::pentacleLocation,
             PentacleAltarConfirmPacket::new
     );
 
     @Override
     public void handle(ServerPlayer player) {
-        player.server.execute(() -> {
+        player.server.executeBlocking(() -> {
             Level level = player.getCommandSenderWorld();
             BlockPos altarPos = ((PentacleAltarMenu) player.containerMenu).contentHolder
                     .getBlockPos();
@@ -34,7 +33,7 @@ public record PentacleAltarConfirmPacket(String pentacleLocation) implements Ser
             if (be instanceof PentacleAltarBlockEntity altar) {
                 altar.inventory.setStackInSlot(0, ItemStack.EMPTY);
                 altar.inventory.setStackInSlot(1,
-                        PentacleSchematicItem.create(Objects.requireNonNull(ResourceLocation.tryParse(pentacleLocation)))
+                        PentacleSchematicItem.create(Objects.requireNonNull(pentacleLocation))
                 );
             }
         });

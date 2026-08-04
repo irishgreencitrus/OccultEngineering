@@ -1,6 +1,5 @@
 package io.github.irishgreencitrus.occultengineering.content.pentacleschematics;
 
-import com.google.common.collect.ImmutableList;
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
 import com.klikli_dev.modonomicon.multiblock.matcher.TagMatcher;
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
@@ -12,7 +11,7 @@ import io.github.irishgreencitrus.occultengineering.mixin.accessor.TagMatcherAcc
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -20,10 +19,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CandleBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.apache.commons.lang3.NotImplementedException;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PentaclePrinter {
 
@@ -106,17 +107,18 @@ public class PentaclePrinter {
         if (nextToPlace.left().isPresent()) {
             setBlock(pos, nextToPlace.left().get());
         } else {
-            var tag = nextToPlace.right().get();
-            // TODO: filter blocks by their tag / 1.21.1's equivilent
-            // ImmutableList<Block> all = ImmutableList.copyOf(Registries.BLOCK);
-            ImmutableList<Block> all = ImmutableList.copyOf(new ArrayList<>());
+            var tag = nextToPlace.right().orElseThrow();
 
-            if (all.isEmpty()) {
+            var tagItems = BuiltInRegistries.BLOCK.getTag(tag);
+            if (tagItems.isEmpty()) {
                 return false;
             }
 
-            var state = all.get(0).defaultBlockState();
-            setBlock(pos, state);
+            var representativeItem = tagItems.get().stream().findFirst();
+            if (representativeItem.isEmpty())
+                return false;
+
+            setBlock(pos, representativeItem.get().value().defaultBlockState());
         }
         return true;
     }
